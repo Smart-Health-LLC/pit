@@ -16,7 +16,7 @@ KMP project targeting Android, iOS, Desktop.
   you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project
 
 ## Versions
-- Gradle: 8.7 (not fully sure)
+- Gradle: 8.7
 - AGP: 8.2.0
 - Android Studio: Iguana 2023.2.1
 - Dev platform OS: Win10 22H2 19045.4291
