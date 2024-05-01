@@ -1,7 +1,7 @@
 import android.content.Context
-import di.KoinManager
 import android.content.Intent
 import android.net.Uri
+import di.KoinManager
 
 class AndroidWebPageRouter : WebRouter {
     override fun openUrl(url: String) {
@@ -15,4 +15,4 @@ class AndroidWebPageRouter : WebRouter {
     }
 }
 
-actual fun openWebPage() : WebRouter = AndroidWebPageRouter()
+actual fun openWebPage(): WebRouter = AndroidWebPageRouter()

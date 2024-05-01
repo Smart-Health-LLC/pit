@@ -4,7 +4,3 @@ interface WebRouter {
 
 
 expect fun openWebPage(): WebRouter
-
-fun openWebPageCommon() {
-
-}
