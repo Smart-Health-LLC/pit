@@ -40,6 +40,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
+            implementation(libs.koin)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
         }
@@ -80,6 +81,7 @@ android {
     }
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
+        implementation(libs.koin.android)
     }
 }
 
