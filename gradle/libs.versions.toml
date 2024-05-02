@@ -15,6 +15,7 @@ compose-plugin            = "1.6.2"
 junit                     = "4.13.2"
 kotlin                    = "1.9.23"
 koin                      = "3.5.6"
+navigationCommonKtx = "2.7.7"
 compose-navigation-ver    = "2.8.0-alpha02"
 
 [libraries]
@@ -33,6 +34,7 @@ compose-ui-tooling         = { module = "androidx.compose.ui:ui-tooling"        
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"              , version.ref = "compose" }
 koin                       = { module = "io.insert-koin:koin-core"                            , version.ref = "koin" }
 koin-android               = { module = "io.insert-koin:koin-android"                         , version.ref = "koin" }
+androidx-navigation-common-ktx = { group = "androidx.navigation", name = "navigation-common-ktx", version.ref = "navigationCommonKtx" }
 
 [plugins]
 androidApplication  = { id = "com.android.application"           , version.ref = "agp" }
