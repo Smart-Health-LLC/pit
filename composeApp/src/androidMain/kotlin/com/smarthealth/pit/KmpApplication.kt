@@ -1,10 +1,8 @@
 package com.smarthealth.pit
 
 import android.app.Application
-import di.KoinManager
+import di.KoinInit
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
 
 // For Android we need to start koin a bit differently since most of the time Android requires
 // Context as a dependency to initialize and access platform-specific APIs. Because of that, we
@@ -12,10 +10,9 @@ import org.koin.core.context.startKoin
 class KmpApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        startKoin {
-            androidContext(this@KmpApplication)
-            androidLogger()
-            modules(KoinManager.koinModules())
+        KoinInit().init {
+            androidContext(androidContext = this@KmpApplication)
+
         }
     }
 }

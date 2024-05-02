@@ -41,6 +41,7 @@ kotlin {
             implementation(compose.material)
             implementation(compose.ui)
             implementation(libs.koin)
+            api(libs.koin.compose)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
         }
