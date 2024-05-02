@@ -2,7 +2,6 @@
   <img src="logo.png" height="200px"  alt="project logo"/>
 </p>
 
-KMP project targeting Android, iOS, Desktop.
 
 ## Project structure
 
@@ -21,6 +20,5 @@ KMP project targeting Android, iOS, Desktop.
 ## Versions
 
 - Gradle: 8.7
-- AGP: 8.3.0
 - Android Studio: Iguana 2023.2.1
 - Dev platform OS: Win10 22H2 19045.4291
