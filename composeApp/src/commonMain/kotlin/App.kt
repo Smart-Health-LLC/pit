@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.KoinContext
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -20,4 +21,9 @@ fun App() {
             }
         }
     }
+    KoinContext {
+        AppTheme {
+        }
+    }
+
 }
