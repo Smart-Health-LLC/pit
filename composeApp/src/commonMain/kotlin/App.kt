@@ -1,28 +1,42 @@
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.*
 import org.koin.compose.KoinContext
+import presentation.navigation.AppNavigation
+import presentation.theme.AppTheme
+import presentation.ui.main.MainNav
+import presentation.ui.splash.SplashNav
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
-@Preview
 fun App() {
-    MaterialTheme {
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = { openWebPage().openUrl("http://www.reddit.com") }) {
-                Text("Click me!")
-            }
-        }
-    }
     KoinContext {
         AppTheme {
+            val navigator = rememberNavController()
+
+            // todo in depends of whether user logged in or not navigate to login screen or main screen
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                NavHost(
+                    navController = navigator,
+                    startDestination = AppNavigation.Splash.route,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    composable(route = AppNavigation.Splash.route) {
+                        SplashNav(navigateToMain = {
+                            navigator.popBackStack()
+                            navigator.navigate(AppNavigation.Main.route)
+                        })
+                    }
+                    composable(route = AppNavigation.Main.route) {
+                        MainNav {
+                            navigator.popBackStack()
+                            navigator.navigate(AppNavigation.Splash.route)
+                        }
+                    }
+                }
+            }
         }
     }
 
