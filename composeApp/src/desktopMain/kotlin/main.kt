@@ -2,6 +2,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import di.KoinInit
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import org.koin.core.Koin
 
 
@@ -12,6 +14,7 @@ fun main() {
     koin.loadModules(
         listOf(),
     )
+    Napier.base(DebugAntilog())
 
     return application {
         Window(
