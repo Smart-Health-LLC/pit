@@ -1,17 +1,27 @@
 package presentation.ui.splash
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.imageResource
+import pit.composeapp.generated.resources.Res
+import pit.composeapp.generated.resources.logo_round
 import presentation.ui.splash.view_model.LoginEvent
 import presentation.ui.splash.view_model.LoginState
 
+
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 internal fun SplashScreen(
     state: LoginState,
@@ -28,25 +38,24 @@ internal fun SplashScreen(
             navigateToLogin()
         }
     }
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter
+    Column(
+        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier.align(Alignment.TopCenter),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.size(32.dp))
-            Text(
-                "splash screen",
-                fontWeight = FontWeight.Bold,
-            )
-            Spacer(modifier = Modifier.size(32.dp))
-            Text(
-                "somestring",
-                fontWeight = FontWeight.Bold,
-            )
-        }
+        Image(
+            imageResource(Res.drawable.logo_round),
+            "App logo",
+            modifier = Modifier.size(180.dp)
+                .fillMaxWidth(),
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            textAlign = TextAlign.Center,
+            fontSize = 45.sp,
+            text = "Splash screen",
+            fontWeight = FontWeight.Bold,
+        )
     }
 
 }
