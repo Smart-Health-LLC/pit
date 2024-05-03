@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import business.NetworkState
-import io.github.aakira.napier.log
+import io.github.aakira.napier.Napier
 
 
 class LoginViewModel(
@@ -53,27 +53,23 @@ class LoginViewModel(
             is LoginEvent.OnUpdateNetworkState -> {
                 onUpdateNetworkState(event.networkState)
             }
-
-            is LoginEvent.OnRemoveHeadFromQueue -> {
-                OnRemoveHeadFromQueue("")
-            }
         }
     }
 
 
     private fun checkToken() {
         // todo check token
-        log { "Checking token" }
+        Napier.i(tag = "PitDev", message = "checking token")
     }
 
     private fun login() {
         // todo perform login process
-        log { "performing login" }
+        Napier.i(tag = "PitDev", message = "performing login")
     }
 
     private fun register() {
         // todo perform register process
-        log { "performing signup" }
+        Napier.i(tag = "PitDev", message = "performing signup")
     }
 
 
@@ -81,9 +77,6 @@ class LoginViewModel(
         state.value = state.value.copy(nameRegister = value)
     }
 
-    private fun OnRemoveHeadFromQueue(value: String) {
-        log { "i donnow what's that" }
-    }
 
     private fun onUpdatePasswordLogin(value: String) {
         state.value = state.value.copy(passwordLogin = value)
@@ -96,7 +89,7 @@ class LoginViewModel(
 
 
     private fun onRetryNetwork() {
-        log { "performing on retry network" }
+        Napier.i(tag = "PitDev", message = "performing on retry network")
     }
 
 

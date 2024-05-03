@@ -15,20 +15,20 @@ import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.stringResource
+import pit.composeapp.generated.resources.*
 import presentation.ui.splash.view_model.LoginEvent
 import presentation.ui.splash.view_model.LoginState
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun SignupScreen(
-
-
     loginState: LoginState,
     events: (LoginEvent) -> Unit,
     navigateToMain: () -> Unit,
     popUp: () -> Unit
-
 ) {
-
 
     LaunchedEffect(loginState.navigateToMain) {
         if (loginState.navigateToMain) {
@@ -36,12 +36,13 @@ fun SignupScreen(
         }
     }
 
+    // ----- to login page
     Box(modifier = Modifier.fillMaxSize()) {
         ClickableText(
-            text = AnnotatedString("Sign up here"),
+            text = AnnotatedString(stringResource(Res.string.to_login_page)),
             modifier = Modifier
                 .padding(20.dp),
-            onClick = { events(LoginEvent.Register) },
+            onClick = { popUp() },
             style = TextStyle(
                 fontSize = 14.sp,
                 fontFamily = FontFamily.Default,
@@ -58,43 +59,37 @@ fun SignupScreen(
         val username = remember { mutableStateOf(TextFieldValue()) }
         val password = remember { mutableStateOf(TextFieldValue()) }
 
-        Text(text = "Login", style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
+        Text(
+            text = stringResource(Res.string.signup),
+            style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive)
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
-            label = { Text(text = "Username") },
+            label = { Text(text = stringResource(Res.string.username)) },
             value = username.value,
             onValueChange = { username.value = it })
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
-            label = { Text(text = "Password") },
+            label = { Text(text = stringResource(Res.string.password)) },
             value = password.value,
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             onValueChange = { password.value = it })
 
+        // ---- signup
         Spacer(modifier = Modifier.height(20.dp))
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
-                onClick = { },
+                onClick = { events(LoginEvent.Register) },
                 shape = RoundedCornerShape(50.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                Text(text = "Login")
+                Text(text = stringResource(Res.string.signup))
             }
         }
-
-        Spacer(modifier = Modifier.height(20.dp))
-        ClickableText(
-            text = AnnotatedString("Forgot password?"),
-            onClick = { },
-            style = TextStyle(
-                fontSize = 14.sp,
-                fontFamily = FontFamily.Default
-            )
-        )
     }
 }

@@ -1,1 +1,12 @@
-<resources></resources>
+<resources>
+    <string name="signup">Sign up</string>
+    <string name="forgotpassword">Forgot password?</string>
+    <string name="login">Login</string>
+    <string name="back">Back</string>
+    <string name="goback">Go back</string>
+    <string name="logout">Logout</string>
+    <string name="already_have_account">Sign up here</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="to_login_page">Login here</string>
+</resources>
