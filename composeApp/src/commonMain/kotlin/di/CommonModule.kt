@@ -1,11 +1,11 @@
 package di
 
 import org.koin.dsl.module
-import presentation.ui.splash.view_model.LoginViewModel
+import presentation.ui.entry.view_model.AuthViewModel
 
 fun commonModule() = module {
-    single<LoginViewModel> {
-        LoginViewModel()
+    single<AuthViewModel> {
+        AuthViewModel()
     }
 }
 

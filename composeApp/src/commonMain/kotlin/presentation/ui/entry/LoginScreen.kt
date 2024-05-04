@@ -1,4 +1,4 @@
-package presentation.ui.splash
+package presentation.ui.entry
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,20 +19,20 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import pit.composeapp.generated.resources.*
-import presentation.ui.splash.view_model.LoginEvent
-import presentation.ui.splash.view_model.LoginState
+import presentation.ui.entry.view_model.AuthEvent
+import presentation.ui.entry.view_model.AuthState
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun LoginScreen(
-    events: (LoginEvent) -> Unit,
-    loginState: LoginState,
+    triggerAuthEvent: (AuthEvent) -> Unit,
+    state: AuthState,
     navigateToMain: () -> Unit,
-    navigateToRegister: () -> Unit,
+    navigateToSignup: () -> Unit,
 ) {
 
-    LaunchedEffect(loginState.navigateToMain) {
-        if (loginState.navigateToMain) {
+    LaunchedEffect(state.navigateToMain) {
+        if (state.navigateToMain) {
             navigateToMain()
         }
     }
@@ -46,7 +46,7 @@ fun LoginScreen(
             text = AnnotatedString(stringResource(Res.string.already_have_account)),
             modifier = Modifier
                 .padding(20.dp),
-            onClick = { navigateToRegister() },
+            onClick = { navigateToSignup() },
             style = TextStyle(
                 fontSize = 14.sp,
                 fontFamily = FontFamily.Default,
@@ -86,7 +86,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(20.dp))
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
-                onClick = { events(LoginEvent.Login) },
+                onClick = { triggerAuthEvent(AuthEvent.Login) },
                 shape = RoundedCornerShape(50.dp),
                 modifier = Modifier
                     .fillMaxWidth()

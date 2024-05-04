@@ -1,4 +1,4 @@
-package presentation.ui.splash.view_model
+package presentation.ui.entry.view_model
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -7,11 +7,11 @@ import business.NetworkState
 import io.github.aakira.napier.Napier
 
 
-class LoginViewModel(
+class AuthViewModel(
 ) : ViewModel() {
 
 
-    val state: MutableState<LoginState> = mutableStateOf(LoginState())
+    val state: MutableState<AuthState> = mutableStateOf(AuthState())
 
 
     init {
@@ -19,38 +19,38 @@ class LoginViewModel(
     }
 
 
-    fun onTriggerEvent(event: LoginEvent) {
+    fun onTriggerEvent(event: AuthEvent) {
         when (event) {
 
             // Actions
-            is LoginEvent.Login -> {
+            is AuthEvent.Login -> {
                 login()
             }
 
-            is LoginEvent.Register -> {
+            is AuthEvent.Register -> {
                 register()
             }
 
             // Data update
-            is LoginEvent.OnUpdateNameRegister -> {
+            is AuthEvent.OnUpdateNameRegister -> {
                 onUpdateNameRegister(event.value)
             }
 
-            is LoginEvent.OnUpdatePasswordLogin -> {
+            is AuthEvent.OnUpdatePasswordLogin -> {
                 onUpdatePasswordLogin(event.value)
             }
 
-            is LoginEvent.OnUpdateUsernameLogin -> {
+            is AuthEvent.OnUpdateUsernameLogin -> {
                 onUpdateUsernameLogin(event.value)
             }
 
 
             // Update network state
-            is LoginEvent.OnRetryNetwork -> {
+            is AuthEvent.OnRetryNetwork -> {
                 onRetryNetwork()
             }
 
-            is LoginEvent.OnUpdateNetworkState -> {
+            is AuthEvent.OnUpdateNetworkState -> {
                 onUpdateNetworkState(event.networkState)
             }
         }

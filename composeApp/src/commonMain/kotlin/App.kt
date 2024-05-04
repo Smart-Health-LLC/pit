@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.*
 import org.koin.compose.KoinContext
-import presentation.navigation.AppNavigation
+import presentation.navigation.InitialNavDestination
 import presentation.theme.AppTheme
+import presentation.ui.entry.SplashNav
 import presentation.ui.main.MainNav
-import presentation.ui.splash.SplashNav
 
 @Composable
 fun App() {
@@ -20,19 +20,19 @@ fun App() {
             Box(modifier = Modifier.fillMaxSize()) {
                 NavHost(
                     navController = navigator,
-                    startDestination = AppNavigation.Splash.route,
+                    startDestination = InitialNavDestination.Splash.route,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    composable(route = AppNavigation.Splash.route) {
+                    composable(route = InitialNavDestination.Splash.route) {
                         SplashNav(navigateToMain = {
                             navigator.popBackStack()
-                            navigator.navigate(AppNavigation.Main.route)
+                            navigator.navigate(InitialNavDestination.Main.route)
                         })
                     }
-                    composable(route = AppNavigation.Main.route) {
+                    composable(route = InitialNavDestination.Main.route) {
                         MainNav {
                             navigator.popBackStack()
-                            navigator.navigate(AppNavigation.Splash.route)
+                            navigator.navigate(InitialNavDestination.Splash.route)
                         }
                     }
                 }

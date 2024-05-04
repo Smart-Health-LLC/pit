@@ -1,4 +1,4 @@
-package presentation.ui.splash
+package presentation.ui.entry
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -17,15 +17,15 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.imageResource
 import pit.composeapp.generated.resources.Res
 import pit.composeapp.generated.resources.logo_round
-import presentation.ui.splash.view_model.LoginEvent
-import presentation.ui.splash.view_model.LoginState
+import presentation.ui.entry.view_model.AuthEvent
+import presentation.ui.entry.view_model.AuthState
 
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 internal fun SplashScreen(
-    state: LoginState,
-    events: (LoginEvent) -> Unit,
+    state: AuthState,
+    events: (AuthEvent) -> Unit,
     navigateToMain: () -> Unit,
     navigateToLogin: () -> Unit,
 ) {

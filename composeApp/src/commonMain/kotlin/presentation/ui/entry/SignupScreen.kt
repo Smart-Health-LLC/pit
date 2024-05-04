@@ -1,4 +1,4 @@
-package presentation.ui.splash
+package presentation.ui.entry
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import pit.composeapp.generated.resources.*
-import presentation.ui.splash.view_model.LoginEvent
-import presentation.ui.splash.view_model.LoginState
+import presentation.ui.entry.view_model.AuthEvent
+import presentation.ui.entry.view_model.AuthState
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun SignupScreen(
-    loginState: LoginState,
-    events: (LoginEvent) -> Unit,
+    loginState: AuthState,
+    events: (AuthEvent) -> Unit,
     navigateToMain: () -> Unit,
     popUp: () -> Unit
 ) {
@@ -82,7 +82,7 @@ fun SignupScreen(
         Spacer(modifier = Modifier.height(20.dp))
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
-                onClick = { events(LoginEvent.Register) },
+                onClick = { events(AuthEvent.Register) },
                 shape = RoundedCornerShape(50.dp),
                 modifier = Modifier
                     .fillMaxWidth()

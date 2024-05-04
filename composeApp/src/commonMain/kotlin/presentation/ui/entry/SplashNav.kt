@@ -1,4 +1,4 @@
-package presentation.ui.splash
+package presentation.ui.entry
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -6,10 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.*
 import org.koin.compose.koinInject
 import presentation.navigation.SplashNavigation
-import presentation.ui.splash.view_model.LoginViewModel
+import presentation.ui.entry.view_model.AuthViewModel
 
 @Composable
-internal fun SplashNav(viewModel: LoginViewModel = koinInject(), navigateToMain: () -> Unit) {
+internal fun SplashNav(viewModel: AuthViewModel = koinInject(), navigateToMain: () -> Unit) {
     val navigator = rememberNavController()
 
     NavHost(
@@ -29,11 +29,11 @@ internal fun SplashNav(viewModel: LoginViewModel = koinInject(), navigateToMain:
         }
         composable(route = SplashNavigation.Login.route) {
             LoginScreen(
-                navigateToMain = navigateToMain, navigateToRegister = {
+                navigateToMain = navigateToMain, navigateToSignup = {
                     navigator.navigate(SplashNavigation.Register.route)
                 },
-                loginState = viewModel.state.value,
-                events = viewModel::onTriggerEvent
+                state = viewModel.state.value,
+                triggerAuthEvent = viewModel::onTriggerEvent
             )
         }
         composable(route = SplashNavigation.Register.route) {
