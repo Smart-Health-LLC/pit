@@ -2,7 +2,6 @@
   <img src="logo.png" height="200px"  alt="project logo"/>
 </p>
 
-
 ## Project structure
 
 * `/composeApp` is for code that will be shared across Compose Multiplatform applications.
@@ -20,5 +19,5 @@
 ## Versions
 
 - Gradle: 8.7
-- Android Studio: Iguana 2023.2.1
+- Android Studio: Jellyfish 2023.3.1
 - Dev platform OS: Win10 22H2 19045.4291
