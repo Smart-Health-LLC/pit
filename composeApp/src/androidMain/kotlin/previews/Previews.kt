@@ -5,9 +5,10 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import presentation.ui.entry.*
-import presentation.ui.entry.view_model.AuthState
-import presentation.ui.main.HomeScreen
+import presentation.ui.login.LoginScreen
+import presentation.ui.main.MainScreen
+import presentation.ui.register.SignupScreen
+import presentation.ui.splash.SplashScreen
 
 // Context-Aware Previews: Light and Dark Theme
 @Preview(name = "Dark Mode", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
@@ -39,30 +40,26 @@ annotation class LayoutDirectionPreviews
 @ThemePreviews
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(
-        state = AuthState(),
-        navigateToMain = {},
-        navigateToSignup = {},
-        triggerAuthEvent = {})
+    LoginScreen()
 }
 
 @ThemePreviews
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    MainScreen()
 }
 
 
 @ThemePreviews
 @Composable
 fun SignupScreenPreview() {
-    SignupScreen(loginState = AuthState(), navigateToMain = {}, events = {}, popUp = {})
+    SignupScreen()
 }
 
 
 @ThemePreviews
 @Composable
 fun SplashScreenPreview() {
-    SplashScreen(state = AuthState(), navigateToLogin = {}, navigateToMain = {}, events = {})
+    SplashScreen()
 }
 

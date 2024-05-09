@@ -57,6 +57,9 @@ flowchart TB
 
 - Singular nouns in package names
 - While project in active development state, unstructured fat-ass commits are allowed
+- To keep aligned on the functional aspect of Jetpack Compose, the best writing approach is to
+  inject instances directly into functions properties. This way allow to have default implementation
+  with Koin, but keep open to inject different instances
 
 # Dependencies overview
 
