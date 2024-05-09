@@ -60,6 +60,9 @@ flowchart TB
 - To keep aligned on the functional aspect of Jetpack Compose, the best writing approach is to
   inject instances directly into functions properties. This way allow to have default implementation
   with Koin, but keep open to inject different instances
+- Nothing worse imo than create "util" folder with bunch of general shit. That's better to honestly
+  say "idk wft located here but I need this", so unless project structure is forming, "wtf" packages
+  exists :(
 
 # Dependencies overview
 
