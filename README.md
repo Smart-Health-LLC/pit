@@ -63,8 +63,7 @@ flowchart TB
 [Versions catalog](/gradle/libs.versions.toml)
 
 - Settings multiplatform
-    - I found more examples with that and I don't know how to deal with
-      DataStore on desktop
+    - I found more examples with that, later probably better to use data store
 - Voyager
     - Looks more pragmatic, than compose-navigation. Although migrating from voyager to
       Decompose or compose-multiplatform is not so hard. View models are voyager's screen
