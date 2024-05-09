@@ -1,9 +1,9 @@
-package presentation.ui.entry.view_model
+package presentation.ui
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import business.ProgressBarState
+import cafe.adriel.voyager.core.model.ScreenModel
 import data.network.NetworkState
 import data.usecase.LoginUseCaseImpl
 import io.github.aakira.napier.Napier
@@ -25,7 +25,7 @@ data class AuthState(
 
 class AuthViewModel(
     private val loginUseCase: LoginUseCaseImpl,
-) : ViewModel() {
+) : ScreenModel {
 
 
     val state: MutableState<AuthState> = mutableStateOf(AuthState())

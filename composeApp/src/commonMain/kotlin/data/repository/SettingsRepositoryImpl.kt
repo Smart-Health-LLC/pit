@@ -3,11 +3,13 @@ package data.repository
 import data.PreferenceManager
 import domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 
 class SettingsRepositoryImpl(
     private val preferenceManager: PreferenceManager,
 ) : SettingsRepository {
+    // todo make theme not int
     override suspend fun saveAppTheme(theme: Int) {
         preferenceManager.setInt(key = PreferenceManager.APP_THEME, value = theme)
     }
@@ -20,6 +22,7 @@ class SettingsRepositoryImpl(
         return preferenceManager.clearPreferences()
     }
 
+    // maybe combine refresh and access token in one data object
     override fun getToken(): Flow<String?> {
         TODO("Not yet implemented")
     }
@@ -28,13 +31,21 @@ class SettingsRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-
     override fun getRefreshToken(): Flow<String?> {
         TODO("Not yet implemented")
     }
 
     override fun saveRefreshToken(token: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun getUsername(): Flow<String?> {
+        // todo placeholder
+        return flow { emit(null) }
+    }
+
+    override fun saveUsername(username: String) {
+        preferenceManager.setString(key = PreferenceManager.USERNAME, value = username)
     }
 
 }

@@ -9,7 +9,8 @@ import data.usecase.LoginUseCaseImpl
 import domain.repository.SettingsRepository
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
-import presentation.ui.login.LoginScreenModel
+import presentation.ui.main.MainViewModel
+import presentation.ui.onboarding.OnboardingViewModel
 
 fun commonModule() = module {
     single { Json { isLenient = true; ignoreUnknownKeys = true } }
@@ -38,10 +39,18 @@ fun commonModule() = module {
     }
 
     /**
-     * ViewModels
+     * View models
      */
-    factory {
-        LoginScreenModel()
+    single<MainViewModel> {
+        MainViewModel(
+            settingsRepository = get(),
+        )
+    }
+
+    single<OnboardingViewModel> {
+        OnboardingViewModel(
+            settingsRepository = get(),
+        )
     }
 
     /**

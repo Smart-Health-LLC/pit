@@ -11,4 +11,6 @@ interface SettingsRepository {
     fun saveToken(token: String)
     fun getRefreshToken(): Flow<String?>
     fun saveRefreshToken(token: String)
+    fun getUsername(): Flow<String?>
+    fun saveUsername(username: String)
 }
