@@ -1,5 +1,10 @@
 <p align="center">
-  <img src="logo.png" height="200px"  alt="project logo"/>
+    <img src="logo.png" height="200px"  alt="project logo"/>
+</p>
+<p align="center">
+    <img alt="Static Badge" src="https://img.shields.io/badge/android-gray?logo=android">
+    <img alt="Static Badge" src="https://img.shields.io/badge/windows-gray?logo=windows&logoColor=blue">
+    <img alt="Static Badge" src="https://img.shields.io/badge/linux-gray?logo=linux">
 </p>
 
 ## Project structure
@@ -16,6 +21,27 @@
   you need this entry point for your iOS app. This is also where you should add SwiftUI code for
   your project
 
+```mermaid
+%%{
+  init: {
+    'theme': 'neutral'
+  }
+}%%
+
+flowchart TB
+  subgraph composeApp
+    AndroidMain(androidMain)
+    Common(commonMain)
+    iosMain(iosMain)
+  end
+
+  AndroidMain(androidMain) --> NativeAndroid(Android Library)
+  Common(commonMain) --> NativeAndroid(Android Library)
+
+  Common(commonMain) --> iOSFramework(iOS framework)
+  iosMain(iosMain) --> iOSFramework(iOS framework)
+```
+
 ## Versions
 
 - Gradle: 8.7
@@ -25,6 +51,7 @@
 # Local conventions
 
 - Singular nouns in package names
+- While project in active development state, unstructured fat-ass commits are allowed
 
 # Dependencies overview
 
