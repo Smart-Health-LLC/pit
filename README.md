@@ -21,3 +21,25 @@
 - Gradle: 8.7
 - Android Studio: Jellyfish 2023.3.1
 - Dev platform OS: Win10 22H2 19045.4291
+
+# Local conventions
+
+- Singular nouns in package names
+
+# Dependencies overview
+
+[Versions catalog](/gradle/libs.versions.toml)
+
+- Settings multiplatform
+    - I found more examples with that and I don't know how to deal with
+      DataStore on desktop
+- Voyager
+    - Looks more pragmatic, than compose-navigation. Although migrating from voyager to
+      Decompose or compose-multiplatform is not so hard. View models are voyager's screen
+      models until jetpack's view models
+      in [release candidate state](https://developer.android.com/jetpack/androidx/releases/lifecycle)
+- Koin
+
+# Supporting Backend Project
+
+[The backend that powers this app](https://github.com/Smart-Health-LLC/server)

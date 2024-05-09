@@ -10,7 +10,7 @@ class KoinInit {
         return startKoin {
             modules(
                 listOf(
-//                    platformModule(),
+                    platformModule(),
                     commonModule(),
                 ),
             )
@@ -19,4 +19,3 @@ class KoinInit {
     }
 }
 
-//expect fun platformModule(): Module

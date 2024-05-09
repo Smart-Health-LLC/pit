@@ -1,4 +1,4 @@
-package presentation.ui.entry
+package presentation.ui.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

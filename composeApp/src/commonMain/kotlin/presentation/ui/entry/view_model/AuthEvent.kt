@@ -1,6 +1,6 @@
 package presentation.ui.entry.view_model
 
-import business.NetworkState
+import data.network.NetworkState
 
 sealed class AuthEvent {
     data class OnUpdateNameRegister(val value: String) : AuthEvent()

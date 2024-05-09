@@ -3,99 +3,74 @@ package presentation.ui.entry.view_model
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import business.NetworkState
+import business.ProgressBarState
+import data.network.NetworkState
+import data.usecase.LoginUseCaseImpl
 import io.github.aakira.napier.Napier
 
 
+data class AuthState(
+    val nameRegister: String = "",
+    val usernameLogin: String = "",
+    val passwordLogin: String = "",
+
+    val isTokenValid: Boolean = false,
+    val navigateToMain: Boolean = false,
+
+    val networkState: NetworkState = NetworkState.Good,
+
+    val progressBarState: ProgressBarState = ProgressBarState.Idle,
+)
+
+
 class AuthViewModel(
+    private val loginUseCase: LoginUseCaseImpl,
 ) : ViewModel() {
 
 
     val state: MutableState<AuthState> = mutableStateOf(AuthState())
 
-
     init {
         checkToken()
     }
 
-
-    fun onTriggerEvent(event: AuthEvent) {
-        when (event) {
-
-            // Actions
-            is AuthEvent.Login -> {
-                login()
-            }
-
-            is AuthEvent.Register -> {
-                register()
-            }
-
-            // Data update
-            is AuthEvent.OnUpdateNameRegister -> {
-                onUpdateNameRegister(event.value)
-            }
-
-            is AuthEvent.OnUpdatePasswordLogin -> {
-                onUpdatePasswordLogin(event.value)
-            }
-
-            is AuthEvent.OnUpdateUsernameLogin -> {
-                onUpdateUsernameLogin(event.value)
-            }
-
-
-            // Update network state
-            is AuthEvent.OnRetryNetwork -> {
-                onRetryNetwork()
-            }
-
-            is AuthEvent.OnUpdateNetworkState -> {
-                onUpdateNetworkState(event.networkState)
-            }
-        }
-    }
-
-
-    private fun checkToken() {
+    public fun checkToken() {
         // todo check token
         Napier.i(tag = "PitDev", message = "checking token")
     }
 
-    private fun login() {
+    public fun login() {
         // todo perform login process
         Napier.i(tag = "PitDev", message = "performing login")
     }
 
-    private fun register() {
+    public fun register() {
         // todo perform register process
         Napier.i(tag = "PitDev", message = "performing signup")
     }
 
 
-    private fun onUpdateNameRegister(value: String) {
+    public fun onUpdateNameRegister(value: String) {
         state.value = state.value.copy(nameRegister = value)
     }
 
 
-    private fun onUpdatePasswordLogin(value: String) {
+    public fun onUpdatePasswordLogin(value: String) {
         state.value = state.value.copy(passwordLogin = value)
     }
 
 
-    private fun onUpdateUsernameLogin(value: String) {
+    public fun onUpdateUsernameLogin(value: String) {
         state.value = state.value.copy(usernameLogin = value)
     }
 
 
-    private fun onRetryNetwork() {
+    public fun onRetryNetwork() {
         Napier.i(tag = "PitDev", message = "performing on retry network")
     }
 
 
-    private fun onUpdateNetworkState(networkState: NetworkState) {
+    public fun onUpdateNetworkState(networkState: NetworkState) {
         state.value = state.value.copy(networkState = networkState)
     }
-
-
 }
