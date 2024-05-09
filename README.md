@@ -24,7 +24,10 @@
 ```mermaid
 %%{
   init: {
-    'theme': 'neutral'
+    'theme': 'neutral',
+    'flowchart': { 
+        'curve': 'natural',
+    },
   }
 }%%
 
@@ -34,6 +37,8 @@ flowchart TB
     Common(commonMain)
     iosMain(iosMain)
   end
+
+  style composeApp fill:transparent, 
 
   AndroidMain(androidMain) --> NativeAndroid(Android Library)
   Common(commonMain) --> NativeAndroid(Android Library)
