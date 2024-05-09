@@ -58,7 +58,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.ui)
             implementation(compose.material3)
-            // implementation(libs.compose.navigation)
+//            implementation(libs.compose.navigation)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.components.resources)
 
@@ -94,6 +94,7 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutines.swing)
         }
 //        iosMain.dependencies {
 //            implementation(libs.ktor.client.darwin)
