@@ -2,11 +2,11 @@ package data.usecase
 
 import business.DataState
 import business.ProgressBarState
+import data.network.auth.AuthService
 import domain.repository.SettingsRepository
 import domain.usecase.LoginUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import wtf.auth.AuthService
 
 class LoginUseCaseImpl(
     private val authService: AuthService,

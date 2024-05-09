@@ -1,25 +1,14 @@
 package data.network
 
-import business.BASE_API_URL
 import business.CUSTOM_TAG
-import data.network.auth.SIGNUP_ROUTE
-import data.network.auth.dto.RefreshToken
 import domain.repository.SettingsRepository
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
-import io.ktor.client.plugins.auth.Auth
-import io.ktor.client.plugins.auth.providers.BearerTokens
-import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.observer.ResponseObserver
-import io.ktor.client.request.get
-import io.ktor.client.request.parameter
-import io.ktor.http.encodedPath
-import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -38,33 +27,39 @@ object KtorHttpClient {
             socketTimeoutMillis = HTTP_TIMEOUT
         }
 
-
-        install(Auth) {
-            bearer {
-                /**
-                 * refreshTokens block triggers when server returns 401.
-                 * Firstly token refresh request will be sent after that our client will resend
-                 * request with new token.
-                 *
-                 * NOTE: add markAsRefreshTokenRequest() method to HttpRequestBuilder block
-                 * for token refresh requests.
-                 */
-                refreshTokens {
-                    val token = client.get {
-                        markAsRefreshTokenRequest()
-                        url {
-                            takeFrom(BASE_API_URL)
-                            encodedPath += SIGNUP_ROUTE
-                        }
-                        parameter("refreshToken", settingsRepository.getRefreshToken())
-                    }.body<RefreshToken>()
-                    BearerTokens(
-                        accessToken = token.bearerToken,
-                        refreshToken = token.refreshToken
-                    )
-                }
-            }
-        }
+        // https://ktor.io/docs/client-auth.html
+//        install(Auth) {
+//            bearer {
+//                /**
+//                 * Load tokens from a local storage and return them as the 'BearerTokens' instance
+//                 */
+//                loadTokens {
+//                    BearerTokens("abc123", "xyz111")
+//                }
+//                /**
+//                 * refreshTokens block triggers when server returns 401.
+//                 * Firstly token refresh request will be sent after that our client will resend
+//                 * request with new token.
+//                 *
+//                 * NOTE: add markAsRefreshTokenRequest() method to HttpRequestBuilder block
+//                 * for token refresh requests.
+//                 */
+//                refreshTokens {
+//                    val token = client.get {
+//                        markAsRefreshTokenRequest()
+//                        url {
+//                            takeFrom(BASE_API_URL)
+//                            encodedPath += SIGNUP_ROUTE
+//                        }
+//                        parameter("refreshToken", settingsRepository.getRefreshToken())
+//                    }.body<RefreshToken>()
+//                    BearerTokens(
+//                        accessToken = token.bearerToken,
+//                        refreshToken = token.refreshToken
+//                    )
+//                }
+//            }
+//        }
 
         install(ResponseObserver) {
             onResponse { response ->

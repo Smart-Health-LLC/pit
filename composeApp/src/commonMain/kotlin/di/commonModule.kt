@@ -14,7 +14,9 @@ import presentation.ui.login.LoginScreenModel
 fun commonModule() = module {
     single { Json { isLenient = true; ignoreUnknownKeys = true } }
     single {
-        KtorHttpClient.httpClient()
+        KtorHttpClient.httpClient(
+            settingsRepository = get()
+        )
     }
 
 
