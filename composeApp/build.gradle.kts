@@ -5,6 +5,26 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.ksp)
+}
+ksp {
+    arg("lyricist.internalVisibility", "true")
+    arg("lyricist.generateStringsProperty", "true")
+}
+dependencies {
+    add("kspCommonMainMetadata", libs.lyricist.processor)
+}
+
+// workaround for KSP only in Common Main.
+// https://github.com/google/ksp/issues/567
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+kotlin.sourceSets.commonMain {
+    kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 }
 
 kotlin {
@@ -15,6 +35,9 @@ kotlin {
             }
         }
     }
+
+    // https://stackoverflow.com/questions/36465824/android-studio-task-testclasses-not-found-in-project#50550818
+    task("testClasses")
 
     jvm("desktop")
 
@@ -42,6 +65,11 @@ kotlin {
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
+
+
+            // ==== i18n ====
+            implementation(libs.lyricist)
+            implementation(libs.lyricist.processor)
 
 
             // ==== Ktor ====

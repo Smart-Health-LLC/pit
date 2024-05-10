@@ -55,4 +55,11 @@ class SettingsRepositoryImpl(
         return preferenceManager.getString(key = PreferenceManager.LANGUAGE_ID)
     }
 
+    override fun getHourFormat(): Flow<Int?> {
+        return preferenceManager.getInt(key = PreferenceManager.HOUR_FORMAT)
+    }
+
+    override fun saveHourFormat(timeFormat: Int) {
+        preferenceManager.setInt(key = PreferenceManager.HOUR_FORMAT, value = timeFormat)
+    }
 }

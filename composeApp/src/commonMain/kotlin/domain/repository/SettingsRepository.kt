@@ -15,4 +15,6 @@ interface SettingsRepository {
     fun saveUsername(username: String)
     fun saveLang(lang: String)
     fun getLang(): Flow<String?>
+    fun getHourFormat(): Flow<Int?>
+    fun saveHourFormat(timeFormat: Int)
 }

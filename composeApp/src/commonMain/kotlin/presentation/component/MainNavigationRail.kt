@@ -19,14 +19,6 @@ fun MainNavigationRail(
     NavigationRail(
         modifier = modifier.fillMaxHeight().alpha(0.95F),
         containerColor = MaterialTheme.colorScheme.surface,
-        header = {
-            /*Icon(
-                modifier = Modifier.size(42.dp),
-                imageVector = Icons.Default.AccountBox,
-                // painter = painterResource("n_logo.png"),
-                contentDescription = "Logo",
-            )*/
-        },
         contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         navRailItems.forEach { item ->

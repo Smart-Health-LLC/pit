@@ -30,7 +30,6 @@ class MainScreen : Screen {
                         navRailItems = listOf(
                             MainTabs.HomeTab,
                             MainTabs.CalendarTab,
-                            MainTabs.AddTaskTab(),
                             MainTabs.StatisticsTab,
                             MainTabs.SettingsTab,
                         ),

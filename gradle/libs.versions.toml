@@ -1,7 +1,9 @@
 [versions]
 # Verions compatibility
 # https://developer.android.com/build/releases/gradle-plugin
-agp = "8.4.0"
+# Kotlin Multiplatform <-> Android Gradle Plugin compatibility (Kotlin Graple plugin <-> AGP)
+#noinspection AndroidGradlePluginVersion
+agp = "8.2.0"
 
 
 # Versions higher not supported by multiplatform
@@ -16,6 +18,7 @@ android-minSdk                   = "24"
 android-targetSdk                = "34"
 
 
+kspPlugin                             = "1.9.23-1.0.19"
 androidx-activityCompose              = "1.9.0"
 material3WindowSizeClassMultiplatform = "0.5.0"
 androidx-appcompat                    = "1.6.1"
@@ -35,6 +38,7 @@ coroutines                            = "1.8.1-Beta"
 kotlinx-components-resources-ver      = "1.6.2"
 koin                                  = "3.5.6"
 napier                                = "2.7.1"
+lyricist                              = "1.7.0"
 kotlinx-serialization-json-ver        = "1.6.3"
 dateTimeVersion                       = "0.5.0"
 compose-navigation-ver                = "2.8.0-alpha02"
@@ -54,6 +58,12 @@ ktor-serialization         = { module = "io.ktor:ktor-serialization-kotlinx-json
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json-ver" }
 # ktor-client-darwin       = { module = "io.ktor:ktor-client-darwin"                      , version.ref = "ktor" }
 # ktor-ios                 = { module = "io.ktor:ktor-client-ios"                         , version.ref = "ktor" }
+
+
+
+# ==== i18n ====
+lyricist           = { module = "cafe.adriel.lyricist:lyricist"          , version.ref = "lyricist" }
+lyricist-processor = { module = "cafe.adriel.lyricist:lyricist-processor", version.ref = "lyricist" }
 
 
 
@@ -118,3 +128,4 @@ androidApplication   = { id = "com.android.application"                  , versi
 androidLibrary       = { id = "com.android.library"                      , version.ref = "agp" }
 jetbrainsCompose     = { id = "org.jetbrains.compose"                    , version.ref = "compose-plugin" }
 kotlinMultiplatform  = { id = "org.jetbrains.kotlin.multiplatform"       , version.ref = "kotlin" }
+ksp                  = { id = "com.google.devtools.ksp"                  , version.ref = "kspPlugin" }

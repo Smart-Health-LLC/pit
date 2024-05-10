@@ -4,8 +4,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
+import domain.repository.SettingsRepository
+import i18n.Locales
+import i18n.rememberStrings
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
@@ -16,14 +20,19 @@ import presentation.wtf.ProvideAppNavigator
 @Composable
 fun App(
     mainViewModel: MainViewModel = koinInject(),
+    settingsRepository: SettingsRepository = koinInject()
 ) {
     val isDarkTheme = when (mainViewModel.appTheme.collectAsState().value) {
         1 -> true
         else -> false
     }
     val onBoardingState = mainViewModel.onBoardingState.collectAsState().value
+    val currentLang: String =
+        settingsRepository.getLang().collectAsState(Locales.EN).value.toString()
+    val lyricist = rememberStrings(currentLanguageTag = currentLang)
 
     KoinContext {
+
         AppTheme(darkTheme = isDarkTheme) {
 
             when (onBoardingState) {
@@ -32,19 +41,22 @@ fun App(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background,
                     ) {
-                        Navigator(
-                            screen = if (onBoardingState.completed) {
-                                MainScreen()
-                            } else {
-                                OnboardingScreen()
-                            },
-                            content = { navigator ->
-                                ProvideAppNavigator(
-                                    navigator = navigator,
-                                    content = { SlideTransition(navigator = navigator) },
-                                )
-                            },
-                        )
+                        ProvideStrings(lyricist) {
+
+                            Navigator(
+                                screen = if (onBoardingState.completed) {
+                                    MainScreen()
+                                } else {
+                                    OnboardingScreen()
+                                },
+                                content = { navigator ->
+                                    ProvideAppNavigator(
+                                        navigator = navigator,
+                                        content = { SlideTransition(navigator = navigator) },
+                                    )
+                                },
+                            )
+                        }
                     }
                 }
                 // todo I completely lost in this magic "when" block

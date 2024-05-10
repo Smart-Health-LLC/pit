@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import presentation.ui.main.MainViewModel
 import presentation.ui.onboarding.OnboardingViewModel
+import presentation.ui.settings.SettingsViewModel
 
 fun commonModule() = module {
     single { Json { isLenient = true; ignoreUnknownKeys = true } }
@@ -49,6 +50,12 @@ fun commonModule() = module {
 
     single<OnboardingViewModel> {
         OnboardingViewModel(
+            settingsRepository = get(),
+        )
+    }
+
+    single<SettingsViewModel> {
+        SettingsViewModel(
             settingsRepository = get(),
         )
     }
