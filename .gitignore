@@ -28,6 +28,7 @@ captures
 .idea/**/shelf
 .idea/discord.xml
 .idea/assetWizardSettings.xml
+.idea/deploymentTargetSelector.xml
 
 # AWS User-specific
 .idea/**/aws.xml
