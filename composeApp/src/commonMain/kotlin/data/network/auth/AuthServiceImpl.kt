@@ -1,6 +1,6 @@
 package data.network.auth
 
-import business.BASE_API_URL
+import data.BASE_API_URL
 import data.network.GenericResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
