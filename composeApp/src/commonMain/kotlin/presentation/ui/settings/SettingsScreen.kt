@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import data.CUSTOM_TAG
 import i18n.*
 import io.github.aakira.napier.log
@@ -19,7 +20,7 @@ fun SettingsScreen(
     var expanded by remember { mutableStateOf(false) }
     var selectedLocaleInfo by remember { mutableStateOf(getLocale(lyricist.languageTag)) }
 
-    Text(text = lyricist.strings.simple)
+    Text(text = strings.simple)
     Box(
         modifier = Modifier
             .fillMaxWidth()

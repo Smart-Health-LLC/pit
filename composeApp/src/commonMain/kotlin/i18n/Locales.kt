@@ -18,8 +18,6 @@ sealed class LocalesInfo(val tag: String, val name: String) {
     )
 }
 
-data class Locale(val tag: String, val name: String)
-
 fun getLocale(tag: String): LocalesInfo {
     return when (tag) {
         LocalesInfo.English.tag -> LocalesInfo.English

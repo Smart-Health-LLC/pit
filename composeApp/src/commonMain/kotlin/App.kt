@@ -4,11 +4,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import cafe.adriel.lyricist.LocalStrings
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import domain.repository.SettingsRepository
-import i18n.*
+import i18n.Locales
+import i18n.lyricist
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
