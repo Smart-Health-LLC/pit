@@ -48,7 +48,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen()
+            HomeScreen("Home screen")
         }
     }
 
@@ -74,7 +74,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen()
+            HomeScreen("Calendar screen")
         }
     }
 
@@ -99,7 +99,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen()
+            HomeScreen("Statistics screen")
         }
     }
 
@@ -124,7 +124,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen()
+            HomeScreen("Settings screen")
         }
     }
 
@@ -151,7 +151,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen()
+            HomeScreen("Add task screen")
         }
     }
 }

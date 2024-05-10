@@ -143,7 +143,7 @@ private fun UsernameTextField(
         singleLine = true,
         placeholder = {
             Text(
-                text = "John Doe",
+                text = "Username",
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontWeight = FontWeight.ExtraLight,
                     fontSize = 18.sp,

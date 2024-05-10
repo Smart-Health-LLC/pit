@@ -9,48 +9,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
 
-class HomeScreen(private val someContent: String = "Home screen") : Screen {
 
-    @Composable
-    override fun Content() {
-        Column(
+@Composable
+fun HomeScreen(someContent: String = "Home screen") {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.Center
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.Center
+            Text(
+                text = someContent,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Button(
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.padding(5.dp),
+                onClick = {
+                    //TODO: Navigate to Details
+                }
             ) {
                 Text(
-                    text = someContent,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    shape = MaterialTheme.shapes.medium,
+                    text = "Fancy button",
                     modifier = Modifier.padding(5.dp),
-                    onClick = {
-                        //TODO: Navigate to Details
-                    }
-                ) {
-                    Text(
-                        text = "Go to Details",
-                        modifier = Modifier.padding(5.dp),
-                    )
-                }
+                )
             }
         }
     }
