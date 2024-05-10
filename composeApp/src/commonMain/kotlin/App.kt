@@ -8,8 +8,7 @@ import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import domain.repository.SettingsRepository
-import i18n.Locales
-import i18n.rememberStrings
+import i18n.*
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
@@ -29,19 +28,19 @@ fun App(
     val onBoardingState = mainViewModel.onBoardingState.collectAsState().value
     val currentLang: String =
         settingsRepository.getLang().collectAsState(Locales.EN).value.toString()
-    val lyricist = rememberStrings(currentLanguageTag = currentLang)
 
-    KoinContext {
+    ProvideStrings(lyricist, LocalStrings) {
+        KoinContext {
 
-        AppTheme(darkTheme = isDarkTheme) {
 
-            when (onBoardingState) {
-                is OnBoardingState.Success -> {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background,
-                    ) {
-                        ProvideStrings(lyricist) {
+            AppTheme(darkTheme = isDarkTheme) {
+
+                when (onBoardingState) {
+                    is OnBoardingState.Success -> {
+                        Surface(
+                            modifier = Modifier.fillMaxSize(),
+                            color = MaterialTheme.colorScheme.background,
+                        ) {
 
                             Navigator(
                                 screen = if (onBoardingState.completed) {
@@ -58,10 +57,12 @@ fun App(
                             )
                         }
                     }
+                    // todo I completely lost in this magic "when" block
+                    else -> {}
                 }
-                // todo I completely lost in this magic "when" block
-                else -> {}
             }
+
+
         }
     }
 }

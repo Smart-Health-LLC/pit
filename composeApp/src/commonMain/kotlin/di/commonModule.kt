@@ -15,6 +15,7 @@ import presentation.ui.settings.SettingsViewModel
 
 fun commonModule() = module {
     single { Json { isLenient = true; ignoreUnknownKeys = true } }
+
     single {
         KtorHttpClient.httpClient(
             settingsRepository = get()

@@ -21,12 +21,3 @@ fun rememberStrings(
 
 val LocalStrings: ProvidableCompositionLocal<Strings> =
     staticCompositionLocalOf { EnStrings }
-
-
-@Composable
-fun ProvideStrings(
-    lyricist: Lyricist<Strings>,
-    content: @Composable () -> Unit
-) {
-    cafe.adriel.lyricist.ProvideStrings(lyricist, LocalStrings, content)
-}
