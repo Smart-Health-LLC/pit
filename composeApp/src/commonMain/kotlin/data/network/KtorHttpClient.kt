@@ -1,6 +1,6 @@
 package data.network
 
-import business.CUSTOM_TAG
+import data.CUSTOM_TAG
 import domain.repository.SettingsRepository
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
