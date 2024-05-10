@@ -1,6 +1,6 @@
 package domain.usecase
 
-import business.DataState
+import data.network.DataState
 import kotlinx.coroutines.flow.Flow
 
 interface LoginUseCase {

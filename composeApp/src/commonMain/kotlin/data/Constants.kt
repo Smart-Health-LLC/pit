@@ -1,4 +1,4 @@
-package business
+package data
 
 const val BASE_API_URL = "https://localhost:5044/api/v1/"
 

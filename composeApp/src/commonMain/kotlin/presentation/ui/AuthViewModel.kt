@@ -2,7 +2,6 @@ package presentation.ui
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import business.ProgressBarState
 import cafe.adriel.voyager.core.model.ScreenModel
 import data.network.NetworkState
 import data.usecase.LoginUseCaseImpl

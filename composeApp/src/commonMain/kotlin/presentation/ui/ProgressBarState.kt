@@ -1,4 +1,4 @@
-package business
+package presentation.ui
 
 sealed class ProgressBarState {
     data object ButtonLoading : ProgressBarState()

@@ -3,7 +3,6 @@ package data.repository
 import data.PreferenceManager
 import domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 
 class SettingsRepositoryImpl(
@@ -40,8 +39,8 @@ class SettingsRepositoryImpl(
     }
 
     override fun getUsername(): Flow<String?> {
-        // todo placeholder
-        return flow { emit(null) }
+        return preferenceManager.getString(key = PreferenceManager.USERNAME)
+//        return flow { emit(null) }
     }
 
     override fun saveUsername(username: String) {

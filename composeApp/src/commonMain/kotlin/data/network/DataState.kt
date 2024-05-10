@@ -1,6 +1,6 @@
-package business
+package data.network
 
-import data.network.NetworkState
+import presentation.ui.ProgressBarState
 
 sealed class DataState<T> {
     data class NetworkStatus<T>(val networkState: NetworkState) : DataState<T>()

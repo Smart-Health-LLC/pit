@@ -2,7 +2,7 @@ package domain.repository
 
 import kotlinx.coroutines.flow.Flow
 
-// Work with local data on higher level
+// Work with local key-value data on higher level
 interface SettingsRepository {
     suspend fun saveAppTheme(theme: Int)
     fun getAppTheme(): Flow<Int?>
