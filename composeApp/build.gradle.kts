@@ -58,6 +58,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.ui)
             implementation(compose.material3)
+            implementation(libs.material3.window.size.multiplatform)
 //            implementation(libs.compose.navigation)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.components.resources)

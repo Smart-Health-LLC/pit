@@ -48,4 +48,12 @@ class SettingsRepositoryImpl(
         preferenceManager.setString(key = PreferenceManager.USERNAME, value = username)
     }
 
+    override fun saveLang(lang: String) {
+        preferenceManager.setString(key = PreferenceManager.LANGUAGE_ID, value = lang)
+    }
+
+    override fun getLang(): Flow<String?> {
+        return preferenceManager.getString(key = PreferenceManager.LANGUAGE_ID)
+    }
+
 }

@@ -13,4 +13,6 @@ interface SettingsRepository {
     fun saveRefreshToken(token: String)
     fun getUsername(): Flow<String?>
     fun saveUsername(username: String)
+    fun saveLang(lang: String)
+    fun getLang(): Flow<String?>
 }

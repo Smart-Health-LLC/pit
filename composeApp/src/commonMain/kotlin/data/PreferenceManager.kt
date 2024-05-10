@@ -41,6 +41,7 @@ class PreferenceManager constructor(private val settings: Settings) {
         const val SHORT_BREAK_TIME = "short_break_time_key"
         const val LONG_BREAK_TIME = "long_break_time_key"
         const val HOUR_FORMAT = "hour_format_key"
+        const val LANGUAGE_ID = "language_id"
     }
 
     fun clearPreferences() {
