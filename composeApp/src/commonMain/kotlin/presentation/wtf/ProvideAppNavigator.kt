@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import cafe.adriel.voyager.navigator.Navigator
 
 // https://developer.android.com/reference/kotlin/androidx/compose/runtime/CompositionLocal
+// https://foso.github.io/Jetpack-Compose-Playground/general/compositionlocal/
 val LocalAppNavigator: ProvidableCompositionLocal<Navigator?> =
     staticCompositionLocalOf { null }
 
