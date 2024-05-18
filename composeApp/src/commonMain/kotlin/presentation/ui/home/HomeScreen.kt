@@ -1,54 +1,161 @@
 package presentation.ui.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
+import pit.composeapp.generated.resources.*
 
-
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun HomeScreen(someContent: String = "Home screen") {
+    val containerHorizontalPadding = 15.dp
+
+    // Screen content holder
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth()
+            .padding(horizontal = containerHorizontalPadding)
     ) {
+
+        // High profile block
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.Center
+                .padding(vertical = 20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = someContent,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Button(
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(5.dp),
-                onClick = {
-                    //TODO: Navigate to Details
-                }
-            ) {
+
+            // Short info about schedule
+            Column(horizontalAlignment = Alignment.Start) {
                 Text(
-                    text = "Fancy button",
-                    modifier = Modifier.padding(5.dp),
+                    "Everyman",
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.W500
+                )
+                Text(
+                    "Started at 2023/01/23",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(start = 3.dp)
                 )
             }
+
+            // Profile pic
+            Box() {
+                Image(
+                    painterResource(Res.drawable.avatar_placeholder),
+                    "profile",
+                    modifier = Modifier
+                        .size(49.dp)
+                        .clip(
+                            CircleShape
+                        )
+                )
+            }
+        }
+
+        // Current schedule visual scheme
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp), contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painterResource(Res.drawable.schedule_scheme_placeholder),
+                "ash",
+                modifier = Modifier.size(350.dp)
+            )
+        }
+
+
+        // Fancy button - edit schedule
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 15.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Button(onClick = { /*TODO*/ }, modifier = Modifier.height(56.dp)) {
+                Text(text = "Change schedule")
+            }
+        }
+
+        // Quick info in numbers
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(horizontal = 15.dp, vertical = 10.dp)
+                .clip(shape = RoundedCornerShape(5.dp))
+                .background(color = MaterialTheme.colorScheme.primaryContainer)
+                .padding(all = 10.dp)
+                .fillMaxWidth()
+        ) {
+            // Info section
+            Column(horizontalAlignment = Alignment.Start) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Icon(Icons.Rounded.ThumbUp, contentDescription = "ash", Modifier.size(12.dp))
+                    Spacer(modifier = Modifier.size(4.dp))
+                    Text("Description", style = MaterialTheme.typography.labelSmall)
+                }
+                Text(
+                    "22.04",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            // Info section
+            Column(horizontalAlignment = Alignment.Start) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Icon(Icons.Rounded.ThumbUp, contentDescription = "ash", Modifier.size(12.dp))
+                    Spacer(modifier = Modifier.size(4.dp))
+                    Text("Description", style = MaterialTheme.typography.labelSmall)
+                }
+                Text(
+                    "22.04",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            // Info section
+            Column(horizontalAlignment = Alignment.Start) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Icon(Icons.Rounded.ThumbUp, contentDescription = "ash", Modifier.size(12.dp))
+                    Spacer(modifier = Modifier.size(4.dp))
+                    Text("Description", style = MaterialTheme.typography.labelSmall)
+                }
+                Text(
+                    "22.04",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
         }
     }
 }
