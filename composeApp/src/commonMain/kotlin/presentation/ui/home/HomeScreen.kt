@@ -14,9 +14,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import domain.model.Schedule
+import domain.model.Segment
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
-import pit.composeapp.generated.resources.*
+import pit.composeapp.generated.resources.Res
+import pit.composeapp.generated.resources.avatar_placeholder
+import presentation.component.ScheduleComponent
+import java.time.LocalTime
+
+
+val dualCore1 = Schedule(
+    name = "Dual Core 1",
+    tst = LocalTime.of(5, 20),
+    segments = listOf(
+        Segment(
+            LocalTime.of(21, 30),
+            LocalTime.of(0, 50)
+        ),
+        Segment(
+            LocalTime.of(5, 50),
+            LocalTime.of(7, 30)
+        ),
+
+        Segment(
+            LocalTime.of(14, 0),
+            LocalTime.of(14, 20)
+        )
+    )
+)
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -42,7 +68,7 @@ fun HomeScreen(someContent: String = "Home screen") {
             // Short info about schedule
             Column(horizontalAlignment = Alignment.Start) {
                 Text(
-                    "Everyman",
+                    "Dual Core 1",
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.W500
                 )
@@ -68,17 +94,15 @@ fun HomeScreen(someContent: String = "Home screen") {
             }
         }
 
+
         // Current schedule visual scheme
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 20.dp), contentAlignment = Alignment.Center
         ) {
-            Image(
-                painterResource(Res.drawable.schedule_scheme_placeholder),
-                "ash",
-                modifier = Modifier.size(350.dp)
-            )
+
+            ScheduleComponent(dualCore1)
         }
 
 
