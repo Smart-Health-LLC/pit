@@ -24,12 +24,8 @@ fun MainNavigationRail(
         navRailItems.forEach { item ->
             val isSelected = tabNavigator.current == item
             NavigationRailItem(
-                modifier = if (item.options.index.toInt() == 4) {
-//                    Modifier.weight(1f)
-                    Modifier.padding(vertical = 12.dp)
-                } else {
-                    Modifier.padding(vertical = 12.dp)
-                },
+                modifier =
+                Modifier.padding(vertical = 12.dp).weight(4f),
                 icon = {
                     item.options.icon?.let {
                         Icon(
