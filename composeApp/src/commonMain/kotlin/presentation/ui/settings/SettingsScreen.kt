@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.strings
 import data.CUSTOM_TAG
+import domain.repository.SettingsRepository
 import i18n.*
 import io.github.aakira.napier.log
 import org.koin.compose.koinInject
@@ -15,8 +16,9 @@ import org.koin.compose.koinInject
 @Composable
 fun SettingsScreen(
     screenModel: SettingsViewModel = koinInject(),
+    settingsRepository: SettingsRepository = koinInject()
 
-    ) {
+) {
     var expanded by remember { mutableStateOf(false) }
     var selectedLocaleInfo by remember { mutableStateOf(getLocale(lyricist.languageTag)) }
 
@@ -51,6 +53,7 @@ fun SettingsScreen(
                         onClick = {
                             selectedLocaleInfo = item
                             lyricist.languageTag = item.tag
+                            settingsRepository.saveLang(item.tag)
                             expanded = false
                             log(tag = CUSTOM_TAG) { lyricist.languageTag }
                         }

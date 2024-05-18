@@ -3,6 +3,7 @@ package presentation.ui.main
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import domain.repository.SettingsRepository
+import i18n.Locales
 import kotlinx.coroutines.flow.*
 
 class MainViewModel(
@@ -23,6 +24,12 @@ class MainViewModel(
             started = SharingStarted.WhileSubscribed(),
             initialValue = OnBoardingState.Loading,
         )
+
+    val languageSetting: StateFlow<String?> = settingsRepository.getLang().map { it }.stateIn(
+        scope = screenModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = Locales.EN
+    )
 }
 
 sealed class OnBoardingState {

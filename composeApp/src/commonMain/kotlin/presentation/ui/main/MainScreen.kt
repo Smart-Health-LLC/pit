@@ -10,7 +10,9 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.tab.*
 import presentation.component.*
 
-
+/**
+ * Serves as a container with tab navigation
+ */
 class MainScreen : Screen {
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

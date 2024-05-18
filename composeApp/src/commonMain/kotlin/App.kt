@@ -9,7 +9,6 @@ import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import domain.repository.SettingsRepository
-import i18n.Locales
 import i18n.lyricist
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
@@ -28,13 +27,12 @@ fun App(
         else -> false
     }
     val onBoardingState = mainViewModel.onBoardingState.collectAsState().value
-    val currentLang: String =
-        settingsRepository.getLang().collectAsState(Locales.EN).value.toString()
+    val currentLang = mainViewModel.languageSetting.collectAsState().value
 
     ProvideStrings(lyricist, LocalStrings) {
         KoinContext {
-
-
+            if (currentLang != null)
+                lyricist.languageTag = currentLang
             AppTheme(darkTheme = isDarkTheme) {
 
                 when (onBoardingState) {
