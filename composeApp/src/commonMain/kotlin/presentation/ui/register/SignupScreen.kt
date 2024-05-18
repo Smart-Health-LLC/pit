@@ -87,6 +87,8 @@ fun signupScreen(
         )
 
         LoginLink(Modifier.align(Alignment.CenterHorizontally), onLoginClick = onNavigateUp)
+
+        AgreementLink(modifier = Modifier.align(Alignment.CenterHorizontally), onClick = {})
     }
 }
 
@@ -161,7 +163,20 @@ private fun LoginLink(modifier: Modifier, onLoginClick: () -> Unit) {
             addStyle(SpanStyle(color = MaterialTheme.colorScheme.primary), 24, this.length)
         },
         modifier = modifier
-            .padding(vertical = 24.dp, horizontal = 16.dp)
             .clickable(onClick = onLoginClick)
+    )
+}
+
+
+@Composable
+private fun AgreementLink(modifier: Modifier, onClick: () -> Unit) {
+    Text(
+        text = buildAnnotatedString {
+            append("By signing up you are apply an service agreement")
+            addStyle(SpanStyle(color = MaterialTheme.colorScheme.primary), 30, this.length)
+        },
+        modifier = modifier
+            .padding(vertical = 24.dp, horizontal = 16.dp)
+            .clickable(onClick = onClick)
     )
 }
