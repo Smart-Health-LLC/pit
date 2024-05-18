@@ -1,12 +1,7 @@
 package presentation.component
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
@@ -58,11 +53,12 @@ internal sealed class MainTabs {
     internal object StatisticsTab : Tab {
         const val INDEX: UShort = 1u
 
+        @OptIn(ExperimentalResourceApi::class)
         override val options: TabOptions
             @Composable
             get() {
                 val title = "Statistics"
-                val icon = rememberVectorPainter(Icons.Default.Star)
+                val icon = painterResource(Res.drawable.ic_data_exploration_24px)
 
                 return remember {
                     TabOptions(
@@ -84,11 +80,12 @@ internal sealed class MainTabs {
 
         const val INDEX: UShort = 2u
 
+        @OptIn(ExperimentalResourceApi::class)
         override val options: TabOptions
             @Composable
             get() {
                 val title = "Notes"
-                val icon = rememberVectorPainter(Icons.Outlined.DateRange)
+                val icon = painterResource(Res.drawable.ic_note_alt_24px)
 
                 return remember {
                     TabOptions(
@@ -108,11 +105,12 @@ internal sealed class MainTabs {
     internal object SettingsTab : Tab {
         const val INDEX: UShort = 3u
 
+        @OptIn(ExperimentalResourceApi::class)
         override val options: TabOptions
             @Composable
             get() {
                 val title = "Settings"
-                val icon = rememberVectorPainter(Icons.Default.Settings)
+                val icon = painterResource(Res.drawable.ic_person_24px)
 
                 return remember {
                     TabOptions(
