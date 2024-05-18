@@ -117,9 +117,6 @@ kotlin {
             // === Simple key-value storage
             api(libs.multiplatformSettings.noArg)
             api(libs.multiplatformSettings.coroutines)
-
-
-            // api(compose.materialIconsExtended)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

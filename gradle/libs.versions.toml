@@ -75,7 +75,6 @@ koin-android                    = { module = "io.insert-koin:koin-android"      
 
 
 # ==== Compose ====
-#compose-icons                      = { module = "androidx.compose.material:material-icons-extended"                 , version.ref = "compose" }
 material3-window-size-multiplatform = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "material3WindowSizeClassMultiplatform" }
 compose-material3                   = { module = "androidx.compose.material3:material3"                              , version.ref = "compose-material3" }
 #compose-navigation                 = { module = "org.jetbrains.androidx.navigation:navigation-compose"              , version.ref = "compose-navigation-ver" }
