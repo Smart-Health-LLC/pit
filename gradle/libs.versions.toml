@@ -44,6 +44,9 @@ dateTimeVersion                       = "0.5.0"
 compose-navigation-ver                = "2.8.0-alpha02"
 ktor                                  = "2.3.10"
 kotlinxCoroutinesSwing                = "1.8.0"
+foundationAndroid = "1.6.7"
+uiGraphicsAndroid = "1.6.7"
+uiAndroid = "1.6.7"
 
 [libraries]
 
@@ -120,6 +123,9 @@ androidx-espresso-core          = { group  = "androidx.test.espresso"           
 androidx-appcompat              = { group  = "androidx.appcompat"                                   , name        = "appcompat"                         , version.ref = "androidx-appcompat" }
 androidx-constraintlayout       = { group  = "androidx.constraintlayout"                            , name        = "constraintlayout"                  , version.ref = "androidx-constraintlayout" }
 androidx-activity-compose       = { module = "androidx.activity:activity-compose"                   , version.ref = "androidx-activityCompose" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
+androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 
 [plugins]
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

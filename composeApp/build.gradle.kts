@@ -12,6 +12,9 @@ ksp {
     arg("lyricist.generateStringsProperty", "true")
 }
 dependencies {
+    implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.ui.graphics.android)
+    implementation(libs.androidx.ui.android)
     add("kspCommonMainMetadata", libs.lyricist.processor)
 }
 
