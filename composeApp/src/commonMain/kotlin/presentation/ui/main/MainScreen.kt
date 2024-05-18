@@ -31,7 +31,7 @@ class MainScreen : Screen {
                         tabNavigator = it,
                         navRailItems = listOf(
                             MainTabs.HomeTab,
-                            MainTabs.CalendarTab,
+                            MainTabs.NotesTab,
                             MainTabs.StatisticsTab,
                             MainTabs.SettingsTab,
                         ),
@@ -52,7 +52,7 @@ class MainScreen : Screen {
                         NavigationBar()
                         {
                             TabNavigationItem(MainTabs.HomeTab)
-                            TabNavigationItem(MainTabs.CalendarTab)
+                            TabNavigationItem(MainTabs.NotesTab)
                             TabNavigationItem(MainTabs.StatisticsTab)
                             TabNavigationItem(MainTabs.SettingsTab)
                         }
