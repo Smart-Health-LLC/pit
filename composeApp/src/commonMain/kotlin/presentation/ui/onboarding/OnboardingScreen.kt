@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -21,8 +20,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.*
 import org.koin.core.component.KoinComponent
-import pit.composeapp.generated.resources.Res
-import pit.composeapp.generated.resources.home_filled
+import pit.composeapp.generated.resources.*
+import presentation.component.CustomFullWidthButton
 
 class OnboardingScreen : Screen, KoinComponent {
     @OptIn(ExperimentalFoundationApi::class)
@@ -30,7 +29,7 @@ class OnboardingScreen : Screen, KoinComponent {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val coroutineScope = rememberCoroutineScope()
-        val pageCount = 3
+        val pageCount = 2
         val pagerState = rememberPagerState(pageCount = { pageCount })
 
         OnboardingScreenContent(
@@ -59,14 +58,14 @@ fun OnboardingScreenContent(
     Scaffold(
         bottomBar = {
             if (pagerState.currentPage == pageCount - 1) {
-                OnBoardingNavigationButton(
-                    modifier = Modifier.padding(16.dp),
+                CustomFullWidthButton(
+                    modifier = Modifier.padding(10.dp),
                     text = "Get Started",
                     onClick = onClickGetStarted,
                 )
             } else {
-                OnBoardingNavigationButton(
-                    modifier = Modifier.padding(16.dp),
+                CustomFullWidthButton(
+                    modifier = Modifier.padding(10.dp),
                     text = "Next",
                     onClick = onClickNext,
                 )
@@ -76,6 +75,15 @@ fun OnboardingScreenContent(
         Column(
             modifier = Modifier.padding(paddingValues),
         ) {
+
+            Spacer(Modifier.padding(10.dp))
+
+            PageIndicators(
+                pageCount = pageCount,
+                currentPage = pagerState.currentPage,
+            )
+
+
             HorizontalPager(
                 modifier = Modifier
                     .weight(.9f)
@@ -85,14 +93,9 @@ fun OnboardingScreenContent(
                 when (currentPage) {
                     0 -> OnboardingFirstPage()
                     1 -> OnboardingSecondPage()
-                    2 -> OnboardingThirdPage()
                 }
             }
 
-            PageIndicators(
-                pageCount = pageCount,
-                currentPage = pagerState.currentPage,
-            )
         }
     }
 }
@@ -131,9 +134,9 @@ private fun ColumnScope.PageIndicators(pageCount: Int, currentPage: Int) {
 @Composable
 private fun OnboardingFirstPage() {
     PageContent(
-        title = "Organize Tasks and Boost Productivity",
-        description = "Welcome to FocusBloom, your task management and productivity companion. Effortlessly organize your tasks and supercharge your productivity journey.",
-        illustration = Res.drawable.home_filled,
+        title = "Change the way you sleep",
+        description = "Adaptation to polyphasic sleep is a lifechanger, but requires some additional forces. Be ready to stress yourself just last time and feel fresh after successful adaptation to reduced sleep schedule with reduced total sleep time per day.",
+        illustration = Res.drawable.sleep,
     )
 }
 
@@ -141,19 +144,9 @@ private fun OnboardingFirstPage() {
 @Composable
 private fun OnboardingSecondPage() {
     PageContent(
-        title = "Tailor Your Work Sessions",
-        description = "With FocusBloom, you have the power to customize your work and break durations to match your preferences and maximize efficiency.",
-        illustration = Res.drawable.home_filled,
-    )
-}
-
-@OptIn(ExperimentalResourceApi::class)
-@Composable
-private fun OnboardingThirdPage() {
-    PageContent(
-        title = "Visualize Your Progress",
-        description = "Experience the power of progress tracking with FocusBloom. Gain insights into your productivity journey and visualize task completion trends.",
-        illustration = Res.drawable.home_filled,
+        title = "Keep in mind",
+        description = "By using the app you agree to our disclaimer of liability for possible personal injury. Sleep deprivation is not a joke. If you feel yourself bad, don't feel bad about stop the adaptation and start it again. Keep in mind your personal age, health, environment limitations and use the app rationally. We hope you'll do your best anyway",
+        illustration = Res.drawable.medical,
     )
 }
 
@@ -167,24 +160,25 @@ private fun PageContent(title: String, description: String, illustration: Drawab
         Image(
             painter = painterResource(illustration),
             contentDescription = null,
-            modifier = Modifier.size(370.dp),
+            modifier = Modifier.size(270.dp),
         )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
-            modifier = Modifier.fillMaxWidth(),
+//            modifier = Modifier.fillMaxWidth(),
             text = title,
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontSize = 22.sp,
-                textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.displayLarge.copy(
+//                fontSize = 22.sp,
+                fontWeight = FontWeight.SemiBold,
+//                textAlign = TextAlign.Center,
             ),
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Text(
-            modifier = Modifier.fillMaxWidth(),
+//            modifier = Modifier.fillMaxWidth(),
             text = description,
-            style = MaterialTheme.typography.labelMedium.copy(
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium.copy(
+//                fontSize = 14.sp,
+//                textAlign = TextAlign.Center,
             ),
         )
     }
