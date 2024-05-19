@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import domain.model.Schedule
@@ -44,6 +45,101 @@ val dualCore1 = Schedule(
     )
 )
 
+
+val everyman1 = Schedule(
+    name = "Everyman 1",
+    tst = LocalTime.of(6, 20),
+    segments = listOf(
+        Segment(
+            LocalTime.of(23, 0),
+            LocalTime.of(5, 0)
+        ),
+        Segment(
+            LocalTime.of(13, 0),
+            LocalTime.of(13, 25)
+        )
+    )
+)
+
+
+val siesta = Schedule(
+    name = "Siesta",
+    tst = LocalTime.of(6, 30),
+    segments = listOf(
+        Segment(
+            LocalTime.of(23, 0),
+            LocalTime.of(4, 0)
+        ),
+        Segment(
+            LocalTime.of(13, 0),
+            LocalTime.of(14, 30)
+        )
+    )
+)
+
+
+val segmented = Schedule(
+    name = "Segmented",
+    tst = LocalTime.of(7, 0),
+    segments = listOf(
+        Segment(
+            LocalTime.of(22, 0),
+            LocalTime.of(1, 30)
+        ),
+
+        Segment(
+            LocalTime.of(4, 30),
+            LocalTime.of(8, 0)
+        )
+    )
+)
+
+
+val dualCore2 = Schedule(
+    name = "Dual Core 2",
+    tst = LocalTime.of(5, 10),
+    segments = listOf(
+        Segment(
+            LocalTime.of(22, 0),
+            LocalTime.of(1, 0)
+        ),
+        Segment(
+            LocalTime.of(5, 50),
+            LocalTime.of(7, 20)
+        ),
+        Segment(
+            LocalTime.of(12, 0),
+            LocalTime.of(12, 25)
+        ),
+        Segment(
+            LocalTime.of(16, 0),
+            LocalTime.of(16, 25)
+        )
+    )
+)
+
+
+val everyman2 = Schedule(
+    name = "Everyman 2",
+    tst = LocalTime.of(5, 10),
+    segments = listOf(
+        Segment(
+            LocalTime.of(23, 0),
+            LocalTime.of(3, 30)
+        ),
+        Segment(
+            LocalTime.of(8, 0),
+            LocalTime.of(8, 25)
+        ),
+
+        Segment(
+            LocalTime.of(14, 30),
+            LocalTime.of(14, 55)
+        )
+    )
+)
+
+
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun HomeScreen() {
@@ -75,7 +171,7 @@ fun HomeScreen() {
                 Text(
                     "Started at 2023/01/23",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = Color.LightGray,
                     modifier = Modifier.padding(start = 3.dp)
                 )
             }
@@ -102,7 +198,7 @@ fun HomeScreen() {
                 .padding(vertical = 20.dp), contentAlignment = Alignment.Center
         ) {
 
-            ScheduleComponent(dualCore1)
+            ScheduleComponent(dualCore1, 350, 170f)
         }
 
 
@@ -124,7 +220,7 @@ fun HomeScreen() {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(horizontal = 15.dp, vertical = 10.dp)
-                .clip(shape = RoundedCornerShape(5.dp))
+                .clip(shape = RoundedCornerShape(10.dp))
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
                 .padding(all = 10.dp)
                 .fillMaxWidth()

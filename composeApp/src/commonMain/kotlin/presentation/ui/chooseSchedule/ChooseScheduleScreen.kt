@@ -1,17 +1,17 @@
 package presentation.ui.chooseSchedule
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import domain.model.Schedule
+import presentation.component.ScheduleComponent
+import presentation.ui.home.*
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -23,26 +23,22 @@ class ChooseScheduleScreen : Screen {
 
         CategoryListContent(
             categoryList = listOf(
-                Category("name 1"),
-                Category("name 2"),
-                Category("name 3"),
-                Category("name 4"),
-                Category("name 5"),
-                Category("name 6"),
-                Category("name 7"),
-                Category("name 8"),
+                dualCore1,
+                everyman1,
+                everyman2,
+                segmented,
+                siesta,
+                dualCore2
             )
         )
     }
 }
 
 
-data class Category(val name: String)
-
 @Composable
 @Suppress("MagicNumber")
 private fun CategoryListContent(
-    categoryList: List<Category>,
+    categoryList: List<Schedule>,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(modifier = modifier.padding(start = 8.dp, end = 8.dp)) {
@@ -61,7 +57,7 @@ private fun CategoryListContent(
 
 @Composable
 private fun CategoryItem(
-    category: Category,
+    category: Schedule,
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
@@ -78,7 +74,8 @@ private fun CategoryItem(
                 .fillMaxWidth()
                 .padding(vertical = 24.dp),
         ) {
-            Image(imageVector = Icons.Outlined.Person, contentDescription = "asht")
+            ScheduleComponent(category, 100, 50f)
+//            Image(imageVector = Icons.Outlined.Person, contentDescription = "asht")
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = category.name)
         }
