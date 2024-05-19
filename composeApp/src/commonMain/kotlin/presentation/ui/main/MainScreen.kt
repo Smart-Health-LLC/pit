@@ -23,8 +23,6 @@ class MainScreen : Screen {
         TabNavigator(
             MainTabs.HomeTab,
         ) {
-            val tabNavigator = LocalTabNavigator.current
-
             if (useNavRail) {
                 Row {
                     MainNavigationRail(

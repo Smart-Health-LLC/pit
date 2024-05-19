@@ -46,7 +46,7 @@ val dualCore1 = Schedule(
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun HomeScreen(someContent: String = "Home screen") {
+fun HomeScreen() {
     val containerHorizontalPadding = 15.dp
 
     // Screen content holder

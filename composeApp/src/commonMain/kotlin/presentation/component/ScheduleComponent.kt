@@ -1,7 +1,6 @@
 package presentation.component
 
 import androidx.compose.foundation.Canvas
-import java.time.Duration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.runtime.Composable
@@ -12,10 +11,11 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.unit.dp
 import domain.model.Schedule
+import java.time.Duration
 import java.time.LocalTime
 
-val CIRCULAR_TIMER_RADIUS = 150
-val STROKE_WIDTH = 70f
+val CIRCULAR_TIMER_RADIUS = 350
+val STROKE_WIDTH = 170f
 val minuteInGrad = 0.25
 val startPosInGrads = 270
 
@@ -27,6 +27,7 @@ fun timeToGrad(time: LocalTime): Float {
     return grads.toFloat()
 }
 
+// todo add desktop foundation like and other stuff
 
 fun timeToGrad(minutes: Long): Float {
     var grads = minutes * minuteInGrad

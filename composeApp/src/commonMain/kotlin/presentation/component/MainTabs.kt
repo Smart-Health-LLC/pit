@@ -2,7 +2,7 @@ package presentation.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import cafe.adriel.lyricist.strings
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -45,7 +45,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen("Home screen")
+            HomeScreen()
         }
     }
 
@@ -71,7 +71,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen(strings.simple)
+            HomeScreen()
         }
     }
 
@@ -98,7 +98,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen("Calendar screen")
+            HomeScreen()
         }
     }
 
@@ -123,7 +123,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            SettingsScreen()
+            Navigator(SettingsScreen())
         }
     }
 }
