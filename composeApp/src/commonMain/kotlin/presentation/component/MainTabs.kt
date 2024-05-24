@@ -45,7 +45,7 @@ internal sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen()
+            Navigator(HomeScreen())
         }
     }
 
