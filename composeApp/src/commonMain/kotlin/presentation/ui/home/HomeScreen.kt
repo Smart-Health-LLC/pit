@@ -5,8 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,12 +13,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import domain.model.Schedule
 import domain.model.Segment
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
-import pit.composeapp.generated.resources.Res
-import pit.composeapp.generated.resources.avatar_placeholder
+import org.jetbrains.compose.resources.*
+import pit.composeapp.generated.resources.*
 import presentation.component.ScheduleComponent
 import java.time.LocalTime
 
@@ -169,7 +166,7 @@ fun HomeScreen() {
                     fontWeight = FontWeight.W500
                 )
                 Text(
-                    "Started at 2023/01/23",
+                    strings.startedAt + "2023/01/23",
                     style = MaterialTheme.typography.labelLarge,
                     color = Color.LightGray,
                     modifier = Modifier.padding(start = 3.dp)
@@ -210,72 +207,55 @@ fun HomeScreen() {
             horizontalArrangement = Arrangement.Center
         ) {
             Button(onClick = { /*TODO*/ }, modifier = Modifier.height(56.dp)) {
-                Text(text = "Change schedule")
+                Text(text = strings.changeSchedule)
             }
         }
 
         // Quick info in numbers
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(horizontal = 15.dp, vertical = 10.dp)
                 .clip(shape = RoundedCornerShape(10.dp))
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
-                .padding(all = 10.dp)
+                .padding(vertical = 10.dp, horizontal = 18.dp)
                 .fillMaxWidth()
         ) {
-            // Info section
-            Column(horizontalAlignment = Alignment.Start) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Icon(Icons.Rounded.ThumbUp, contentDescription = "ash", Modifier.size(12.dp))
-                    Spacer(modifier = Modifier.size(4.dp))
-                    Text("Description", style = MaterialTheme.typography.labelSmall)
-                }
-                Text(
-                    "22.04",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-
-            // Info section
-            Column(horizontalAlignment = Alignment.Start) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Icon(Icons.Rounded.ThumbUp, contentDescription = "ash", Modifier.size(12.dp))
-                    Spacer(modifier = Modifier.size(4.dp))
-                    Text("Description", style = MaterialTheme.typography.labelSmall)
-                }
-                Text(
-                    "22.04",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-
-            // Info section
-            Column(horizontalAlignment = Alignment.Start) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Icon(Icons.Rounded.ThumbUp, contentDescription = "ash", Modifier.size(12.dp))
-                    Spacer(modifier = Modifier.size(4.dp))
-                    Text("Description", style = MaterialTheme.typography.labelSmall)
-                }
-                Text(
-                    "22.04",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-
+            InfoUnit(Res.drawable.ic_clear_night_filled_24px, strings.napIn, "01:18", Color.Blue)
+            InfoUnit(
+                Res.drawable.ic_hourglass_filled_24px,
+                strings.tstToday,
+                "04:16",
+                Color(0xffe08a1a)
+            )
+            InfoUnit(Res.drawable.ic_whatshot_filled_24px, strings.streak, "3 days", Color.Red)
         }
+    }
+}
+
+
+@OptIn(ExperimentalResourceApi::class)
+@Composable
+fun InfoUnit(icon: DrawableResource, title: String, value: String, iconColor: Color) {
+    Column(horizontalAlignment = Alignment.Start) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Icon(
+                tint = iconColor,
+                painter = painterResource(icon),
+                contentDescription = null,
+                modifier = Modifier.size(14.dp)
+            )
+            Spacer(modifier = Modifier.size(4.dp))
+            Text(title, style = MaterialTheme.typography.labelLarge)
+        }
+        Text(
+            value,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
     }
 }

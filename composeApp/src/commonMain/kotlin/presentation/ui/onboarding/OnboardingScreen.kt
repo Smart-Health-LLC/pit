@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -22,6 +23,7 @@ import org.jetbrains.compose.resources.*
 import org.koin.core.component.KoinComponent
 import pit.composeapp.generated.resources.*
 import presentation.component.CustomFullWidthButton
+import presentation.ui.register.SignupScreen
 
 class OnboardingScreen : Screen, KoinComponent {
     @OptIn(ExperimentalFoundationApi::class)
@@ -41,7 +43,7 @@ class OnboardingScreen : Screen, KoinComponent {
                 }
             },
             onClickGetStarted = {
-                navigator.push(UsernameScreen())
+                navigator.push(SignupScreen())
             },
         )
     }
@@ -60,13 +62,13 @@ fun OnboardingScreenContent(
             if (pagerState.currentPage == pageCount - 1) {
                 CustomFullWidthButton(
                     modifier = Modifier.padding(10.dp),
-                    text = "Get Started",
+                    text = strings.getStarted,
                     onClick = onClickGetStarted,
                 )
             } else {
                 CustomFullWidthButton(
                     modifier = Modifier.padding(10.dp),
-                    text = "Next",
+                    text = strings.next,
                     onClick = onClickNext,
                 )
             }
@@ -134,8 +136,8 @@ private fun ColumnScope.PageIndicators(pageCount: Int, currentPage: Int) {
 @Composable
 private fun OnboardingFirstPage() {
     PageContent(
-        title = "Change the way you sleep",
-        description = "Adaptation to polyphasic sleep is a lifechanger, but requires some additional forces. Be ready to stress yourself just last time and feel fresh after successful adaptation to reduced sleep schedule with reduced total sleep time per day.",
+        title = strings.changeTheWayYouSleep,
+        description = strings.firstOnboardingMessage,
         illustration = Res.drawable.sleep,
     )
 }
@@ -144,8 +146,8 @@ private fun OnboardingFirstPage() {
 @Composable
 private fun OnboardingSecondPage() {
     PageContent(
-        title = "Keep in mind",
-        description = "By using the app you agree to our disclaimer of liability for possible personal injury. Sleep deprivation is not a joke. If you feel yourself bad, don't feel bad about stop the adaptation and start it again. Keep in mind your personal age, health, environment limitations and use the app rationally. We hope you'll do your best anyway",
+        title = strings.keepInMind,
+        description = strings.secondOnboardingMessage,
         illustration = Res.drawable.medical,
     )
 }

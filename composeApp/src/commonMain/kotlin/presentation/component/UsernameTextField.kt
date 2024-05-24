@@ -5,6 +5,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import cafe.adriel.lyricist.strings
 
 @Composable
 fun UsernameTextField(
@@ -13,7 +14,7 @@ fun UsernameTextField(
 ) {
     CustomTextField(
         value = value,
-        label = "Username",
+        label = strings.username,
         modifier = modifier,
         onValueChange = {},
         leadingIcon = { Icon(Icons.Outlined.Person, "User") },

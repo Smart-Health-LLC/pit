@@ -50,8 +50,8 @@ class MainScreen : Screen {
                         NavigationBar()
                         {
                             TabNavigationItem(MainTabs.HomeTab)
-                            TabNavigationItem(MainTabs.NotesTab)
                             TabNavigationItem(MainTabs.StatisticsTab)
+                            TabNavigationItem(MainTabs.NotesTab)
                             TabNavigationItem(MainTabs.SettingsTab)
                         }
                     },

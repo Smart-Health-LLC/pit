@@ -7,20 +7,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import org.koin.core.component.KoinComponent
 import presentation.component.PasswordTextField
 import presentation.component.UsernameTextField
+import presentation.ui.login.LoginScreen
 
 
 class SignupScreen : Screen, KoinComponent {
 
     @Composable
     override fun Content() {
+
+        val navigator = LocalNavigator.currentOrThrow
         signupScreen(
             isLoading = false,
             username = "johndoe",
@@ -30,7 +34,7 @@ class SignupScreen : Screen, KoinComponent {
             confirmPassword = "password",
             onConfirmPasswordChanged = {},
             isValidConfirmPassword = false,
-            onNavigateUp = {},
+            onNavigateUp = { navigator.push(LoginScreen()) },
             onSignUpClick = {},
             onDialogDismiss = {},
             isValidUsername = false,
@@ -68,7 +72,8 @@ fun signupScreen(
             .verticalScroll(rememberScrollState())
     ) {
         Text(
-            text = "Create\naccount",
+            text = strings.signup,
+            style = MaterialTheme.typography.displayLarge,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 60.dp, bottom = 16.dp)
         )
@@ -150,7 +155,7 @@ private fun SignUpForm(
                 .fillMaxWidth()
                 .height(60.dp)
         ) {
-            Text(color = Color.White, text = "Create account")
+            Text(color = Color.White, text = strings.createAccountButton)
         }
     }
 }
@@ -158,10 +163,7 @@ private fun SignUpForm(
 @Composable
 private fun LoginLink(modifier: Modifier, onLoginClick: () -> Unit) {
     Text(
-        text = buildAnnotatedString {
-            append("Already have an account? Login")
-            addStyle(SpanStyle(color = MaterialTheme.colorScheme.primary), 24, this.length)
-        },
+        text = strings.alreadyHaveAnAccount,
         modifier = modifier
             .clickable(onClick = onLoginClick)
     )
@@ -171,10 +173,8 @@ private fun LoginLink(modifier: Modifier, onLoginClick: () -> Unit) {
 @Composable
 private fun AgreementLink(modifier: Modifier, onClick: () -> Unit) {
     Text(
-        text = buildAnnotatedString {
-            append("By signing up you are apply an service agreement")
-            addStyle(SpanStyle(color = MaterialTheme.colorScheme.primary), 30, this.length)
-        },
+        text =
+        strings.byContinue,
         modifier = modifier
             .padding(vertical = 24.dp, horizontal = 16.dp)
             .clickable(onClick = onClick)

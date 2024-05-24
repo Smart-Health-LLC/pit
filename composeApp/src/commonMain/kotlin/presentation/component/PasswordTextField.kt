@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import cafe.adriel.lyricist.strings
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.vectorResource
 import pit.composeapp.generated.resources.*
@@ -17,7 +18,7 @@ import pit.composeapp.generated.resources.*
 @Composable
 fun PasswordTextField(
     modifier: Modifier = Modifier,
-    label: String = "Password",
+    label: String = strings.password,
     value: String = "",
     isError: Boolean = false,
     onValueChange: (String) -> Unit
@@ -32,7 +33,7 @@ fun PasswordTextField(
         leadingIcon = {
             Icon(
                 vectorResource(Res.drawable.ic_password_24px),
-                "asht"
+                null
             )
         },
         visualTransformation = if (isPasswordVisible) {

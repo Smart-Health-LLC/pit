@@ -14,10 +14,10 @@ import domain.model.Schedule
 import java.time.Duration
 import java.time.LocalTime
 
-val CIRCULAR_TIMER_RADIUS = 350
-val STROKE_WIDTH = 170f
-val minuteInGrad = 0.25
-val startPosInGrads = 270
+const val minuteInGrad = 0.25
+const val startPosInGrads = 270
+val backColor = Color(0xff91C3FF)
+val frontColor = Color(0xff3775D2)
 
 fun timeToGrad(time: LocalTime): Float {
     val minutes = time.hour * 60 + time.minute
@@ -39,21 +39,21 @@ fun timeToGrad(minutes: Long): Float {
 
 
 @Composable
-fun ScheduleComponent(schedule: Schedule) {
+fun ScheduleComponent(schedule: Schedule, componentRadius: Int, strokeWidth: Float) {
     Canvas(
         modifier = Modifier
             .fillMaxWidth()
-            .requiredHeight(CIRCULAR_TIMER_RADIUS.dp)
+            .requiredHeight(componentRadius.dp)
     ) {
         inset(
-            size.width / 2 - CIRCULAR_TIMER_RADIUS,
-            size.height / 2 - CIRCULAR_TIMER_RADIUS
+            size.width / 2 - componentRadius,
+            size.height / 2 - componentRadius
         ) {
             drawCircle(
-                color = Color.Gray,
-                radius = CIRCULAR_TIMER_RADIUS.toFloat(),
+                color = backColor,
+                radius = componentRadius.toFloat(),
                 center = center,
-                style = Stroke(width = STROKE_WIDTH, cap = StrokeCap.Round)
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
             )
 
             schedule.segments.forEach {
@@ -72,8 +72,8 @@ fun ScheduleComponent(schedule: Schedule) {
                     startAngle = timeToGrad(it.start),
                     sweepAngle = timeToGrad(minutes),
                     useCenter = false,
-                    color = Color.Red,
-                    style = Stroke(width = STROKE_WIDTH, cap = StrokeCap.Butt)
+                    color = frontColor,
+                    style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
                 )
             }
         }

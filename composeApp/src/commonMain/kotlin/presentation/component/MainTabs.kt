@@ -18,7 +18,7 @@ fun FilledIcon(item: Tab) = when (item.options.index) {
     MainTabs.HomeTab.INDEX -> painterResource(Res.drawable.ic_space_dashboard_filled_24px)
     MainTabs.StatisticsTab.INDEX -> painterResource(Res.drawable.ic_data_exploration_filled_24px)
     MainTabs.NotesTab.INDEX -> painterResource(Res.drawable.ic_note_alt_filled_24px)
-    MainTabs.SettingsTab.INDEX -> painterResource(Res.drawable.ic_person_filled_24px)
+    MainTabs.SettingsTab.INDEX -> painterResource(Res.drawable.ic_more_horiz_24px)
     // nonsense
     else -> painterResource(Res.drawable.ic_space_dashboard_filled_24px)
 }
@@ -110,7 +110,7 @@ internal sealed class MainTabs {
             @Composable
             get() {
                 val title = "Settings"
-                val icon = painterResource(Res.drawable.ic_person_24px)
+                val icon = painterResource(Res.drawable.ic_more_horiz_24px)
 
                 return remember {
                     TabOptions(
