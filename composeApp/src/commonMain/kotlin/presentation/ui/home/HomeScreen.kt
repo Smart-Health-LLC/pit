@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,11 +19,12 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.jetbrains.compose.resources.*
+import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.*
 import presentation.component.ScheduleComponent
 import presentation.ui.changeScheduleScreen.ChangeScheduleScreen
 
-class HomeScreen : Screen {
+class HomeScreen() : Screen {
 
 
     @OptIn(ExperimentalResourceApi::class)
@@ -30,6 +32,9 @@ class HomeScreen : Screen {
     override fun Content() {
         val containerHorizontalPadding = 15.dp
         val localNavigator = LocalNavigator.currentOrThrow
+        val viewModel: HomeViewModel = koinInject()
+
+        val schedule = viewModel.state.collectAsState().value
 
         // Screen content holder
         Column(
@@ -50,7 +55,7 @@ class HomeScreen : Screen {
                 // Short info about schedule
                 Column(horizontalAlignment = Alignment.Start) {
                     Text(
-                        "Dual Core 1",
+                        schedule.name,
                         style = MaterialTheme.typography.headlineLarge,
                         fontWeight = FontWeight.W500
                     )
@@ -83,8 +88,7 @@ class HomeScreen : Screen {
                     .fillMaxWidth()
                     .padding(vertical = 20.dp), contentAlignment = Alignment.Center
             ) {
-
-                ScheduleComponent(dualCore1, 350, 170f)
+                ScheduleComponent(schedule, 350, 170f)
             }
 
 
@@ -96,7 +100,7 @@ class HomeScreen : Screen {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(onClick = {
-                    localNavigator.push(ChangeScheduleScreen())
+                    localNavigator.push(ChangeScheduleScreen(schedule, viewModel))
                 }, modifier = Modifier.height(56.dp)) {
                     Text(text = strings.changeSchedule)
                 }

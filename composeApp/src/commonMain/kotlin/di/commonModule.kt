@@ -9,6 +9,7 @@ import data.usecase.LoginUseCaseImpl
 import domain.repository.SettingsRepository
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
+import presentation.ui.home.HomeViewModel
 import presentation.ui.main.MainViewModel
 import presentation.ui.onboarding.OnboardingViewModel
 import presentation.ui.settings.SettingsViewModel
@@ -58,6 +59,12 @@ fun commonModule() = module {
     single<SettingsViewModel> {
         SettingsViewModel(
             settingsRepository = get(),
+        )
+    }
+
+
+    single<HomeViewModel> {
+        HomeViewModel(
         )
     }
 

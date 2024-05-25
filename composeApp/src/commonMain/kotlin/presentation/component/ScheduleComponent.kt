@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -39,7 +40,59 @@ fun timeToGrad(minutes: Long): Float {
 
 
 @Composable
-fun ScheduleComponent(schedule: Schedule, componentRadius: Int, strokeWidth: Float) {
+fun ScheduleComponent(
+    schedule: Schedule,
+    componentRadius: Int,
+    strokeWidth: Float
+) {
+    val scheduleState = remember { schedule }
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .requiredHeight(componentRadius.dp)
+    ) {
+        inset(
+            size.width / 2 - componentRadius,
+            size.height / 2 - componentRadius
+        ) {
+            drawCircle(
+                color = backColor,
+                radius = componentRadius.toFloat(),
+                center = center,
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+            )
+
+            scheduleState.segments.forEach {
+                val minutes: Long
+                if (!it.start.isBefore(it.end)) {
+                    minutes =
+                        Duration.between(it.start, LocalTime.MAX).toMinutes() + Duration.between(
+                            LocalTime.MIN,
+                            it.end
+                        ).toMinutes() + 1
+                } else {
+                    val duration = Duration.between(it.start, it.end)
+                    minutes = duration.toMinutes()
+                }
+                drawArc(
+                    startAngle = timeToGrad(it.start),
+                    sweepAngle = timeToGrad(minutes),
+                    useCenter = false,
+                    color = frontColor,
+                    style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
+                )
+            }
+        }
+    }
+}
+
+// WARNING: mega huge stooopido copy-paste detected. Call that guy dumb
+@Composable
+fun StaticScheduleComponent(
+    schedule: Schedule,
+    componentRadius: Int,
+    strokeWidth: Float
+) {
     Canvas(
         modifier = Modifier
             .fillMaxWidth()

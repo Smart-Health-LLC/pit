@@ -17,8 +17,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import domain.model.Schedule
+import domain.model.Segment
+import presentation.ui.home.HomeViewModel
+import java.time.LocalTime
 
-class ChangeScheduleScreen : Screen {
+class ChangeScheduleScreen(
+    private val schedule: Schedule,
+    private val viewModel: HomeViewModel
+) : Screen {
     @Composable
     override fun Content() {
 
@@ -32,7 +39,7 @@ class ChangeScheduleScreen : Screen {
                     .fillMaxWidth()
                     .padding(bottom = 25.dp), horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = { viewModel.updateSchedule() }) {
                     Text(text = "Save")
                 }
                 Button(
@@ -40,7 +47,7 @@ class ChangeScheduleScreen : Screen {
                     onClick = { /* TODO */ }) {
                     Text(text = "Warnings")
                 }
-                Button(onClick = { /* TODO */ }) {
+                Button(onClick = { /* TODO check if the specified interval not conflict with existing ones */ }) {
                     Text(text = "Add")
                 }
             }
@@ -50,11 +57,17 @@ class ChangeScheduleScreen : Screen {
                 verticalArrangement = Arrangement.spacedBy(25.dp),
             ) {
                 item {
-                    SegmentItem(1)
-                    Spacer(modifier = Modifier.padding(12.dp))
-                    SegmentItem(2)
-                    Spacer(modifier = Modifier.padding(12.dp))
-                    SegmentItem(3)
+                    var index = 0
+                    schedule.segments.forEach {
+                        index += 1
+                        SegmentItem(
+                            index,
+                            it,
+                            viewModel::updateSegmentStartTime,
+                            viewModel::updateSegmentEndTime
+                        )
+                        Spacer(modifier = Modifier.padding(12.dp))
+                    }
                 }
             }
         }
@@ -64,7 +77,12 @@ class ChangeScheduleScreen : Screen {
 
 
 @Composable
-fun SegmentItem(index: Int = 1) {
+fun SegmentItem(
+    index: Int,
+    segment: Segment,
+    updateSegmentStart: (index: Int, time: LocalTime) -> Unit,
+    updateSegmentEnd: (index: Int, time: LocalTime) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -75,7 +93,7 @@ fun SegmentItem(index: Int = 1) {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Text(text = index.toString())
-        TimePickerWithDialog()
+        DialogTimePickerByButton(true, index, segment.start, updateSegmentStart)
         Canvas(
             Modifier
                 .height(1.dp)
@@ -89,7 +107,7 @@ fun SegmentItem(index: Int = 1) {
                 pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
             )
         }
-        TimePickerWithDialog()
+        DialogTimePickerByButton(true, index, segment.end, updateSegmentEnd)
         IconButton(onClick = { /*TODO*/ }) {
             Icon(Icons.Outlined.Delete, contentDescription = null)
         }
@@ -99,24 +117,34 @@ fun SegmentItem(index: Int = 1) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimePickerWithDialog() {
-    var selectedHour by remember { mutableIntStateOf(0) }
-    var selectedMinute by remember { mutableIntStateOf(0) }
+fun DialogTimePickerByButton(
+    is24Hour: Boolean,
+    index: Int,
+    segmentTimeEdge: LocalTime,
+    updateSegmentEdge: (index: Int, time: LocalTime) -> Unit
+) {
+    // viewmodel information
+    var segmentLocalTimeEdge by remember { mutableStateOf(segmentTimeEdge) }
+
+    // control timepicker visibility
     var showDialog by remember { mutableStateOf(false) }
+
+    // time picker state
     val timeState = rememberTimePickerState(
-        initialHour = selectedHour,
-        initialMinute = selectedMinute,
-        is24Hour = true
+        initialHour = segmentLocalTimeEdge.hour,
+        initialMinute = segmentLocalTimeEdge.minute,
+        is24Hour = is24Hour
     )
 
+    // timepicker
     if (showDialog) {
-        AlertDialog(
+        BasicAlertDialog(
             onDismissRequest = { showDialog = false },
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
-                    .background(color = Color.LightGray.copy(alpha = .3f))
+                    .clip(RoundedCornerShape(5.dp))
                     .padding(top = 28.dp, start = 20.dp, end = 20.dp, bottom = 12.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -132,8 +160,8 @@ fun TimePickerWithDialog() {
                     }
                     TextButton(onClick = {
                         showDialog = false
-                        selectedHour = timeState.hour
-                        selectedMinute = timeState.minute
+                        segmentLocalTimeEdge = LocalTime.of(timeState.hour, timeState.minute)
+                        updateSegmentEdge(index, segmentLocalTimeEdge)
                     }) {
                         Text(text = "Confirm")
                     }
@@ -142,6 +170,7 @@ fun TimePickerWithDialog() {
         }
     }
 
+    // button that open timepicker
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Button(onClick = { showDialog = true }) {
             Text(text = "${timeState.hour} : ${timeState.minute}")

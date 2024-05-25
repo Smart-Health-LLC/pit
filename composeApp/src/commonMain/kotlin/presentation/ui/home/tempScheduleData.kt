@@ -7,7 +7,7 @@ import java.time.LocalTime
 val dualCore1 = Schedule(
     name = "Dual Core 1",
     tst = LocalTime.of(5, 20),
-    segments = listOf(
+    segments = mutableListOf(
         Segment(
             LocalTime.of(21, 30),
             LocalTime.of(0, 50)
@@ -28,7 +28,7 @@ val dualCore1 = Schedule(
 val everyman1 = Schedule(
     name = "Everyman 1",
     tst = LocalTime.of(6, 20),
-    segments = listOf(
+    segments = mutableListOf(
         Segment(
             LocalTime.of(23, 0),
             LocalTime.of(5, 0)
@@ -44,7 +44,7 @@ val everyman1 = Schedule(
 val siesta = Schedule(
     name = "Siesta",
     tst = LocalTime.of(6, 30),
-    segments = listOf(
+    segments = mutableListOf(
         Segment(
             LocalTime.of(23, 0),
             LocalTime.of(4, 0)
@@ -60,7 +60,7 @@ val siesta = Schedule(
 val segmented = Schedule(
     name = "Segmented",
     tst = LocalTime.of(7, 0),
-    segments = listOf(
+    segments = mutableListOf(
         Segment(
             LocalTime.of(22, 0),
             LocalTime.of(1, 30)
@@ -77,7 +77,7 @@ val segmented = Schedule(
 val dualCore2 = Schedule(
     name = "Dual Core 2",
     tst = LocalTime.of(5, 10),
-    segments = listOf(
+    segments = mutableListOf(
         Segment(
             LocalTime.of(22, 0),
             LocalTime.of(1, 0)
@@ -101,7 +101,7 @@ val dualCore2 = Schedule(
 val everyman2 = Schedule(
     name = "Everyman 2",
     tst = LocalTime.of(5, 10),
-    segments = listOf(
+    segments = mutableListOf(
         Segment(
             LocalTime.of(23, 0),
             LocalTime.of(3, 30)
