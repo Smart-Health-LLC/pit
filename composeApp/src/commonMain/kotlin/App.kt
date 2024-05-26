@@ -12,8 +12,10 @@ import i18n.lyricist
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
-import presentation.ui.main.*
+import presentation.ui.main.MainViewModel
+import presentation.ui.main.OnBoardingState
 import presentation.ui.onboarding.OnboardingScreen
+import presentation.ui.rate.RateSegmentScreen
 
 @Composable
 fun App(
@@ -41,7 +43,9 @@ fun App(
 
                             Navigator(
                                 screen = if (onBoardingState.completed) {
-                                    MainScreen()
+//                                    MainScreen()
+
+                                    RateSegmentScreen()
                                 } else {
                                     OnboardingScreen()
                                 },

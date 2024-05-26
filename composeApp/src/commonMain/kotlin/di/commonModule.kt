@@ -12,6 +12,7 @@ import org.koin.dsl.module
 import presentation.ui.home.HomeViewModel
 import presentation.ui.main.MainViewModel
 import presentation.ui.onboarding.OnboardingViewModel
+import presentation.ui.rate.RateSegmentViewModel
 import presentation.ui.settings.SettingsViewModel
 
 fun commonModule() = module {
@@ -64,8 +65,12 @@ fun commonModule() = module {
 
 
     single<HomeViewModel> {
-        HomeViewModel(
-        )
+        HomeViewModel()
+    }
+
+
+    single<RateSegmentViewModel> {
+        RateSegmentViewModel()
     }
 
     /**
@@ -79,9 +84,7 @@ fun commonModule() = module {
      * Repositories
      */
     single<SettingsRepository> {
-        SettingsRepositoryImpl(
-            preferenceManager = get(),
-        )
+        SettingsRepositoryImpl(preferenceManager = get())
     }
 }
 
