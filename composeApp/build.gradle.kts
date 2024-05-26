@@ -69,6 +69,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
 
+            // ==== toast ====
+            implementation(libs.sonner)
 
             // ==== i18n ====
             implementation(libs.lyricist)

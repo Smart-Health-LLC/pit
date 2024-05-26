@@ -8,7 +8,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,8 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.dokar.sonner.Toaster
+import com.dokar.sonner.rememberToasterState
 import domain.model.Schedule
 import domain.model.Segment
+import presentation.component.DialogTimePickerByButton
 import presentation.ui.home.HomeViewModel
 import java.time.LocalTime
 
@@ -26,8 +30,20 @@ class ChangeScheduleScreen(
     private val schedule: Schedule,
     private val viewModel: HomeViewModel
 ) : Screen {
+    // todo fix notification
     @Composable
     override fun Content() {
+
+        val toasterState = rememberToasterState(onToastDismissed = {
+//            viewModel.updateToastState(false)
+        })
+        Toaster(state = toasterState)
+        val showToaster = viewModel.toastState.collectAsState().value
+//        toasterState.li
+        if (showToaster) {
+            toasterState.show("shit happends")
+        }
+
 
         Column(
             modifier = Modifier
@@ -64,7 +80,7 @@ class ChangeScheduleScreen(
                             index,
                             it,
                             viewModel::updateSegmentStartTime,
-                            viewModel::updateSegmentEndTime
+                            viewModel::updateSegmentEndTime,
                         )
                         Spacer(modifier = Modifier.padding(12.dp))
                     }
@@ -72,7 +88,6 @@ class ChangeScheduleScreen(
             }
         }
     }
-
 }
 
 
@@ -81,7 +96,7 @@ fun SegmentItem(
     index: Int,
     segment: Segment,
     updateSegmentStart: (index: Int, time: LocalTime) -> Unit,
-    updateSegmentEnd: (index: Int, time: LocalTime) -> Unit
+    updateSegmentEnd: (index: Int, time: LocalTime) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -115,65 +130,3 @@ fun SegmentItem(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DialogTimePickerByButton(
-    is24Hour: Boolean,
-    index: Int,
-    segmentTimeEdge: LocalTime,
-    updateSegmentEdge: (index: Int, time: LocalTime) -> Unit
-) {
-    // viewmodel information
-    var segmentLocalTimeEdge by remember { mutableStateOf(segmentTimeEdge) }
-
-    // control timepicker visibility
-    var showDialog by remember { mutableStateOf(false) }
-
-    // time picker state
-    val timeState = rememberTimePickerState(
-        initialHour = segmentLocalTimeEdge.hour,
-        initialMinute = segmentLocalTimeEdge.minute,
-        is24Hour = is24Hour
-    )
-
-    // timepicker
-    if (showDialog) {
-        BasicAlertDialog(
-            onDismissRequest = { showDialog = false },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(5.dp))
-                    .padding(top = 28.dp, start = 20.dp, end = 20.dp, bottom = 12.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                TimePicker(state = timeState)
-                Row(
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .fillMaxWidth(), horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { showDialog = false }) {
-                        Text(text = "Dismiss")
-                    }
-                    TextButton(onClick = {
-                        showDialog = false
-                        segmentLocalTimeEdge = LocalTime.of(timeState.hour, timeState.minute)
-                        updateSegmentEdge(index, segmentLocalTimeEdge)
-                    }) {
-                        Text(text = "Confirm")
-                    }
-                }
-            }
-        }
-    }
-
-    // button that open timepicker
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Button(onClick = { showDialog = true }) {
-            Text(text = "${timeState.hour} : ${timeState.minute}")
-        }
-    }
-}
