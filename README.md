@@ -82,10 +82,9 @@ flowchart TB
 - Settings multiplatform
     - I found more examples with that, later probably better to use data store
 - Voyager
-    - Looks more pragmatic, than compose-navigation. Although migrating from voyager to
-      Decompose or compose-multiplatform is not so hard. View models are voyager's screen
-      models until jetpack's view models
-      in [release candidate state](https://developer.android.com/jetpack/androidx/releases/lifecycle)
+    - Maybe future migration
+      to [androidx.lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle) and
+      compose-navigation
 - Koin
 - SQLDelight
 - Lyricist
