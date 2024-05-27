@@ -7,7 +7,7 @@
     <img alt="Static Badge" src="https://img.shields.io/badge/linux-gray?logo=linux">
 </p>
 
-## Project structure
+# Project structure
 
 ```
 project/
@@ -57,7 +57,7 @@ flowchart TB
   iosMain(iosMain) --> iOSFramework(iOS framework)
 ```
 
-## Versions
+# Versions
 
 - Gradle: 8.7
 - Android Studio: Jellyfish 2023.3.1
