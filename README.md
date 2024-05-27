@@ -87,6 +87,10 @@ flowchart TB
       models until jetpack's view models
       in [release candidate state](https://developer.android.com/jetpack/androidx/releases/lifecycle)
 - Koin
+- SQLDelight
+- Lyricist
+- Napier
+- Ktor
 
 # Supporting Backend Project
 
