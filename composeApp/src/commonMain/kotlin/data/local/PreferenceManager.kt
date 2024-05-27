@@ -1,4 +1,4 @@
-package data
+package data.local
 
 import com.russhwolf.settings.*
 import com.russhwolf.settings.coroutines.*

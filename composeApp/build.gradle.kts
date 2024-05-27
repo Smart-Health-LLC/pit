@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.sqldelight)
 }
 ksp {
     arg("lyricist.internalVisibility", "true")
@@ -40,7 +41,9 @@ kotlin {
     }
 
     // https://stackoverflow.com/questions/36465824/android-studio-task-testclasses-not-found-in-project#50550818
-    task("testClasses")
+    task("testClasses").doLast {
+        println("This is a dummy testClasses task")
+    }
 
     jvm("desktop")
 
@@ -63,6 +66,7 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
+            implementation(libs.sqldelight.android)
         }
         commonMain.dependencies {
 
@@ -71,6 +75,9 @@ kotlin {
 
             // ==== toast ====
             implementation(libs.sonner)
+
+            // ==== sql delight ====
+            implementation(libs.sqldelight.coroutines)
 
             // ==== i18n ====
             implementation(libs.lyricist)
@@ -126,8 +133,10 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.sqldelight.jvm)
         }
 //        iosMain.dependencies {
+//            implementation(libs.sqldelight.native)
 //            implementation(libs.ktor.client.darwin)
 //        }
     }
@@ -176,6 +185,14 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.smarthealth.pit"
             packageVersion = "1.0.0"
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("PitDatabase") {
+            packageName.set("com.smarthealth.pit.database")
         }
     }
 }

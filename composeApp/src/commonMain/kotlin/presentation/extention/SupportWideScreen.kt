@@ -1,4 +1,4 @@
-package presentation.ui.extention
+package presentation.extention
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment

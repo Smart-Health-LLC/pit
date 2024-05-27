@@ -22,7 +22,7 @@ import org.jetbrains.compose.resources.*
 import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.*
 import presentation.component.ScheduleComponent
-import presentation.ui.changeScheduleScreen.ChangeScheduleScreen
+import presentation.ui.changeSchedule.ChangeScheduleScreen
 
 class HomeScreen() : Screen {
 

@@ -1,4 +1,4 @@
-package presentation.ui.changeScheduleScreen
+package presentation.ui.changeSchedule
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background

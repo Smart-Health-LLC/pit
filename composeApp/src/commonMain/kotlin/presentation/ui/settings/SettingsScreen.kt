@@ -10,12 +10,12 @@ import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import data.CUSTOM_TAG
 import domain.repository.SettingsRepository
 import i18n.*
 import io.github.aakira.napier.log
 import org.koin.compose.koinInject
 import presentation.ui.chooseSchedule.ChooseScheduleScreen
+import presentation.wtf.CUSTOM_TAG
 
 class SettingsScreen() : Screen {
 

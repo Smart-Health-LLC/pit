@@ -1,12 +1,14 @@
 package presentation.ui.rate
 
 import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import domain.model.Segment
+import domain.model.SegmentReport
+import domain.repository.SegmentReportRepository
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
-
-const val MAX_LEVEL = 5
 
 data class SegmentRateInfo(
     val isSegmentSkipped: Boolean = false,
@@ -23,7 +25,8 @@ data class SegmentRateInfo(
     val isFormComplete: Boolean = true
 )
 
-class RateSegmentViewModel : ScreenModel {
+class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRepository) :
+    ScreenModel {
     // todo get data about current segment
 
     val thisSegmentInfo = Segment(
@@ -117,7 +120,18 @@ class RateSegmentViewModel : ScreenModel {
     }
 
     fun onSavePressed() {
-        // todo save provided data
-        println("hahah I'm gonna save new data to sqdelight")
+        screenModelScope.launch {
+            segmentReportRepository.addReport(
+                SegmentReport(
+                    day = thisSegmentInfo.day ?: LocalDate.now(),
+                    fallAsleepEaseLevel = state.value.fallAsleepEaseLevel,
+                    wakeUpEaseLevel = state.value.wakeApEaseLevel,
+                    isSkipped = state.value.isSegmentSkipped,
+                    timeStart = state.value.newStartTime ?: thisSegmentInfo.start,
+                    timeEnd = state.value.newEndTime ?: thisSegmentInfo.end
+                )
+            )
+        }
+        println("hahah I saved new data to sqdelight")
     }
 }

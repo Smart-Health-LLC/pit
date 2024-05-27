@@ -9,8 +9,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import domain.model.Segment
 import org.koin.compose.koinInject
+import presentation.extention.supportWideScreen
 import presentation.theme.stronglyDeEmphasizedAlpha
-import presentation.ui.extention.supportWideScreen
 import presentation.ui.rate.question_type.*
 import presentation.wtf.dateFormat
 import presentation.wtf.dateTimeFormatter
@@ -110,7 +110,7 @@ fun SurveyTopAppBar(segment: Segment) {
     Column(modifier = Modifier.fillMaxWidth()) {
         CenterAlignedTopAppBar(
             title = {
-                Row {
+                Column {
                     segment.day?.let {
                         Text(
                             text = it.format(DateTimeFormatter.ofPattern(dateFormat)),
