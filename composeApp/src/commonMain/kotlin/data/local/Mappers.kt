@@ -12,25 +12,28 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import kotlin.coroutines.CoroutineContext
 
+
+// @formatter:off
 fun SegmentReportLocalEntity.toSegmentReport() = SegmentReport(
-    id = id,
-    day = LocalDate.parse(day),
-    timeStart = LocalTime.parse(timeStart),
-    timeEnd = LocalTime.parse(timeEnd),
-    isSkipped = isSkipped,
-    wakeUpEaseLevel = wakeUpEaseLevel.toInt(),
+    id                  = id,
+    day                 = LocalDate.parse(day, DateTimeFormatter.ISO_LOCAL_DATE),
+    timeStart           = LocalTime.parse(timeStart, DateTimeFormatter.ISO_LOCAL_TIME),
+    timeEnd             = LocalTime.parse(timeEnd, DateTimeFormatter.ISO_LOCAL_TIME),
+    isSkipped           = isSkipped,
+    wakeUpEaseLevel     = wakeUpEaseLevel.toInt(),
     fallAsleepEaseLevel = fallAsleepEaseLevel.toInt()
 )
 
 fun SegmentReport.toSegmentReportLocalEntity() = SegmentReportLocalEntity(
-    id = id,
-    day = day.format(DateTimeFormatter.ofPattern(localSQLiteDateTimeFormat)),
-    timeStart = timeStart.format(DateTimeFormatter.ofPattern(localSQLiteDateTimeFormat)),
-    timeEnd = timeEnd.format(DateTimeFormatter.ofPattern(localSQLiteDateTimeFormat)),
-    isSkipped = isSkipped,
-    wakeUpEaseLevel = wakeUpEaseLevel.toLong(),
+    id                  = id,
+    day                 = day.format(DateTimeFormatter.ISO_LOCAL_DATE),
+    timeStart           = timeStart.format(DateTimeFormatter.ISO_LOCAL_TIME),
+    timeEnd             = timeEnd.format(DateTimeFormatter.ISO_LOCAL_TIME),
+    isSkipped           = isSkipped,
+    wakeUpEaseLevel     = wakeUpEaseLevel.toLong(),
     fallAsleepEaseLevel = fallAsleepEaseLevel.toLong()
 )
+// @formatter:on
 
 @JvmOverloads
 fun <T : Any> Flow<Query<T>>.mapToList(

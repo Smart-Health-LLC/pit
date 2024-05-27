@@ -30,19 +30,14 @@ class PreferenceManager constructor(private val settings: Settings) {
     @OptIn(ExperimentalSettingsApi::class)
     fun getIntFlow(key: String) = observableSettings.getIntFlow(key = key, defaultValue = 0)
 
+    // @formatter:off
     companion object {
-        const val NOTIFICATION_OPTION = "notification_option_key"
-        const val USERNAME = "username_key"
-        const val SHORT_BREAK_COLOR = "short_break_color_key"
-        const val LONG_BREAK_COLOR = "long_break_color_key"
-        const val FOCUS_COLOR = "focus_color_key"
-        const val APP_THEME = "app_theme_key"
-        const val FOCUS_TIME = "focus_time_key"
-        const val SHORT_BREAK_TIME = "short_break_time_key"
-        const val LONG_BREAK_TIME = "long_break_time_key"
-        const val HOUR_FORMAT = "hour_format_key"
-        const val LANGUAGE_ID = "language_id"
+        const val USERNAME            = "username_key"
+        const val APP_THEME           = "app_theme_key"
+        const val HOUR_FORMAT         = "hour_format_key"
+        const val LANGUAGE_ID         = "language_id"
     }
+    // @formatter:on
 
     fun clearPreferences() {
         observableSettings.clear()
