@@ -9,6 +9,16 @@
 
 ## Project structure
 
+```
+project/
+├── composeApp/
+│   ├── commonMain/
+│   ├── iosMain/
+│   ├── desktopMain/
+│   └── androidMain/
+└── iosApp/
+```
+
 * `/composeApp` is for code that will be shared across Compose Multiplatform applications.
   Sub-folders:
     - `/commonMain` is for code that’s common for all targets.
