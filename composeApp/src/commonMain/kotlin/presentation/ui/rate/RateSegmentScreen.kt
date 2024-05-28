@@ -48,7 +48,7 @@ fun RateSegmentScreenContent(
 
             if (!state.isSegmentSkipped) {
                 CheckboxQuestion(
-                    text = "Реальное время периода отличается от того, что в распиание",
+                    text = "Реальное время периода отличается от того, что в распиании",
                     selected = state.isSegmentDiffersFromScheduled,
                     onOptionSelected = viewModel::toggleDifferFromScheduleStatus
                 )

@@ -32,7 +32,6 @@ fun TimeEdgesQuestion(
             Text(text, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
             Box(Modifier.padding(8.dp)) {
                 // dialog time picker
-
             }
         }
     }

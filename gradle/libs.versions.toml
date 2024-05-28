@@ -23,7 +23,7 @@ kspPlugin                             = "1.9.23-1.0.19"
 androidx-activityCompose              = "1.9.0"
 material3WindowSizeClassMultiplatform = "0.5.0"
 androidx-appcompat                    = "1.6.1"
-androidxLifecycle                     = "2.8.0-rc01"
+androidxLifecycle                     = "2.8.0"
 androidx-constraintlayout             = "2.1.4"
 androidx-core-ktx                     = "1.13.1"
 koin-compose                          = "1.1.5"
@@ -33,23 +33,24 @@ compose-material3                     = "1.2.1"
 androidx-test-junit                   = "1.1.5"
 compose                               = "1.6.7"
 voyager                               = "1.0.0"
-compose-plugin                        = "1.6.2"
+compose-plugin                        = "1.6.10"
 junit                                 = "4.13.2"
-coroutines                            = "1.8.1-Beta"
-kotlinx-components-resources-ver      = "1.6.2"
+coroutines                            = "1.8.1"
+kotlinx-components-resources-ver      = "1.6.10"
 koin                                  = "3.5.6"
 napier                                = "2.7.1"
 lyricist                              = "1.7.0"
 kotlinx-serialization-json-ver        = "1.6.3"
-dateTimeVersion                       = "0.5.0"
+dateTimeVersion                       = "0.6.0"
 compose-navigation-ver                = "2.8.0-alpha02"
 ktor                                  = "2.3.10"
-kotlinxCoroutinesSwing                = "1.8.0"
+kotlinxCoroutinesSwing                = "1.8.1"
 foundationAndroid                     = "1.6.7"
 uiGraphicsAndroid                     = "1.6.7"
 uiAndroid                             = "1.6.7"
 sqldelight                            = "2.0.2"
 sonner                                = "0.3.6"
+koalaplotCore                         = "0.6.0"
 
 [libraries]
 
@@ -72,6 +73,8 @@ sqldelight-native               = { module = "app.cash.sqldelight:native-driver"
 sqldelight-jvm                  = { module = "app.cash.sqldelight:sqlite-driver"        , version.ref = "sqldelight" }
 sqldelight-coroutines           = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 
+# ==== charts ====
+koalaplot-core      = { module = "io.github.koalaplot:koalaplot-core"     , version.ref = "koalaplotCore" }
 
 
 # ==== toast ====

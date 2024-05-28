@@ -83,6 +83,8 @@ kotlin {
             implementation(libs.lyricist)
             implementation(libs.lyricist.processor)
 
+            // ==== charts ====
+            implementation(libs.koalaplot.core)
 
             // ==== Ktor ====
             implementation(libs.ktor.client.core)
