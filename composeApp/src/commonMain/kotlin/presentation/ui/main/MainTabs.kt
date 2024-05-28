@@ -7,6 +7,8 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.painterResource
 import pit.composeapp.generated.resources.*
+import presentation.ui.adaptation_stats.AdaptationStatsScreenContent
+import presentation.ui.daily_stats.DailyStatsScreenContent
 import presentation.ui.home.HomeScreen
 import presentation.ui.settings.SettingsScreen
 
@@ -73,7 +75,7 @@ sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen()
+            AdaptationStatsScreenContent()
         }
     }
 
@@ -100,7 +102,7 @@ sealed class MainTabs {
 
         @Composable
         override fun Content() {
-            HomeScreen()
+            DailyStatsScreenContent()
         }
     }
 

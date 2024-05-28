@@ -51,6 +51,7 @@ uiAndroid                             = "1.6.7"
 sqldelight                            = "2.0.2"
 sonner                                = "0.3.6"
 koalaplotCore                         = "0.6.0"
+splashScreen                          = "1.0.1"
 
 [libraries]
 
@@ -131,6 +132,10 @@ multiplatformSettings-coroutines = { module = "com.russhwolf:multiplatform-setti
 # ==== View model ====
 #androidx-lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 #androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidxLifecycle" }
+
+
+# ==== Splash screen API ====
+splashscreen = {module = "androidx.core:core-splashscreen", version.ref = "splashScreen"}
 
 kotlinx-datetime             = { module = "org.jetbrains.kotlinx:kotlinx-datetime"               , version.ref = "dateTimeVersion" }
 kotlinx-coroutines-core      = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core"        , version.ref = "coroutines" }

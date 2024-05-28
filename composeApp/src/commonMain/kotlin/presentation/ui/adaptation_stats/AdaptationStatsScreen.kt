@@ -1,15 +1,20 @@
 package presentation.ui.adaptation_stats
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import domain.MAX_SEGMENT_MARK_VALUE
 import domain.MIN_SEGMENT_MARK_VALUE
@@ -19,7 +24,10 @@ import io.github.koalaplot.core.line.LinePlot
 import io.github.koalaplot.core.style.LineStyle
 import io.github.koalaplot.core.util.ExperimentalKoalaPlotApi
 import io.github.koalaplot.core.xygraph.*
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import pit.composeapp.generated.resources.Res
+import pit.composeapp.generated.resources.avatar_placeholder
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -36,6 +44,47 @@ class AdaptationStatsScreen : Screen {
 @OptIn(ExperimentalKoalaPlotApi::class)
 @Composable
 fun AdaptationStatsScreenContent(viewModel: AdaptationStatsViewModel = koinInject()) {
+
+
+    // High profile block
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        // Short info about schedule
+        Column(horizontalAlignment = Alignment.Start) {
+            Text(
+                "Everyman",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.W500
+            )
+            Text(
+                strings.startedAt + "2023/01/23",
+                style = MaterialTheme.typography.labelLarge,
+                color = Color.LightGray,
+                modifier = Modifier.padding(start = 3.dp)
+            )
+        }
+
+        // Profile pic
+        Box() {
+            Image(
+                painterResource(Res.drawable.avatar_placeholder),
+                "profile",
+                modifier = Modifier
+                    .size(49.dp)
+                    .clip(
+                        CircleShape
+                    )
+            )
+        }
+    }
+
+
     val title = "Общая легкость соблюдения режима"
     val scheduleStartDay = LocalDate.of(2024, 5, 13)
     val yesterday = LocalDate.now().minusDays(1)
@@ -114,6 +163,7 @@ fun AdaptationStatsScreenContent(viewModel: AdaptationStatsViewModel = koinInjec
             )
         }
     }
+
 
 }
 

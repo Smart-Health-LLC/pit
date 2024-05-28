@@ -42,10 +42,6 @@ fun App(
                             Navigator(
                                 screen = if (onBoardingState.completed) {
                                     MainScreen()
-
-//                                    RateSegmentScreen()
-//                                    AdaptationStatsScreen()
-//                                    DailyStatsScreen()
                                 } else {
                                     OnboardingScreen()
                                 },

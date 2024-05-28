@@ -75,6 +75,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
             implementation(libs.sqldelight.android)
+            implementation(libs.splashscreen)
         }
         commonMain.dependencies {
 

@@ -1,21 +1,23 @@
 package presentation.ui.daily_stats
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import org.koin.compose.koinInject
+import presentation.component.*
+import presentation.icon.CalendarMonthIcon
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.Locale
 
 class DailyStatsScreen : Screen {
     @Composable
@@ -33,385 +35,117 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
             .padding(horizontal = 15.dp)
     ) {
 
-        // Screen top description
+        CalendarTop(LocalDate.now())
+        Spacer_32dp()
+        CalendarWeek()
+
+    }
+}
+
+@Composable
+fun CalendarTop(date: LocalDate) {
+    // Screen top description
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
+    ) {
+
+        // Selected date indication
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Text(
-                "Adaptation overview",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.W500
+            // Calendar icon
+            Icon(
+                CalendarMonthIcon,
+                null,
+                modifier = Modifier
+                    .size(35.dp)
             )
+            Spacer_12dp()
+            Row(verticalAlignment = Alignment.Bottom) {
+                Text(
+                    date.month.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.ExtraBold,
+                )
+                Spacer_8dp()
+                Text(
+                    text = date.year.toString(),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(bottom = 5.dp)
+                )
+            }
         }
 
-        // Calendar stripe
-        Row(
-            modifier = Modifier
-                .padding(vertical = 20.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-
-            // Calendar stripe's one day block
-            val dayChipWidth = 60.dp
-            val bottomDayChipPadding = 20.dp
-            val dayChipPadding = 5.dp
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(color = Color.Blue)
-                    .size(height = dayChipWidth * 2, width = dayChipWidth)
-                    .padding(
-                        start = dayChipPadding,
-                        top = dayChipPadding,
-                        end = dayChipPadding,
-                        bottom = bottomDayChipPadding
-                    )
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(Color.White)
-                        .size(dayChipWidth - dayChipPadding * 2)
-                        .align(Alignment.TopCenter)
-                ) {
-                    Text(
-                        text = "28",
-                        modifier = Modifier.align(Alignment.Center),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                Text("Sat", color = Color.White, modifier = Modifier.align(Alignment.BottomCenter))
-            }
-
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(color = Color.Blue)
-                    .size(height = dayChipWidth * 2, width = dayChipWidth)
-                    .padding(
-                        start = dayChipPadding,
-                        top = dayChipPadding,
-                        end = dayChipPadding,
-                        bottom = bottomDayChipPadding
-                    )
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(Color.White)
-                        .size(dayChipWidth - dayChipPadding * 2)
-                        .align(Alignment.TopCenter)
-                ) {
-                    Text(
-                        text = "28",
-                        modifier = Modifier.align(Alignment.Center),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                Text("Sat", color = Color.White, modifier = Modifier.align(Alignment.BottomCenter))
-            }
-
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(color = Color.Blue)
-                    .size(height = dayChipWidth * 2, width = dayChipWidth)
-                    .padding(
-                        start = dayChipPadding,
-                        top = dayChipPadding,
-                        end = dayChipPadding,
-                        bottom = bottomDayChipPadding
-                    )
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(Color.White)
-                        .size(dayChipWidth - dayChipPadding * 2)
-                        .align(Alignment.TopCenter)
-                ) {
-                    Text(
-                        text = "28",
-                        modifier = Modifier.align(Alignment.Center),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                Text("Sat", color = Color.White, modifier = Modifier.align(Alignment.BottomCenter))
-            }
+        // To today text button
+        Text(
+            text = "Today",
+            color = Color.Blue,
+            fontWeight = FontWeight.Bold,
+        )
+    }
+}
 
 
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(color = Color.Blue)
-                    .size(height = dayChipWidth * 2, width = dayChipWidth)
-                    .padding(
-                        start = dayChipPadding,
-                        top = dayChipPadding,
-                        end = dayChipPadding,
-                        bottom = bottomDayChipPadding
-                    )
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(Color.White)
-                        .size(dayChipWidth - dayChipPadding * 2)
-                        .align(Alignment.TopCenter)
-                ) {
-                    Text(
-                        text = "28",
-                        modifier = Modifier.align(Alignment.Center),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                Text("Sat", color = Color.White, modifier = Modifier.align(Alignment.BottomCenter))
-            }
-
-        }
-
-        // Chart section name
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.padding(vertical = 15.dp)
+@Composable
+fun CalendarDay(isActive: Boolean, day: LocalDate) {
+    // Calendar stripe's one day block
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = if (isActive) {
+            Color.Blue
+        } else {
+            MaterialTheme.colorScheme.surface
+        },
+        modifier = Modifier
+            .size(height = 75.dp, width = 48.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                "Adaptation process",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
+                day.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                color = if (isActive) {
+                    MaterialTheme.colorScheme.secondary
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
+                style = MaterialTheme.typography.labelMedium
+            )
+            Text(
+                text = day.format(DateTimeFormatter.ofPattern("dd")),
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (isActive) {
+                    Color.White
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
+                fontWeight = FontWeight.SemiBold
             )
         }
-
-        // chart here
-
-
-        // Summary block
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(5.dp))
-                .background(color = MaterialTheme.colorScheme.primaryContainer)
-                .padding(vertical = 20.dp, horizontal = 10.dp),
-//            horizontalArrangement = Arrangement.Center
-        ) {
-            // Summary column
-            Column(modifier = Modifier.padding(end = 55.dp)) {
-
-                // One summary block
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 20.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(35.dp)
-                            .clip(CircleShape)
-                            .background(Color.LightGray)
-                    ) {
-                        Icon(
-                            Icons.Rounded.Notifications, contentDescription = "ash", modifier =
-                            Modifier.align(
-                                Alignment.Center
-                            )
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Column {
-                        Text(
-                            text = "In bed",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = "23.33",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
+    }
+}
 
 
-                // One summary block
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 20.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(35.dp)
-                            .clip(CircleShape)
-                            .background(Color.LightGray)
-                    ) {
-                        Icon(
-                            Icons.Rounded.Notifications, contentDescription = "ash", modifier =
-                            Modifier.align(
-                                Alignment.Center
-                            )
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Column {
-                        Text(
-                            text = "In bed",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = "23.33",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-
-                // One summary block
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(35.dp)
-                            .clip(CircleShape)
-                            .background(Color.LightGray)
-                    ) {
-                        Icon(
-                            Icons.Rounded.Notifications, contentDescription = "ash", modifier =
-                            Modifier.align(
-                                Alignment.Center
-                            )
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Column {
-                        Text(
-                            text = "In bed",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = "23.33",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-
-            }
-
-
-            // Summary column
-            Column(modifier = Modifier.padding(end = 25.dp)) {
-
-                // One summary block
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 20.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(35.dp)
-                            .clip(CircleShape)
-                            .background(Color.LightGray)
-                    ) {
-                        Icon(
-                            Icons.Rounded.Notifications, contentDescription = "ash", modifier =
-                            Modifier.align(
-                                Alignment.Center
-                            )
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Column {
-                        Text(
-                            text = "In bed",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = "23.33",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-
-
-                // One summary block
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 20.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(35.dp)
-                            .clip(CircleShape)
-                            .background(Color.LightGray)
-                    ) {
-                        Icon(
-                            Icons.Rounded.Notifications, contentDescription = "ash", modifier =
-                            Modifier.align(
-                                Alignment.Center
-                            )
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Column {
-                        Text(
-                            text = "In bed",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = "23.33",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-
-                // One summary block
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(35.dp)
-                            .clip(CircleShape)
-                            .background(Color.LightGray)
-                    ) {
-                        Icon(
-                            Icons.Rounded.Notifications, contentDescription = "ash", modifier =
-                            Modifier.align(
-                                Alignment.Center
-                            )
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Column {
-                        Text(
-                            text = "In bed",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = "23.33",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-
-            }
-        }
+// Calendar stripe
+@Composable
+fun CalendarWeek() {
+    Row(
+        modifier = Modifier.padding(vertical = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+    ) {
+        CalendarDay(true, LocalDate.of(2024, 5, 1))
+        CalendarDay(false, LocalDate.of(2024, 5, 2))
+        CalendarDay(false, LocalDate.of(2024, 5, 3))
+        CalendarDay(false, LocalDate.of(2024, 5, 4))
+        CalendarDay(false, LocalDate.of(2024, 5, 5))
+        CalendarDay(false, LocalDate.of(2024, 5, 6))
+        CalendarDay(true, LocalDate.of(2024, 5, 7))
     }
 }
