@@ -30,5 +30,9 @@ val RuStrings = Strings(
     dontHaveAnAccount = "Нет аккаунта? Зарегистрироваться",
     welcomeBack = "Рады Вас видеть",
     language = "Язык",
-    chooseAnotherSchedule = "Выбрать другой режим"
+    chooseAnotherSchedule = "Выбрать другой режим",
+    tabHome = "Главная",
+    tabAdaptationStats = "Адаптация",
+    tabDailyStats = "По дням",
+    tabMore = "Больше"
 )

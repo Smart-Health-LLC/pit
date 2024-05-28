@@ -1,18 +1,20 @@
-package presentation.component
+package presentation.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import pit.composeapp.generated.resources.*
 import presentation.ui.home.HomeScreen
 import presentation.ui.settings.SettingsScreen
 
+/**
+ * Data for navigation tabs
+ * Note: can't use here strings.* because in that case no recomposition on tabs' labels happens
+ */
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun FilledIcon(item: Tab) = when (item.options.index) {
     MainTabs.HomeTab.INDEX -> painterResource(Res.drawable.ic_space_dashboard_filled_24px)
@@ -23,11 +25,11 @@ fun FilledIcon(item: Tab) = when (item.options.index) {
     else -> painterResource(Res.drawable.ic_space_dashboard_filled_24px)
 }
 
-internal sealed class MainTabs {
-    internal object HomeTab : Tab {
+sealed class MainTabs {
+    object HomeTab : Tab {
+        private fun readResolve(): Any = HomeTab
         const val INDEX: UShort = 0u
 
-        @OptIn(ExperimentalResourceApi::class)
         override val options: TabOptions
             @Composable
             get() {
@@ -50,10 +52,10 @@ internal sealed class MainTabs {
     }
 
 
-    internal object StatisticsTab : Tab {
+    object StatisticsTab : Tab {
+        private fun readResolve(): Any = StatisticsTab
         const val INDEX: UShort = 1u
 
-        @OptIn(ExperimentalResourceApi::class)
         override val options: TabOptions
             @Composable
             get() {
@@ -76,11 +78,11 @@ internal sealed class MainTabs {
     }
 
 
-    internal object NotesTab : Tab {
+    object NotesTab : Tab {
+        private fun readResolve(): Any = NotesTab
 
         const val INDEX: UShort = 2u
 
-        @OptIn(ExperimentalResourceApi::class)
         override val options: TabOptions
             @Composable
             get() {
@@ -102,10 +104,10 @@ internal sealed class MainTabs {
         }
     }
 
-    internal object SettingsTab : Tab {
+    object SettingsTab : Tab {
+        private fun readResolve(): Any = SettingsTab
         const val INDEX: UShort = 3u
 
-        @OptIn(ExperimentalResourceApi::class)
         override val options: TabOptions
             @Composable
             get() {

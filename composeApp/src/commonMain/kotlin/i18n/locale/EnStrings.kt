@@ -30,5 +30,9 @@ val EnStrings = Strings(
     dontHaveAnAccount = "Don't have an account? Signup",
     welcomeBack = "Welcome back",
     language = "Language",
-    chooseAnotherSchedule = "Choose another schedule"
+    chooseAnotherSchedule = "Choose another schedule",
+    tabHome = "Home",
+    tabAdaptationStats = "Adaptation",
+    tabDailyStats = "Daily",
+    tabMore = "More"
 )

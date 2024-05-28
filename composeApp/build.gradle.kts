@@ -59,6 +59,14 @@ kotlin {
 //    }
 
     sourceSets {
+        all {
+            languageSettings.optIn("androidx.compose.material.ExperimentalMaterialApi")
+            languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
+            languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            languageSettings.optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
+        }
+
+
         val desktopMain by getting
 
         androidMain.dependencies {
@@ -195,6 +203,8 @@ sqldelight {
     databases {
         create("PitDatabase") {
             packageName.set("com.smarthealth.pit.database")
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+            verifyMigrations.set(true)
         }
     }
 }

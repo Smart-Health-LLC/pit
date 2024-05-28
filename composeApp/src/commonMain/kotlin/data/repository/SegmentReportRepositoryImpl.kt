@@ -13,7 +13,7 @@ class SegmentReportRepositoryImpl(
     pitDatabase: PitDatabase,
 ) : SegmentReportRepository {
 
-    private val dbQuery = pitDatabase.pitDatabaseQueries
+    private val dbQuery = pitDatabase.segmentReportQueries
 
     override fun getReports(): Flow<List<SegmentReport>> {
         return dbQuery

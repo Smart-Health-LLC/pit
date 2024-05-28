@@ -30,7 +30,11 @@ data class Strings(
     val dontHaveAnAccount: String,
     val welcomeBack: String,
     val language: String,
-    val chooseAnotherSchedule: String
+    val chooseAnotherSchedule: String,
+    val tabHome: String,
+    val tabAdaptationStats: String,
+    val tabDailyStats: String,
+    val tabMore: String
 )
 
 val TagToStringsMapper: Map<LanguageTag, Strings> = mapOf(

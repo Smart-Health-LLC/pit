@@ -1,6 +1,5 @@
 import kotlin.Boolean;
 
-
 CREATE TABLE IF NOT EXISTS SegmentReportLocalEntity (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     day TEXT NOT NULL,
@@ -30,32 +29,3 @@ VALUES (?,?,?,?,?,?);
 
 updateReport:
 UPDATE SegmentReportLocalEntity SET day = ?, timeEnd = ?, timeEnd = ?, isSkipped = ?, wakeUpEaseLevel = ?, fallAsleepEaseLevel = ? WHERE id = ?;
-
--- User's current schedule
-CREATE TABLE IF NOT EXISTS UserScheduleLocalEntity (
-    name TEXT NOT NULL,
-    tst TEXT NOT NULL
-);
-
--- User's current schedule's sleep segments
-CREATE TABLE IF NOT EXISTS SleepSegmentLocalEntity (
-    timeStart TEXT NOT NULL,
-    timeEnd TEXT NOT NULL
-);
-
-getSchedule:
-SELECT * FROM UserScheduleLocalEntity LIMIT 1;
-
-updateSchedule:
-REPLACE
-INTO UserScheduleLocalEntity (name, tst)
-VALUES (?,?);
-
--- todo warning don't lose data when offline idk exactly how rn
-clearScheduleSleepSegments:
-DELETE FROM SleepSegmentLocalEntity;
-
-addScheduleSleepSegment:
-INSERT
-INTO SleepSegmentLocalEntity (timeStart, timeEnd)
-VALUES (?, ?);

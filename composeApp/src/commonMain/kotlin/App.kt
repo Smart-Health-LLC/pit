@@ -12,9 +12,7 @@ import i18n.lyricist
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
-import presentation.ui.adaptation_stats.AdaptationStatsScreen
-import presentation.ui.main.MainViewModel
-import presentation.ui.main.OnBoardingState
+import presentation.ui.main.*
 import presentation.ui.onboarding.OnboardingScreen
 
 @Composable
@@ -43,10 +41,11 @@ fun App(
 
                             Navigator(
                                 screen = if (onBoardingState.completed) {
-//                                    MainScreen()
+                                    MainScreen()
 
 //                                    RateSegmentScreen()
-                                    AdaptationStatsScreen()
+//                                    AdaptationStatsScreen()
+//                                    DailyStatsScreen()
                                 } else {
                                     OnboardingScreen()
                                 },

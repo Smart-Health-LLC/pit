@@ -2,8 +2,6 @@ package presentation.wtf
 
 import java.time.format.DateTimeFormatter
 
-// haha lol
-
 const val timeFormat = "HH:mm"
 const val dateFormat = "yyyy/MM/dd"
 

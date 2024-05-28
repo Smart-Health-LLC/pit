@@ -13,6 +13,7 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import platform.LocalDatabaseDriverFactory
 import presentation.ui.adaptation_stats.AdaptationStatsViewModel
+import presentation.ui.daily_stats.DailyStatsViewModel
 import presentation.ui.home.HomeViewModel
 import presentation.ui.main.MainViewModel
 import presentation.ui.onboarding.OnboardingViewModel
@@ -67,6 +68,10 @@ fun commonModule() = module {
 
     single<AdaptationStatsViewModel> {
         AdaptationStatsViewModel()
+    }
+
+    single<DailyStatsViewModel> {
+        DailyStatsViewModel()
     }
 
     single<OnboardingViewModel> {
