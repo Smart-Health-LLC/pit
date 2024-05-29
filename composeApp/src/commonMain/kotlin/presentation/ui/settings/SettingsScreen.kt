@@ -21,7 +21,7 @@ import i18n.getLocalesInfo
 import org.koin.compose.koinInject
 import presentation.component.ToasterWrapper
 import presentation.icon.ScheduleIcon
-import presentation.ui.chooseSchedule.ChooseScheduleScreen
+import presentation.ui.choose_schedule.ChooseScheduleScreen
 import presentation.ui.main.MainViewModel
 import presentation.ui.settings.component.SingleChoiceAlertDialog
 

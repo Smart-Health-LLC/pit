@@ -40,7 +40,6 @@ class SettingsRepositoryImpl(
 
     override fun getUsername(): Flow<String?> {
         return preferenceManager.getString(key = PreferenceManager.USERNAME)
-//        return flow { emit(null) }
     }
 
     override fun saveUsername(username: String) {

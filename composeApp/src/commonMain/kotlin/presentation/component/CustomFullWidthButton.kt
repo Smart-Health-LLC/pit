@@ -6,7 +6,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -21,6 +20,6 @@ fun CustomFullWidthButton(
             .fillMaxWidth()
             .height(60.dp)
     ) {
-        Text(color = Color.White, text = text)
+        Text(text = text)
     }
 }

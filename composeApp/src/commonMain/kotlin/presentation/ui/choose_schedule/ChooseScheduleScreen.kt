@@ -1,4 +1,4 @@
-package presentation.ui.chooseSchedule
+package presentation.ui.choose_schedule
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

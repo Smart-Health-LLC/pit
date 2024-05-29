@@ -10,6 +10,7 @@ import com.dokar.sonner.ToasterState
 fun ToasterWrapper(state: ToasterState) {
     Toaster(
         state = state,
+        maxVisibleToasts = 1,
         alignment = Alignment.TopCenter,
         darkTheme = isSystemInDarkTheme()
     )

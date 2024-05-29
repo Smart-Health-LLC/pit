@@ -11,18 +11,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.*
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import pit.composeapp.generated.resources.*
-import presentation.component.CustomFullWidthButton
+import presentation.component.*
 import presentation.ui.register.SignupScreen
 
 class OnboardingScreen : Screen, KoinComponent {
@@ -132,7 +134,6 @@ private fun ColumnScope.PageIndicators(pageCount: Int, currentPage: Int) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun OnboardingFirstPage() {
     PageContent(
@@ -142,7 +143,6 @@ private fun OnboardingFirstPage() {
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun OnboardingSecondPage() {
     PageContent(
@@ -152,7 +152,6 @@ private fun OnboardingSecondPage() {
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun PageContent(title: String, description: String, illustration: DrawableResource) {
     Column(
@@ -163,44 +162,21 @@ private fun PageContent(title: String, description: String, illustration: Drawab
             painter = painterResource(illustration),
             contentDescription = null,
             modifier = Modifier.size(270.dp),
+            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer_32dp()
         Text(
-//            modifier = Modifier.fillMaxWidth(),
             text = title,
             style = MaterialTheme.typography.displayLarge.copy(
-//                fontSize = 22.sp,
                 fontWeight = FontWeight.SemiBold,
-//                textAlign = TextAlign.Center,
             ),
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start
         )
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer_12dp()
         Text(
-//            modifier = Modifier.fillMaxWidth(),
             text = description,
-            style = MaterialTheme.typography.bodyMedium.copy(
-//                fontSize = 14.sp,
-//                textAlign = TextAlign.Center,
-            ),
-        )
-    }
-}
-
-@Composable
-fun OnBoardingNavigationButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
-    Button(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp),
-        onClick = onClick,
-        shape = MaterialTheme.shapes.medium,
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-            ),
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }

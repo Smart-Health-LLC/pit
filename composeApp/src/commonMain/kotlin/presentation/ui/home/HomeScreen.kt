@@ -25,7 +25,7 @@ import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.*
 import presentation.component.*
 import presentation.icon.BombIcon
-import presentation.ui.changeSchedule.ChangeScheduleScreen
+import presentation.ui.change_schedule.ChangeScheduleScreen
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle

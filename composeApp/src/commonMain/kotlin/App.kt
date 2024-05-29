@@ -6,7 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import cafe.adriel.lyricist.LocalStrings
 import cafe.adriel.lyricist.ProvideStrings
-import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import i18n.defaultLocale
 import i18n.lyricist
@@ -14,12 +13,12 @@ import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
 import presentation.ui.main.*
-import presentation.ui.onboarding.OnboardingScreen
 
 @Composable
 fun App(
     mainViewModel: MainViewModel = koinInject(),
 ) {
+    // todo
     val isDarkTheme = when (mainViewModel.appTheme.collectAsState().value) {
         1 -> true
         else -> false
@@ -32,7 +31,7 @@ fun App(
             if (currentLangInfo.tag != defaultLocale)
                 lyricist.languageTag = currentLangInfo.tag
 
-            AppTheme(darkTheme = isDarkTheme) {
+            AppTheme() {
 
                 when (onBoardingState) {
                     is OnBoardingState.Success -> {
@@ -42,12 +41,13 @@ fun App(
                         ) {
 
                             Navigator(
-                                screen = if (onBoardingState.completed) {
-                                    MainScreen()
-                                } else {
-                                    OnboardingScreen()
-                                },
-                                content = { CurrentScreen() },
+                                MainScreen()
+//                                screen = if (onBoardingState.completed) {
+//                                    MainScreen()
+//                                } else {
+//                                    OnboardingScreen()
+//                                },
+//                                content = { CurrentScreen() },
                             )
                         }
                     }

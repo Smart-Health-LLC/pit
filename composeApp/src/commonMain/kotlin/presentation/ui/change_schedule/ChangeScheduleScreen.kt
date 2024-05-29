@@ -1,4 +1,4 @@
-package presentation.ui.changeSchedule
+package presentation.ui.change_schedule
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.dokar.sonner.Toaster
 import com.dokar.sonner.rememberToasterState
 import domain.model.Schedule
 import domain.model.Segment
