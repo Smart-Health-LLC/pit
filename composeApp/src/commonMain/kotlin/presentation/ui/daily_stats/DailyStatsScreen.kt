@@ -1,7 +1,9 @@
 package presentation.ui.daily_stats
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -10,7 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import pit.composeapp.generated.resources.Res
+import pit.composeapp.generated.resources.redo
 import presentation.component.*
 import presentation.icon.CalendarMonthIcon
 import presentation.ui.home.everyman1
@@ -30,46 +35,57 @@ class DailyStatsScreen : Screen {
 @Composable
 fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
 //     Screen content holder
-    Column(
+
+    LazyColumn(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(18.dp)
+//            .scrollable(rememberScrollState(0), orientation = Orientation.Vertical)
     ) {
+        item {
+            CalendarTop(LocalDate.now())
+            Spacer_8dp()
+            CalendarWeek()
+            StaticScheduleComponent(everyman1, 250, 130f)
+            Spacer_8dp()
 
-        CalendarTop(LocalDate.now())
-        Spacer_8dp()
-        CalendarWeek()
-        StaticScheduleComponent(everyman1, 250, 130f)
-        DaySleepOverviewComponent()
+        }
 
-        SegmentReportCard(
-            LocalTime.of(5, 0),
-            LocalTime.of(7, 30),
-            3, 4,
-            LocalTime.of(3, 28),
-            LocalTime.of(8, 43),
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-        )
-
-        SegmentReportCard(
-            LocalTime.of(5, 0),
-            LocalTime.of(7, 30),
-            3, 4,
-            LocalTime.of(3, 28),
-            LocalTime.of(8, 43),
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-        )
-
-
-        SegmentReportCard(
-            LocalTime.of(5, 0),
-            LocalTime.of(7, 30),
-            3, 4,
-            LocalTime.of(3, 28),
-            LocalTime.of(8, 43),
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-        )
+        item {
+            SegmentReportCard(
+                LocalTime.of(5, 0),
+                LocalTime.of(7, 30),
+                3, 4,
+                LocalTime.of(3, 28),
+                LocalTime.of(8, 43),
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+            )
+        }
+        item {
+            SegmentReportCard(
+                LocalTime.of(5, 0),
+                LocalTime.of(7, 30),
+                3, 4,
+                LocalTime.of(3, 28),
+                LocalTime.of(8, 43),
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+            )
+        }
+        item {
+            SegmentReportCard(
+                LocalTime.of(5, 0),
+                LocalTime.of(7, 30),
+                3, 4,
+                LocalTime.of(3, 28),
+                LocalTime.of(8, 43),
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+            )
+        }
+        item {
+            Spacer_32dp()
+        }
     }
 }
+
 
 @Composable
 fun CalendarTop(date: LocalDate) {
@@ -82,41 +98,57 @@ fun CalendarTop(date: LocalDate) {
             .horizontalScroll(rememberScrollState())
     ) {
 
-        // Selected date indication
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Surface(onClick = {}) {
 
-            // Calendar icon
-            Icon(
-                CalendarMonthIcon,
-                null,
-                modifier = Modifier
-                    .size(35.dp)
-            )
-            Spacer_12dp()
-            Row(verticalAlignment = Alignment.Bottom) {
-                Text(
-                    date.month.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.ExtraBold,
+            // Selected date indication
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(5.dp)
+            ) {
+
+                // Calendar icon
+                Icon(
+                    CalendarMonthIcon,
+                    null,
+                    modifier = Modifier
+                        .size(35.dp)
                 )
-                Spacer_8dp()
+                Spacer_12dp()
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Text(
+                        date.month.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.ExtraBold,
+                    )
+                    Spacer_8dp()
+                    Text(
+                        text = date.year.toString(),
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(bottom = 5.dp)
+                    )
+                }
+            }
+        }
+        // To today text button
+        Surface(
+            onClick = {
+            }
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(5.dp)) {
+                Icon(
+                    modifier = Modifier.size(18.dp),
+                    painter = painterResource(Res.drawable.redo),
+                    contentDescription = "Today",
+                )
+                Spacer_16dp()
                 Text(
-                    text = date.year.toString(),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(bottom = 5.dp)
+                    text = "Today",
+                    color = Color.Blue,
+                    fontWeight = FontWeight.Bold,
                 )
             }
         }
-
-        // To today text button
-        Text(
-            text = "Today",
-            color = Color.Blue,
-            fontWeight = FontWeight.Bold,
-        )
     }
 }
 
@@ -125,6 +157,7 @@ fun CalendarTop(date: LocalDate) {
 fun CalendarDay(isActive: Boolean, day: LocalDate) {
     // Calendar stripe's one day block
     Surface(
+        onClick = {},
         shape = MaterialTheme.shapes.medium,
         color = if (isActive) {
             Color.Blue
@@ -132,7 +165,7 @@ fun CalendarDay(isActive: Boolean, day: LocalDate) {
             MaterialTheme.colorScheme.surface
         },
         modifier = Modifier
-            .size(height = 75.dp, width = 48.dp).clickable { }
+            .size(height = 75.dp, width = 48.dp)
     ) {
         Column(
             verticalArrangement = Arrangement.SpaceEvenly,
@@ -141,7 +174,7 @@ fun CalendarDay(isActive: Boolean, day: LocalDate) {
             Text(
                 day.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
                 color = if (isActive) {
-                    MaterialTheme.colorScheme.secondary
+                    Color.White
                 } else {
                     MaterialTheme.colorScheme.onSurface
                 },
@@ -169,12 +202,12 @@ fun CalendarWeek() {
         modifier = Modifier.padding(vertical = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
-        CalendarDay(true, LocalDate.of(2024, 5, 1))
+        CalendarDay(false, LocalDate.of(2024, 5, 1))
         CalendarDay(false, LocalDate.of(2024, 5, 2))
         CalendarDay(false, LocalDate.of(2024, 5, 3))
         CalendarDay(false, LocalDate.of(2024, 5, 4))
-        CalendarDay(false, LocalDate.of(2024, 5, 5))
+        CalendarDay(true, LocalDate.of(2024, 5, 5))
         CalendarDay(false, LocalDate.of(2024, 5, 6))
-        CalendarDay(true, LocalDate.of(2024, 5, 7))
+        CalendarDay(false, LocalDate.of(2024, 5, 7))
     }
 }

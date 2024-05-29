@@ -16,8 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.strings
 import org.koin.compose.koinInject
-import presentation.component.Spacer_16dp
-import presentation.component.Spacer_4dp
+import presentation.component.*
 import presentation.icon.AchievementIcon
 
 
@@ -25,13 +24,13 @@ import presentation.icon.AchievementIcon
 fun AdaptationStatsScreenContent(viewModel: AdaptationStatsViewModel = koinInject()) {
     Column(modifier = Modifier.fillMaxWidth()) {
         HighProfileBlock()
-        Spacer_16dp()
+        Spacer_32dp()
         // Graph element
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(MaterialTheme.shapes.medium)
-                .background(PurpleBackgroundColor),
+                .background(MaterialTheme.colorScheme.primaryContainer),
         ) {
 
             Column(
@@ -51,7 +50,6 @@ fun AdaptationStatsScreenContent(viewModel: AdaptationStatsViewModel = koinInjec
                         text = "Легкость",
                         style = MaterialTheme.typography.headlineLarge
                     )
-
                 }
 
                 SmoothLineGraph(Modifier.height(240.dp))
@@ -64,21 +62,20 @@ fun AdaptationStatsScreenContent(viewModel: AdaptationStatsViewModel = koinInjec
                 ) {
                     GraphLegendItem("Легкость подъема", Color.Green, 15.dp)
                     Spacer_16dp()
-                    GraphLegendItem("Легкость засыпания", Color.Blue, 15.dp)
+                    GraphLegendItem("Легкость засыпания", Color.Magenta, 15.dp)
                 }
             }
         }
 
+        Spacer_32dp()
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            DaySleepOverviewComponent()
+        }
         Spacer_16dp()
-        OverViewBlock()
     }
 
 }
 
-@Composable
-fun OverViewBlock() {
-    // mah
-}
 
 @Composable
 fun GraphLegendItem(name: String, color: Color, colorSize: Dp) {
@@ -105,8 +102,7 @@ fun HighProfileBlock() {
     // High profile block
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 20.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -127,7 +123,11 @@ fun HighProfileBlock() {
         }
 
         // Motivation button
-        Box() {
+        Surface(
+            onClick = {
+
+            }
+        ) {
             Icon(AchievementIcon, null, modifier = Modifier.size(25.dp))
         }
     }

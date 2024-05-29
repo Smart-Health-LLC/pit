@@ -1,21 +1,19 @@
 package presentation.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.vectorResource
-import pit.composeapp.generated.resources.Res
-import pit.composeapp.generated.resources.ic_dots_vertical
-import presentation.icon.WatchLater
+import presentation.icon.SleepSegmentIcon
+import presentation.ui.adaptation_stats.generateRandomEaseLevel
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -30,23 +28,31 @@ fun SegmentReportCard(
     realTimeEnd: LocalTime? = null,
     noteContent: String? = null,
 ) {
-    Card(modifier = Modifier
+    ElevatedCard(modifier = Modifier
         .clickable
         {
             // todo stuffchik
         }) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Title(idealTimeStart, idealTimeEnd, realTimeStart, realTimeEnd)
+        Column {
+            // main content
+            Column(
+                modifier = Modifier
+                    .clip(
+                        RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
+                    )
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(18.dp)
+            ) {
+                Title(idealTimeStart, idealTimeEnd, realTimeStart, realTimeEnd)
+                Spacer_4dp()
+                SegmentRatesContainer(wakeUpEaseLevel, fallAsleepEaseLevel)
+            }
 
-            Spacer(modifier = Modifier.padding(8.dp))
-
-            SegmentRatesContainer(wakeUpEaseLevel, fallAsleepEaseLevel)
+            // note content
             if (noteContent != null) {
-                Spacer(modifier = Modifier.padding(8.dp))
-                VerticalDivider()
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Note(noteContent)
+                Box(modifier = Modifier.padding(horizontal = 18.dp).padding(vertical = 8.dp)) {
+                    Note(noteContent)
+                }
             }
         }
     }
@@ -80,27 +86,33 @@ const val MAX_SEGMENT_RATE_VALUE = 5
 @Composable
 fun SegmentRate(rateName: String, value: Int) {
     // Component container
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+    Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(rateName, style = MaterialTheme.typography.bodyLarge)
+        Text(rateName, style = MaterialTheme.typography.bodyMedium)
         RateHorizontalIndication(value)
     }
 }
 
 @Composable
 fun RateHorizontalIndication(value: Int) {
-    LinearProgressIndicator(
-        modifier = Modifier
-            .requiredWidth(140.dp)
-            .height(15.dp)
-            .clip(RoundedCornerShape(14.dp)),
-        trackColor = Color.Cyan,
-//        progress = value.toFloat() / MAX_SEGMENT_RATE_VALUE.toFloat() * 100
-        progress = 0.6f
-    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(15.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+
+        val localValue = generateRandomEaseLevel().toInt()
+
+        LinearProgressIndicator(
+            progress = { localValue.toFloat() / MAX_SEGMENT_RATE_VALUE.toFloat() },
+            modifier = Modifier.height(10.dp),
+            color = MaterialTheme.colorScheme.primary,
+            trackColor = MaterialTheme.colorScheme.inverseOnSurface,
+            strokeCap = StrokeCap.Round,
+        )
+        Text(text = "$localValue / $MAX_SEGMENT_RATE_VALUE")
+    }
 }
 
 
@@ -118,48 +130,32 @@ fun Title(
         modifier = Modifier.fillMaxWidth()
     ) {
 
-        // times indication
+        // real time indication
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                Icons.Outlined.WatchLater,
+                SleepSegmentIcon,
                 modifier = Modifier.size(38.dp),
                 contentDescription = null
             )
-            Spacer(modifier = Modifier.padding(10.dp))
-            Column {
-                val idealTextColor = if (realTimeStart != null || realTimeEnd != null) {
-                    Color(0x57000000)
-                } else {
-                    Color.Black
-                }
-                Text(
-                    text = idealTimeStart.format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + idealTimeEnd.format(
-                        DateTimeFormatter.ofPattern("HH:mm")
-                    ),
-                    color = idealTextColor,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                if (realTimeStart != null || realTimeEnd != null) {
-                    val timeStart = realTimeStart ?: idealTimeStart
-                    val timeEnd = realTimeEnd ?: idealTimeEnd
-                    Text(
-                        timeStart.format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + timeEnd.format(
-                            DateTimeFormatter.ofPattern("HH:mm"),
-                        ),
-                        style = MaterialTheme.typography.labelMedium
-                    )
-                }
-            }
+            Spacer_4dp()
+            Text(
+                text = (realTimeStart
+                    ?: idealTimeStart).format(DateTimeFormatter.ofPattern("HH:mm")) +
+                        " - " +
+                        (realTimeEnd ?: idealTimeEnd).format(DateTimeFormatter.ofPattern("HH:mm")),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
         }
 
-
-        // button indication
-        Icon(
-            vectorResource(Res.drawable.ic_dots_vertical),
-            contentDescription = null
-        )
-
+        // ideal time suggestion
+        SuggestionChip(onClick = { }, label = {
+            Text(
+                idealTimeStart.format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + idealTimeEnd.format(
+                    DateTimeFormatter.ofPattern("HH:mm"),
+                ),
+                style = MaterialTheme.typography.labelMedium
+            )
+        })
     }
-
 }

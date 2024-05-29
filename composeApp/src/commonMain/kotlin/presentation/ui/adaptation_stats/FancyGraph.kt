@@ -2,7 +2,6 @@ package presentation.ui.adaptation_stats
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -24,7 +23,7 @@ fun SmoothLineGraph(modifier: Modifier) {
     Box(
         modifier = modifier.then(
             Modifier
-                .background(PurpleBackgroundColor)
+//                .background(MaterialTheme.colorScheme.primaryContainer)
                 .fillMaxWidth()
         )
     ) {
@@ -61,14 +60,15 @@ fun SmoothLineGraph(modifier: Modifier) {
 
                     onDrawBehind {
                         val barWidthPx = 1.dp.toPx()
-                        drawRect(BarColor, style = Stroke(barWidthPx))
+                        //graph border
+//                        drawRect(BarColor, style = Stroke(barWidthPx))
 
                         val horizontalLines = 3
                         val sectionSize = size.height / (horizontalLines + 1)
                         repeat(horizontalLines) { i ->
                             val startY = sectionSize * (i + 1)
                             drawLine(
-                                BarColor,
+                                Color.Gray,
                                 start = Offset(0f, startY),
                                 end = Offset(size.width, startY),
                                 strokeWidth = barWidthPx
@@ -97,14 +97,14 @@ fun SmoothLineGraph(modifier: Modifier) {
                         // draw data
                         clipRect(right = size.width * animationProgress.value) {
                             // draw line
-                            drawPath(filledPathAsleep, Color.Blue, style = Stroke(2.dp.toPx()))
+                            drawPath(filledPathAsleep, Color.Magenta, style = Stroke(2.dp.toPx()))
 
                             // draw underneath shade
                             drawPath(
                                 filledPathAsleep,
                                 brush = Brush.verticalGradient(
                                     listOf(
-                                        Color.Blue.copy(alpha = 0.4f),
+                                        Color.Magenta.copy(alpha = 0.4f),
                                         Color.Transparent
                                     )
                                 ),
@@ -203,6 +203,3 @@ val fallAsleepLevelsData = listOf(
 
 data class MetricLevel(val date: LocalDate, val value: Float)
 data class Point(val x: Float, val y: Float)
-
-val PurpleBackgroundColor = Color(0xff322049)
-val BarColor = Color.White.copy(alpha = 0.3f)
