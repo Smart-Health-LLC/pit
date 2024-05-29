@@ -8,10 +8,12 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.sqldelight)
 }
+
 ksp {
     arg("lyricist.internalVisibility", "true")
     arg("lyricist.generateStringsProperty", "true")
 }
+
 dependencies {
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.ui.graphics.android)
@@ -81,6 +83,10 @@ kotlin {
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
+
+            // ==== settings ui ====
+            implementation(libs.composeSettings.ui.extended)
+            implementation(libs.composeSettings.ui)
 
             // ==== toast ====
             implementation(libs.sonner)

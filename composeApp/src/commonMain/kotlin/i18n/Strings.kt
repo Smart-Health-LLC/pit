@@ -42,4 +42,5 @@ val TagToStringsMapper: Map<LanguageTag, Strings> = mapOf(
     Locales.RU to RuStrings,
 )
 
-var lyricist: Lyricist<Strings> = Lyricist(Locales.RU, TagToStringsMapper)
+
+var lyricist: Lyricist<Strings> = Lyricist(defaultLocale, TagToStringsMapper)

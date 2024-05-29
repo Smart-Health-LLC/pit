@@ -3,14 +3,14 @@ package presentation.ui.adaptation_stats
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -28,6 +28,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.Res
 import pit.composeapp.generated.resources.avatar_placeholder
+import presentation.icon.AchievementIcon
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -70,17 +71,9 @@ fun AdaptationStatsScreenContent(viewModel: AdaptationStatsViewModel = koinInjec
             )
         }
 
-        // Profile pic
+        // Motivation button
         Box() {
-            Image(
-                painterResource(Res.drawable.avatar_placeholder),
-                "profile",
-                modifier = Modifier
-                    .size(49.dp)
-                    .clip(
-                        CircleShape
-                    )
-            )
+            Icon(AchievementIcon, null, modifier = Modifier.size(49.dp))
         }
     }
 

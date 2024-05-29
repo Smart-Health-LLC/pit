@@ -12,7 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.imageResource
+import org.jetbrains.compose.resources.vectorResource
 import pit.composeapp.generated.resources.Res
 import pit.composeapp.generated.resources.ic_dots_vertical
 import presentation.icon.WatchLater
@@ -156,7 +156,7 @@ fun Title(
 
         // button indication
         Icon(
-            imageResource(Res.drawable.ic_dots_vertical),
+            vectorResource(Res.drawable.ic_dots_vertical),
             contentDescription = null
         )
 

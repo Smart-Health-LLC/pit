@@ -1,8 +1,7 @@
 package presentation.ui.daily_stats
 
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,7 +13,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import org.koin.compose.koinInject
 import presentation.component.*
 import presentation.icon.CalendarMonthIcon
+import presentation.ui.home.everyman1
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
@@ -32,13 +33,41 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 15.dp)
     ) {
 
         CalendarTop(LocalDate.now())
-        Spacer_32dp()
+        Spacer_8dp()
         CalendarWeek()
+        StaticScheduleComponent(everyman1, 250, 130f)
+        DaySleepOverviewComponent()
 
+        SegmentReportCard(
+            LocalTime.of(5, 0),
+            LocalTime.of(7, 30),
+            3, 4,
+            LocalTime.of(3, 28),
+            LocalTime.of(8, 43),
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        )
+
+        SegmentReportCard(
+            LocalTime.of(5, 0),
+            LocalTime.of(7, 30),
+            3, 4,
+            LocalTime.of(3, 28),
+            LocalTime.of(8, 43),
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        )
+
+
+        SegmentReportCard(
+            LocalTime.of(5, 0),
+            LocalTime.of(7, 30),
+            3, 4,
+            LocalTime.of(3, 28),
+            LocalTime.of(8, 43),
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        )
     }
 }
 
@@ -103,7 +132,7 @@ fun CalendarDay(isActive: Boolean, day: LocalDate) {
             MaterialTheme.colorScheme.surface
         },
         modifier = Modifier
-            .size(height = 75.dp, width = 48.dp)
+            .size(height = 75.dp, width = 48.dp).clickable { }
     ) {
         Column(
             verticalArrangement = Arrangement.SpaceEvenly,

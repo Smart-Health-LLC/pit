@@ -52,6 +52,7 @@ sqldelight                            = "2.0.2"
 sonner                                = "0.3.6"
 koalaplotCore                         = "0.6.0"
 splashScreen                          = "1.0.1"
+compose-settings                      = "2.4.0"
 
 [libraries]
 
@@ -132,6 +133,11 @@ multiplatformSettings-coroutines = { module = "com.russhwolf:multiplatform-setti
 # ==== View model ====
 #androidx-lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 #androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidxLifecycle" }
+
+
+# ==== Settings UI ====
+composeSettings-ui          = { group = "com.github.alorma.compose-settings", name = "ui-tiles"         , version.ref = "compose-settings" }
+composeSettings-ui-extended = { group = "com.github.alorma.compose-settings", name = "ui-tiles-extended", version.ref = "compose-settings" }
 
 
 # ==== Splash screen API ====

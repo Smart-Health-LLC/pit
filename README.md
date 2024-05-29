@@ -73,7 +73,6 @@ flowchart TB
 - Nothing worse imo than create "util" folder with bunch of general shit. That's better to honestly
   say "idk wft located here but I need this", so unless project structure is forming, "wtf" packages
   exists :(
-- Sealed classes name in plural form (except states)
 
 # Dependencies overview
 

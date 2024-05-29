@@ -17,15 +17,16 @@ import presentation.ui.settings.SettingsScreen
  * Note: can't use here strings.* because in that case no recomposition on tabs' labels happens
  */
 
+// @formatter:off
 @Composable
 fun FilledIcon(item: Tab) = when (item.options.index) {
-    MainTabs.HomeTab.INDEX -> painterResource(Res.drawable.ic_space_dashboard_filled_24px)
-    MainTabs.StatisticsTab.INDEX -> painterResource(Res.drawable.ic_data_exploration_filled_24px)
-    MainTabs.NotesTab.INDEX -> painterResource(Res.drawable.ic_note_alt_filled_24px)
-    MainTabs.SettingsTab.INDEX -> painterResource(Res.drawable.ic_more_horiz_24px)
-    // nonsense
-    else -> painterResource(Res.drawable.ic_space_dashboard_filled_24px)
+    MainTabs.HomeTab.INDEX              -> painterResource(Res.drawable.ic_space_dashboard_filled_24px)
+    MainTabs.AdaptationStatsTab.INDEX   -> painterResource(Res.drawable.ic_data_exploration_filled_24px)
+    MainTabs.DailyStatsTab.INDEX        -> painterResource(Res.drawable.ic_note_alt_filled_24px)
+    MainTabs.SettingsTab.INDEX          -> painterResource(Res.drawable.ic_more_horiz_24px)
+    else -> error("Unknown tab")
 }
+// @formatter:on
 
 sealed class MainTabs {
     object HomeTab : Tab {
@@ -54,8 +55,8 @@ sealed class MainTabs {
     }
 
 
-    object StatisticsTab : Tab {
-        private fun readResolve(): Any = StatisticsTab
+    object AdaptationStatsTab : Tab {
+        private fun readResolve(): Any = AdaptationStatsTab
         const val INDEX: UShort = 1u
 
         override val options: TabOptions
@@ -80,8 +81,8 @@ sealed class MainTabs {
     }
 
 
-    object NotesTab : Tab {
-        private fun readResolve(): Any = NotesTab
+    object DailyStatsTab : Tab {
+        private fun readResolve(): Any = DailyStatsTab
 
         const val INDEX: UShort = 2u
 

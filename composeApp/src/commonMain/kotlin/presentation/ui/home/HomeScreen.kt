@@ -25,7 +25,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.*
 import presentation.component.ScheduleComponent
-import presentation.icon.AchievementIcon
 import presentation.icon.BombIcon
 import presentation.ui.changeSchedule.ChangeScheduleScreen
 import java.time.LocalDate
@@ -43,7 +42,6 @@ class HomeScreen() : Screen {
 
 @Composable
 fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
-    val containerHorizontalPadding = 15.dp
     val localNavigator = LocalNavigator.currentOrThrow
 
     val schedule = viewModel.state.collectAsState().value
@@ -52,14 +50,12 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = containerHorizontalPadding)
     ) {
 
         // High profile block
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 20.dp),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -82,10 +78,6 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                 )
             }
 
-            // Motivation button
-            Box() {
-                Icon(AchievementIcon, null)
-            }
         }
 
 

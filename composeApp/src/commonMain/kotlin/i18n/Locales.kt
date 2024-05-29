@@ -1,33 +1,44 @@
 package i18n
 
 // https://developer.android.com/guide/topics/resources/providing-resources#LocaleQualifier
+/**
+ * In-app available IETF BCP47 compliant language tags
+ */
 object Locales {
     const val EN = "en"
     const val RU = "ru"
 }
 
-sealed class LocalesInfo(val tag: String, val name: String) {
-    data object English : LocalesInfo(
+const val defaultLocale = Locales.RU
+
+/**
+ * Class contains distinctive information about existing locales
+ *
+ * @param tag An IETF BCP47 compliant language tag
+ * @param name Human-readable native language name
+ */
+sealed class LocaleInfo(val tag: String, val name: String) {
+    data object English : LocaleInfo(
         tag = Locales.EN,
-        name = "English"
+        name = "English",
     )
 
-    data object Russian : LocalesInfo(
+    data object Russian : LocaleInfo(
         tag = Locales.RU,
         name = "Русский"
     )
 }
 
-fun getLocale(tag: String): LocalesInfo {
+fun getLocaleInfo(tag: String?): LocaleInfo {
     return when (tag) {
-        LocalesInfo.English.tag -> LocalesInfo.English
-        LocalesInfo.Russian.tag -> LocalesInfo.Russian
+        LocaleInfo.English.tag -> LocaleInfo.English
+        LocaleInfo.Russian.tag -> LocaleInfo.Russian
         else -> {
-            LocalesInfo.English
+            getLocaleInfo(defaultLocale) // mom's engineer
         }
     }
 }
 
-fun getLocales(): List<LocalesInfo> {
-    return listOf(LocalesInfo.English, LocalesInfo.Russian)
+fun getLocalesInfo(): List<LocaleInfo> {
+    return listOf(LocaleInfo.English, LocaleInfo.Russian)
 }
