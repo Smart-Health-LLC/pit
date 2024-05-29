@@ -23,6 +23,7 @@ import com.dokar.sonner.rememberToasterState
 import domain.model.Schedule
 import domain.model.Segment
 import presentation.component.DialogTimePickerByButton
+import presentation.component.ToasterWrapper
 import presentation.ui.home.HomeViewModel
 import java.time.LocalTime
 
@@ -37,7 +38,7 @@ class ChangeScheduleScreen(
         val toasterState = rememberToasterState(onToastDismissed = {
 //            viewModel.updateToastState(false)
         })
-        Toaster(state = toasterState)
+        ToasterWrapper(toasterState)
         val showToaster = viewModel.toastState.collectAsState().value
 //        toasterState.li
         if (showToaster) {

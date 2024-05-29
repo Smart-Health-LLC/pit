@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,16 +15,15 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.alorma.compose.settings.ui.SettingsMenuLink
-import domain.repository.SettingsRepository
-import i18n.*
-import io.github.aakira.napier.log
+import com.dokar.sonner.rememberToasterState
+import i18n.LocaleInfo
+import i18n.getLocalesInfo
 import org.koin.compose.koinInject
+import presentation.component.ToasterWrapper
 import presentation.icon.ScheduleIcon
 import presentation.ui.chooseSchedule.ChooseScheduleScreen
 import presentation.ui.main.MainViewModel
-import presentation.ui.settings.component.SampleData.items
 import presentation.ui.settings.component.SingleChoiceAlertDialog
-import presentation.wtf.CUSTOM_TAG
 
 class SettingsScreen() : Screen {
 
@@ -36,16 +36,13 @@ class SettingsScreen() : Screen {
 
 @Composable
 fun SettingsScreenContent(
-    settingsViewModel: SettingsViewModel = koinInject(),
     mainViewModel: MainViewModel = koinInject(),
-    settingsRepository: SettingsRepository = koinInject()
 ) {
-    var expanded by remember { mutableStateOf(false) }
-//    var selectedLocaleInfo by remember { mutableStateOf(getLocaleInfo(lyricist.languageTag)) }
-    var selectedLocaleInfo = mainViewModel.languageSetting.collectAsState().value
-
-    val singleSelectionState = remember { mutableStateOf(getLocaleInfo(lyricist.languageTag)) }
+    val selectedLocaleInfo = mainViewModel.languageSetting.collectAsState().value
     val localNavigator = LocalNavigator.currentOrThrow
+
+    val toasterState = rememberToasterState { }
+    ToasterWrapper(toasterState)
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -53,7 +50,9 @@ fun SettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
-            SettingLanguage()
+            SettingLanguage(currentLanguageInfo = selectedLocaleInfo, onLanguageUpdate = {
+                mainViewModel.updateLanguage(it)
+            })
         }
         item {
             SettingsMenuLink(
@@ -61,69 +60,55 @@ fun SettingsScreenContent(
                 subtitle = { Text(text = "Dual Core 1") },
                 modifier = Modifier,
                 enabled = true,
-                icon = { Icon(ScheduleIcon, null) },
+                icon = {
+                    Icon(
+                        ScheduleIcon,
+                        null,
+                        modifier = Modifier.size(25.dp)
+                    )
+                },
                 onClick = { localNavigator.push(ChooseScheduleScreen()) },
             )
         }
         item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-
-
-                Text(text = strings.language)
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(32.dp)
-                ) {
-                    ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = {
-                            expanded = !expanded
-                        }
+            SettingsMenuLink(
+                title = { Text(text = strings.timeFormat) },
+                modifier = Modifier,
+                enabled = true,
+                action = {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-
-                        TextField(
-                            value = selectedLocaleInfo.name,
-                            onValueChange = {},
-                            readOnly = true,
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                            modifier = Modifier.menuAnchor()
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false }
-                        ) {
-                            getLocalesInfo().forEach { item ->
-                                DropdownMenuItem(
-                                    text = { Text(text = item.name) },
-                                    onClick = {
-                                        selectedLocaleInfo = item
-                                        lyricist.languageTag = item.tag
-                                        settingsRepository.saveLang(item.tag)
-                                        expanded = false
-                                        log(tag = CUSTOM_TAG) { lyricist.languageTag }
-                                    }
-                                )
-                            }
-                        }
+                        Text(text = "12h", style = MaterialTheme.typography.bodyLarge)
+                        Switch(true, {})
+                        Text(text = "24h", style = MaterialTheme.typography.bodyLarge)
                     }
-                }
-            }
+                },
+                icon = {
+                    Icon(
+                        Icons.Outlined.Notifications,
+                        null,
+//                        modifier = Modifier.size(25.dp)
+                    )
+                },
+                onClick = {
+                    toasterState.show("Not supported yet")
+                },
+            )
         }
+
     }
 }
 
 
 @Composable
 private fun SettingLanguage(
-    onLanguageUpdate: (newLanguageTag: String) -> Unit,
+    onLanguageUpdate: (newLanguage: LocaleInfo) -> Unit,
     currentLanguageInfo: LocaleInfo
 ) {
     val isDialogOpen = remember { mutableStateOf(false) }
+    val rememberedCurrentLanguageInfo = remember { mutableStateOf(currentLanguageInfo) }
 
     fun toggleDialog() {
         isDialogOpen.value = !isDialogOpen.value
@@ -132,7 +117,7 @@ private fun SettingLanguage(
     // @formatter:off
     SettingsMenuLink(
         title    = { Text(text = strings.language) },
-        subtitle = { Text(text = currentLanguageInfo.name) },
+        subtitle = { Text(text = rememberedCurrentLanguageInfo.value.name) },
         onClick  = { toggleDialog() },
         icon     = { Icon(Icons.Filled.Favorite, null) },
     )
@@ -141,11 +126,14 @@ private fun SettingLanguage(
     if (isDialogOpen.value) {
         SingleChoiceAlertDialog(
             items = getLocalesInfo(),
-            selectedItemKey = currentLanguageInfo,
-            onItemSelected = { selectedItemKey ->
-                onLanguageUpdate(selectedItemKey)
+            previouslySelectedLanguage = rememberedCurrentLanguageInfo.value,
+            onItemSelected = { newLanguage ->
+                onLanguageUpdate(newLanguage)
                 toggleDialog()
+                // HAHAHHA what a stupid shit ooooh boi enough
+                rememberedCurrentLanguageInfo.value = newLanguage
             },
+            onDialogDismiss = { toggleDialog() }
         )
     }
 }

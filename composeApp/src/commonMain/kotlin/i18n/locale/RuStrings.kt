@@ -34,5 +34,6 @@ val RuStrings = Strings(
     tabHome = "Главная",
     tabAdaptationStats = "Адаптация",
     tabDailyStats = "По дням",
-    tabMore = "Больше"
+    tabMore = "Больше",
+    timeFormat = "Формат времени"
 )

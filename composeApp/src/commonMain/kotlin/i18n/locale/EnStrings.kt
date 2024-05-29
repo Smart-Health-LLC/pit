@@ -34,5 +34,6 @@ val EnStrings = Strings(
     tabHome = "Home",
     tabAdaptationStats = "Adaptation",
     tabDailyStats = "Daily",
-    tabMore = "More"
+    tabMore = "More",
+    timeFormat = "Time format"
 )

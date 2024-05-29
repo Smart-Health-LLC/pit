@@ -4,15 +4,14 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import domain.repository.SegmentReportRepository
 import domain.repository.SettingsRepository
-import i18n.defaultLocale
-import i18n.getLocaleInfo
+import i18n.*
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import presentation.wtf.CUSTOM_TAG
 
 class MainViewModel(
-    settingsRepository: SettingsRepository,
+    private val settingsRepository: SettingsRepository,
     reportRepository: SegmentReportRepository // for dev dummy tests
 ) : ScreenModel {
 
@@ -42,7 +41,8 @@ class MainViewModel(
             initialValue = OnBoardingState.Loading,
         )
 
-    val languageSetting = settingsRepository.getLang()
+    // todo this shit now don't emit new values when updateLanguage() executes
+    var languageSetting = settingsRepository.getLang()
         .map {
             getLocaleInfo(it)
         }.stateIn(
@@ -50,6 +50,14 @@ class MainViewModel(
             started = SharingStarted.WhileSubscribed(timeout),
             initialValue = getLocaleInfo(defaultLocale)
         )
+
+    // update UI language data and lyricist information
+    fun updateLanguage(newLanguage: LocaleInfo) {
+        lyricist.languageTag = newLanguage.tag
+        screenModelScope.launch {
+            settingsRepository.saveLang(newLanguage.tag)
+        }
+    }
 }
 
 sealed class OnBoardingState {

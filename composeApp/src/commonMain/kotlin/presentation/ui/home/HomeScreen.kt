@@ -18,13 +18,12 @@ import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.dokar.sonner.Toaster
 import com.dokar.sonner.rememberToasterState
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.*
-import presentation.component.ScheduleComponent
+import presentation.component.*
 import presentation.icon.BombIcon
 import presentation.ui.changeSchedule.ChangeScheduleScreen
 import java.time.LocalDate
@@ -121,7 +120,9 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
         // Action buttons
 
         val toasterState = rememberToasterState()
-        Toaster(state = toasterState)
+
+        ToasterWrapper(toasterState)
+
 
         // button - edit schedule
         Row(
@@ -145,7 +146,7 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
             // track a tiredness bomb
             Button(
                 onClick = {
-                    toasterState.show("Not supported yet")
+                    toasterState.show(message = "Not supported yet")
                 }, modifier = Modifier.height(56.dp)
             ) {
                 Icon(
@@ -153,6 +154,7 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                     contentDescription = null,
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
+                Spacer_8dp()
                 Text(text = "Set tiredness bomb")
             }
         }

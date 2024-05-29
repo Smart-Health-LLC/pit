@@ -34,7 +34,8 @@ data class Strings(
     val tabHome: String,
     val tabAdaptationStats: String,
     val tabDailyStats: String,
-    val tabMore: String
+    val tabMore: String,
+    val timeFormat: String
 )
 
 val TagToStringsMapper: Map<LanguageTag, Strings> = mapOf(

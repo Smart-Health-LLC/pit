@@ -12,6 +12,7 @@ class PreferenceManager constructor(private val settings: Settings) {
         observableSettings.set(key = key, value = value)
     }
 
+
     fun getNonFlowString(key: String) = observableSettings.getString(
         key = key,
         defaultValue = "",

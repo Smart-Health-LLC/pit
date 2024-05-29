@@ -3,9 +3,7 @@ package presentation.ui.settings.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import i18n.LocaleInfo
@@ -13,36 +11,41 @@ import i18n.LocaleInfo
 
 @Composable
 fun SingleChoiceAlertDialog(
-    selectedItemKey: LocaleInfo,
-    onItemSelected: (String) -> Unit,
+    previouslySelectedLanguage: LocaleInfo, // language that was selected before dialog was opened
+    onItemSelected: (LocaleInfo) -> Unit,
+    onDialogDismiss: () -> Unit,
     items: List<LocaleInfo>
 ) {
-    val userSelectedItem = remember { mutableStateOf(selectedItemKey) }
+    // local user selection state used to show dismiss\ok\cancel button
+    val userSelectedItem = remember { mutableStateOf(previouslySelectedLanguage) }
 
     AlertDialog(
-        onDismissRequest = { onItemSelected(selectedItemKey) },
-        title = { Text(text = "Single choice") },
+        onDismissRequest = onDialogDismiss,
+        title = { Text(text = "Select new language") },
         text = {
             Column {
-                items.forEach { sampleItem ->
-                    val isSelected = sampleItem.key == userSelectedItem.value
+                items.forEach { localeItem ->
+                    val isSelected = localeItem == userSelectedItem.value
                     LabelRadioButton(
-                        item = sampleItem,
+                        item = localeItem,
                         isSelected = isSelected,
-                        onClick = { userSelectedItem.value = sampleItem.key },
+                        onClick = { userSelectedItem.value = localeItem },
                     )
                 }
             }
         },
-        confirmButton = if (userSelectedItem.value == null) {
+        // close the dialog before select any language
+        confirmButton = if (userSelectedItem.value == previouslySelectedLanguage) {
             {
                 TextButton(
-                    onClick = { onItemSelected(null) },
+                    onClick = onDialogDismiss,
                 ) {
                     Text(text = "Cancel")
                 }
             }
-        } else {
+        }
+        // confirm new selected language
+        else {
             {
                 TextButton(
                     onClick = { onItemSelected(userSelectedItem.value) },
@@ -51,12 +54,13 @@ fun SingleChoiceAlertDialog(
                 }
             }
         },
-        dismissButton = if (userSelectedItem.value == null) {
+        // close the dialog even after select any language
+        dismissButton = if (userSelectedItem.value == previouslySelectedLanguage) {
             null
         } else {
             {
                 TextButton(
-                    onClick = { onItemSelected(null) },
+                    onClick = onDialogDismiss,
                 ) {
                     Text(text = "Clear")
                 }
@@ -76,36 +80,9 @@ fun LabelRadioButton(
         modifier = Modifier.clickable(
             role = Role.RadioButton,
             onClick = onClick,
-            onClickLabel = item.title,
+//            onClickLabel = item.title,
         ),
         headlineContent = { Text(text = item.name) },
         trailingContent = { RadioButton(selected = isSelected, onClick = null) },
     )
 }
-
-
-object SampleData {
-    val items = listOf(
-        SampleItem(
-            key = "item-0",
-            title = "Item #0",
-            description = "Subtitle of item #0",
-        ),
-        SampleItem(
-            key = "item-1",
-            title = "Item #1",
-            description = "Subtitle of item #1",
-        ),
-        SampleItem(
-            key = "item-2",
-            title = "Item #2",
-            description = "Subtitle of item #2",
-        )
-    )
-}
-
-data class SampleItem(
-    val key: String,
-    val title: String,
-    val description: String,
-)
