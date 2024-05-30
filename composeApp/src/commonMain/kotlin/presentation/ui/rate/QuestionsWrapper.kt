@@ -1,12 +1,13 @@
 package presentation.ui.rate
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import presentation.component.Spacer_16dp
 import presentation.theme.slightlyDeEmphasizedAlpha
 import presentation.theme.stronglyDeEmphasizedAlpha
 
@@ -27,16 +28,14 @@ fun QuestionWrapper(
 ) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .verticalScroll(rememberScrollState())
     ) {
-        Spacer(Modifier.height(32.dp))
         CustomQuestionTitle(questionTitleText)
+
         questionDescriptionText?.let {
-            Spacer(Modifier.height(18.dp))
+            Spacer_16dp()
             QuestionDescription(it)
         }
-        Spacer(Modifier.height(18.dp))
+        Spacer_16dp()
 
         content()
     }

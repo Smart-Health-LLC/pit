@@ -13,7 +13,7 @@ fun SliderQuestion(
     questionTitleText: String,
     value: Float?,
     onValueChange: (Int) -> Unit,
-    valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
+    valueRange: ClosedFloatingPointRange<Float> = 1f..5f,
     steps: Int = 5,
     startTextResource: String,
     neutralTextResource: String,

@@ -49,6 +49,11 @@ fun SettingsScreenContent(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+
+        item {
+            Text(text = "Настройки", style = MaterialTheme.typography.displaySmall)
+        }
+
         item {
             SettingLanguage(currentLanguageInfo = selectedLocaleInfo, onLanguageUpdate = {
                 mainViewModel.updateLanguage(it)
@@ -64,7 +69,8 @@ fun SettingsScreenContent(
                     Icon(
                         ScheduleIcon,
                         null,
-                        modifier = Modifier.size(25.dp)
+                        modifier = Modifier.size(25.dp),
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 },
                 onClick = { localNavigator.push(ChooseScheduleScreen()) },
@@ -89,6 +95,7 @@ fun SettingsScreenContent(
                     Icon(
                         Icons.Outlined.Notifications,
                         null,
+                        tint = MaterialTheme.colorScheme.primary
 //                        modifier = Modifier.size(25.dp)
                     )
                 },
@@ -119,7 +126,7 @@ private fun SettingLanguage(
         title    = { Text(text = strings.language) },
         subtitle = { Text(text = rememberedCurrentLanguageInfo.value.name) },
         onClick  = { toggleDialog() },
-        icon     = { Icon(Icons.Filled.Favorite, null) },
+        icon     = { Icon(Icons.Filled.Favorite, null, tint = MaterialTheme.colorScheme.primary ) },
     )
     // @formatter:on
 

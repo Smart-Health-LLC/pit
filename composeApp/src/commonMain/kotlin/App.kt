@@ -42,6 +42,7 @@ fun App(
 
                             Navigator(
                                 MainScreen()
+//                                RateSegmentScreen()
 //                                screen = if (onBoardingState.completed) {
 //                                    MainScreen()
 //                                } else {

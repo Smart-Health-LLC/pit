@@ -6,6 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Padding is measured in increments of 4dp.
+ */
+
+
 @Composable
 fun Spacer_4dp() {
     Spacer(modifier = Modifier.size(4.dp))

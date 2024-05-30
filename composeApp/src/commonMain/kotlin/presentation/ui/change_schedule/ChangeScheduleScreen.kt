@@ -1,21 +1,13 @@
 package presentation.ui.change_schedule
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.dokar.sonner.rememberToasterState
@@ -23,6 +15,7 @@ import domain.model.Schedule
 import domain.model.Segment
 import presentation.component.DialogTimePickerByButton
 import presentation.component.ToasterWrapper
+import presentation.icon.ArrowRightIcon
 import presentation.ui.home.HomeViewModel
 import java.time.LocalTime
 
@@ -101,31 +94,20 @@ fun SegmentItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(15.dp))
-            .background(color = MaterialTheme.colorScheme.primaryContainer)
             .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        Text(text = index.toString())
         DialogTimePickerByButton(true, index, segment.start, updateSegmentStart)
-        Canvas(
-            Modifier
-                .height(1.dp)
-                .width(80.dp)
-        ) {
-
-            drawLine(
-                color = Color.Red,
-                start = Offset(0f, 0f),
-                end = Offset(size.width, 0f),
-                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-            )
-        }
+        Icon(
+            imageVector = ArrowRightIcon,
+            contentDescription = null,
+            modifier = Modifier.size(35.dp)
+        )
         DialogTimePickerByButton(true, index, segment.end, updateSegmentEnd)
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Outlined.Delete, contentDescription = null)
-        }
+//        IconButton(onClick = { /*TODO*/ }) {
+//            Icon(Icons.Outlined.Delete, contentDescription = null)
+//        }
     }
 }
 
