@@ -13,21 +13,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import pit.composeapp.generated.resources.*
 import presentation.component.Spacer_12dp
 import presentation.component.Spacer_32dp
+import presentation.ui.main.MainScreen
 
 class NoInternetScreen : Screen {
+
     @Composable
     override fun Content() {
-        NoInternetScreenContent()
+        val nav = LocalNavigator.currentOrThrow
+        NoInternetScreenContent { nav.replaceAll(MainScreen()) }
     }
 }
 
 @Composable
-fun NoInternetScreenContent() {
+fun NoInternetScreenContent(onRefreshPressed: () -> Unit) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -129,9 +134,9 @@ fun NoInternetScreenContent() {
                 )
             }
 
-            Button(modifier = Modifier.align(Alignment.BottomCenter), onClick = {
-
-            }) {
+            Button(
+                modifier = Modifier.align(Alignment.BottomCenter), onClick = onRefreshPressed
+            ) {
                 Text("Refresh")
             }
         }

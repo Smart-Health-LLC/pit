@@ -11,6 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Segment
 import org.koin.compose.koinInject
 import presentation.component.Spacer_4dp
@@ -36,10 +38,15 @@ fun RateSegmentScreenContent(
     viewModel: RateSegmentViewModel = koinInject()
 ) {
 
+    val localNavigator = LocalNavigator.currentOrThrow
+
     val state = viewModel.state.collectAsState().value
 
     QuestionsLayout(
-        onDonePressed = viewModel::onSavePressed,
+        onDonePressed = {
+            viewModel.onSavePressed()
+            localNavigator.pop()
+        },
         shouldShowDoneButton = state.isFormComplete,
         segment = viewModel.thisSegmentInfo
     ) { paddingValues ->

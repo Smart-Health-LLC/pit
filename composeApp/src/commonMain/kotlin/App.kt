@@ -16,9 +16,7 @@ import i18n.lyricist
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
-import presentation.ui.main.MainViewModel
-import presentation.ui.main.OnBoardingState
-import presentation.ui.no_internet.NoInternetScreen
+import presentation.ui.main.*
 
 
 fun getAsyncImageLoader(context: PlatformContext) =
@@ -56,8 +54,8 @@ fun App(
                         ) {
 
                             Navigator(
-//                                MainScreen()
-                                NoInternetScreen()
+                                MainScreen()
+//                                NoInternetScreen()
 //                                RateSegmentScreen()
 //                                screen = if (onBoardingState.completed) {
 //                                    MainScreen()

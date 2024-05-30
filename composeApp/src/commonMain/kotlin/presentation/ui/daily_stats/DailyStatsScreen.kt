@@ -44,8 +44,7 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
     fun updateWeek(selectedDate: LocalDate): List<LocalDate> {
         // if new week on day selection - refresh week info
         // set selected day in the middle of the stripe
-        val displayDays =
-            ((3 downTo 0).map { selectedDate.minusDays(it.toLong()) }).toMutableList()
+        val displayDays = ((3 downTo 0).map { selectedDate.minusDays(it.toLong()) }).toMutableList()
         displayDays.add(selectedDate.plusDays(1L))
         displayDays.add(selectedDate.plusDays(2L))
         displayDays.add(selectedDate.plusDays(3L))
@@ -54,16 +53,14 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
     }
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(18.dp)
+        modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         stickyHeader {
             Surface {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     CalendarTop(onTodayClick = { selectedDay = LocalDate.now() }, selectedDay)
                     Spacer_8dp()
-                    CalendarWeek(
-                        selectedDate = selectedDay,
+                    CalendarWeek(selectedDate = selectedDay,
                         days = updateWeek(LocalDate.now()),
                         onDaySelected = { newDay -> selectedDay = newDay })
                 }
@@ -80,7 +77,8 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
                 SegmentReportCard(
                     LocalTime.of(5, 0),
                     LocalTime.of(7, 30),
-                    3, 4,
+                    3,
+                    4,
                     LocalTime.of(3, 28),
                     LocalTime.of(8, 43),
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -90,7 +88,8 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
                 SegmentReportCard(
                     LocalTime.of(5, 0),
                     LocalTime.of(7, 30),
-                    3, 4,
+                    3,
+                    4,
                     LocalTime.of(3, 28),
                     LocalTime.of(8, 43),
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -100,7 +99,8 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
                 SegmentReportCard(
                     LocalTime.of(5, 0),
                     LocalTime.of(7, 30),
-                    3, 4,
+                    3,
+                    4,
                     LocalTime.of(3, 28),
                     LocalTime.of(8, 43),
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -134,9 +134,7 @@ fun CalendarTop(onTodayClick: () -> Unit, date: LocalDate) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
+        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
     ) {
 
         Surface(onClick = {}) {
@@ -150,15 +148,14 @@ fun CalendarTop(onTodayClick: () -> Unit, date: LocalDate) {
 
                 // Calendar icon
                 Icon(
-                    CalendarMonthIcon,
-                    null,
-                    modifier = Modifier
-                        .size(35.dp)
+                    CalendarMonthIcon, null, modifier = Modifier.size(35.dp)
                 )
                 Spacer_12dp()
                 Row(verticalAlignment = Alignment.Bottom) {
                     Text(
-                        date.month.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                        (date.month.getDisplayName(
+                            TextStyle.FULL_STANDALONE, Locale.getDefault()
+                        )).replaceFirstChar { it.uppercase() },
                         style = MaterialTheme.typography.headlineLarge,
                         fontWeight = FontWeight.ExtraBold,
                     )
@@ -213,8 +210,7 @@ fun CalendarDay(
         } else {
             MaterialTheme.colorScheme.surface
         },
-        modifier = Modifier
-            .size(height = 75.dp, width = 48.dp)
+        modifier = Modifier.size(height = 75.dp, width = 48.dp)
     ) {
         Column(
             verticalArrangement = Arrangement.SpaceEvenly,
@@ -247,9 +243,7 @@ fun CalendarDay(
 // Calendar stripe
 @Composable
 fun CalendarWeek(
-    onDaySelected: (selectedDay: LocalDate) -> Unit,
-    selectedDate: LocalDate,
-    days: List<LocalDate>
+    onDaySelected: (selectedDay: LocalDate) -> Unit, selectedDate: LocalDate, days: List<LocalDate>
 ) {
     Row(
         modifier = Modifier.padding(vertical = 20.dp),
@@ -257,9 +251,7 @@ fun CalendarWeek(
     ) {
         days.forEach { day ->
             CalendarDay(
-                selectedDate,
-                displayDay = day,
-                onDaySelected = onDaySelected
+                selectedDate, displayDay = day, onDaySelected = onDaySelected
             )
         }
     }

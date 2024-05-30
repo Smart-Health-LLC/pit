@@ -3,8 +3,7 @@ package presentation.component
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -12,6 +11,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.unit.dp
 import domain.model.Schedule
+import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.LocalTime
 
@@ -38,14 +38,33 @@ fun timeToGrad(minutes: Long): Float {
     return grads.toFloat()
 }
 
+@Composable
+fun minutesLeft(updateIntervalMinutes: Long) {
+
+}
+
 
 @Composable
 fun ScheduleComponent(
     schedule: Schedule,
     componentRadius: Int,
-    strokeWidth: Float
+    strokeWidth: Float,
+    showCurrentTime: Boolean = false
 ) {
     val scheduleState = remember { schedule }
+
+    var currentTime by remember { mutableStateOf(LocalTime.now()) }
+    if (showCurrentTime) {
+        val updateIntervalMinutes = 5L
+        LaunchedEffect(updateIntervalMinutes) {
+            while (true) {
+                delay(updateIntervalMinutes * 60 * 1000) // Convert minutes to milliseconds
+                currentTime = currentTime.plusMinutes(5)
+            }
+        }
+    }
+
+
     Canvas(
         modifier = Modifier
             .fillMaxWidth()
@@ -79,6 +98,16 @@ fun ScheduleComponent(
                     sweepAngle = timeToGrad(minutes),
                     useCenter = false,
                     color = frontColor,
+                    style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
+                )
+            }
+
+            if (showCurrentTime) {
+                drawArc(
+                    startAngle = timeToGrad(currentTime),
+                    sweepAngle = timeToGrad(5),
+                    useCenter = false,
+                    color = Color.Red,
                     style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
                 )
             }

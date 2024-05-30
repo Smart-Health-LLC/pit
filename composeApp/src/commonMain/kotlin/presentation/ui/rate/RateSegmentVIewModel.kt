@@ -132,6 +132,5 @@ class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRep
                 )
             )
         }
-        println("hahah I saved new data to sqdelight")
     }
 }

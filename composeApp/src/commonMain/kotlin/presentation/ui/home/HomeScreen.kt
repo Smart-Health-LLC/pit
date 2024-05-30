@@ -2,6 +2,7 @@ package presentation.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -26,7 +27,7 @@ import pit.composeapp.generated.resources.*
 import presentation.component.*
 import presentation.icon.BombIcon
 import presentation.ui.change_schedule.ChangeScheduleScreen
-import presentation.ui.no_internet.NoInternetScreen
+import presentation.ui.rate.RateSegmentScreen
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -63,10 +64,10 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
             // Today is the day yaaaaah
             Column(horizontalAlignment = Alignment.Start) {
                 Text(
-                    text = LocalDate.now().dayOfWeek.getDisplayName(
+                    text = (LocalDate.now().dayOfWeek.getDisplayName(
                         TextStyle.FULL,
                         Locale.getDefault()
-                    ),
+                    )).replaceFirstChar { it.uppercase() },
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.W500
                 )
@@ -77,8 +78,7 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                     modifier = Modifier.padding(start = 3.dp)
                 )
             }
-            val parentNavigator = LocalNavigator.currentOrThrow
-            parentNavigator.replaceAll(NoInternetScreen())
+
         }
 
 
@@ -88,7 +88,7 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                 .fillMaxWidth()
                 .padding(vertical = 20.dp), contentAlignment = Alignment.Center
         ) {
-            ScheduleComponent(schedule, 350, 170f)
+            ScheduleComponent(schedule, 350, 170f, showCurrentTime = true)
         }
 
 
@@ -118,6 +118,8 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
             InfoUnit(Res.drawable.ic_whatshot_filled_24px, strings.streak, "3 days", Color.Red)
         }
 
+        Spacer_16dp()
+
 
         // Action buttons
 
@@ -127,37 +129,66 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
 
 
         // button - edit schedule
-        Row(
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 128.dp),
+            contentPadding = PaddingValues(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 15.dp),
-            horizontalArrangement = Arrangement.Center
         ) {
-            // change schedule
-            Button(onClick = {
-                localNavigator.push(ChangeScheduleScreen(schedule, viewModel))
-            }, modifier = Modifier.height(56.dp)) {
-                Icon(
-                    imageVector = Icons.Filled.Edit,
-                    contentDescription = null,
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Text(text = strings.changeSchedule)
+            item {
+
+                // change schedule
+                Button(
+                    onClick = {
+                        localNavigator.push(ChangeScheduleScreen(schedule, viewModel))
+                    }, modifier = Modifier.height(56.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = null,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Text(text = strings.changeSchedule)
+                }
+
             }
 
-            // track a tiredness bomb
-            Button(
-                onClick = {
-                    toasterState.show(message = "Not supported yet")
-                }, modifier = Modifier.height(56.dp)
-            ) {
-                Icon(
-                    imageVector = BombIcon,
-                    contentDescription = null,
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer_8dp()
-                Text(text = "Set tiredness bomb")
+            item {
+
+                // track a tiredness bomb
+                Button(
+                    onClick = {
+                        toasterState.show(message = "Not supported yet")
+                    }, modifier = Modifier.height(56.dp)
+                ) {
+                    Icon(
+                        imageVector = BombIcon,
+                        contentDescription = null,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer_8dp()
+                    Text(text = "Set tiredness bomb")
+                }
+
+            }
+
+            item(span = { GridItemSpan(2) }) {
+                // test if no internet
+                Button(
+                    onClick = {
+                        localNavigator.push(RateSegmentScreen())
+                    }, modifier = Modifier.height(56.dp)
+                ) {
+                    Icon(
+                        imageVector = BombIcon,
+                        contentDescription = null,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer_8dp()
+                    Text(text = "Set tiredness bomb")
+                }
             }
         }
     }
