@@ -84,6 +84,13 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
 
+            // ==== assets ====
+            implementation(libs.coil.base)
+            implementation(libs.coil.gif)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil)
+
             // ==== settings ui ====
             implementation(libs.composeSettings.ui.extended)
             implementation(libs.composeSettings.ui)

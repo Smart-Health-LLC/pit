@@ -7,13 +7,24 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.lyricist.LocalStrings
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.voyager.navigator.Navigator
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.setSingletonImageLoaderFactory
 import i18n.defaultLocale
 import i18n.lyricist
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
-import presentation.ui.main.*
+import presentation.ui.main.MainViewModel
+import presentation.ui.main.OnBoardingState
+import presentation.ui.no_internet.NoInternetScreen
 
+
+fun getAsyncImageLoader(context: PlatformContext) =
+    ImageLoader.Builder(context).components { }.build()
+
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun App(
     mainViewModel: MainViewModel = koinInject(),
@@ -33,6 +44,10 @@ fun App(
 
             AppTheme() {
 
+                setSingletonImageLoaderFactory { context ->
+                    getAsyncImageLoader(context)
+                }
+
                 when (onBoardingState) {
                     is OnBoardingState.Success -> {
                         Surface(
@@ -41,7 +56,8 @@ fun App(
                         ) {
 
                             Navigator(
-                                MainScreen()
+//                                MainScreen()
+                                NoInternetScreen()
 //                                RateSegmentScreen()
 //                                screen = if (onBoardingState.completed) {
 //                                    MainScreen()

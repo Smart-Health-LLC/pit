@@ -26,6 +26,7 @@ import pit.composeapp.generated.resources.*
 import presentation.component.*
 import presentation.icon.BombIcon
 import presentation.ui.change_schedule.ChangeScheduleScreen
+import presentation.ui.no_internet.NoInternetScreen
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -76,7 +77,8 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                     modifier = Modifier.padding(start = 3.dp)
                 )
             }
-
+            val parentNavigator = LocalNavigator.currentOrThrow
+            parentNavigator.replaceAll(NoInternetScreen())
         }
 
 
