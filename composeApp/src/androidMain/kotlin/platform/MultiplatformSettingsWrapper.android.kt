@@ -6,7 +6,7 @@ import com.russhwolf.settings.SharedPreferencesSettings
 
 actual class SettingsFactory(private val context: Context) {
     actual fun createSettings(): Settings {
-        val delegate = context.getSharedPreferences("bloom_preferences", Context.MODE_PRIVATE)
+        val delegate = context.getSharedPreferences("pit_preferences", Context.MODE_PRIVATE)
         return SharedPreferencesSettings(delegate)
     }
 }

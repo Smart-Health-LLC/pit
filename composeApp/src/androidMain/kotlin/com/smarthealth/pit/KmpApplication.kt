@@ -15,7 +15,6 @@ class KmpApplication : Application() {
         Napier.base(DebugAntilog())
         KoinInit().init {
             androidContext(androidContext = this@KmpApplication)
-
         }
     }
 }

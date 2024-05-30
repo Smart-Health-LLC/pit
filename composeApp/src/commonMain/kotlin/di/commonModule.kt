@@ -71,7 +71,7 @@ fun commonModule() = module {
     }
 
     single<DailyStatsViewModel> {
-        DailyStatsViewModel()
+        DailyStatsViewModel(segmentReportRepository = get())
     }
 
     single<OnboardingViewModel> {
