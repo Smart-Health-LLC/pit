@@ -84,6 +84,9 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
 
+            // ==== internet connection ====
+            implementation(libs.konnection)
+
             // ==== assets ====
             implementation(libs.coil.base)
             implementation(libs.coil.gif)

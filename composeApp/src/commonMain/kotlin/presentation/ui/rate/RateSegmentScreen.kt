@@ -3,8 +3,8 @@ package presentation.ui.rate
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -96,9 +96,36 @@ fun RateSegmentScreenContent(
                         endTextResource = "Легко"
                     )
                 }
+
+                item {
+                    Textarea()
+                }
             }
         }
     }
+}
+
+
+@Composable
+fun Textarea() {
+    val text = rememberSaveable { mutableStateOf("") }
+    OutlinedTextField(
+        value = text.value,
+        onValueChange = {
+            text.value = it
+        },
+        label = {
+            Text(
+                text = "Заметочка",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth(),
+        textStyle = MaterialTheme.typography.bodyMedium,
+        singleLine = true
+    )
+
 }
 
 @Composable

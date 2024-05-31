@@ -5,8 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.tmapps.konnection.Konnection
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import pit.composeapp.generated.resources.*
@@ -27,7 +27,11 @@ class NoInternetScreen : Screen {
     @Composable
     override fun Content() {
         val nav = LocalNavigator.currentOrThrow
-        NoInternetScreenContent { nav.replaceAll(MainScreen()) }
+        val isConnected by Konnection.instance.observeHasConnection()
+            .collectAsState(initial = false)
+        if (isConnected) {
+            nav.replaceAll(MainScreen())
+        }
     }
 }
 
@@ -132,12 +136,6 @@ fun NoInternetScreenContent(onRefreshPressed: () -> Unit) {
                     "That sucks, because for now, there is no way to use the app offline. Yeah...",
                     textAlign = TextAlign.Center
                 )
-            }
-
-            Button(
-                modifier = Modifier.align(Alignment.BottomCenter), onClick = onRefreshPressed
-            ) {
-                Text("Refresh")
             }
         }
     }
