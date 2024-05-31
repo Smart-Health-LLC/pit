@@ -38,7 +38,7 @@ class MainViewModel(
         }.stateIn(
             scope = screenModelScope,
             started = SharingStarted.WhileSubscribed(),
-            initialValue = OnBoardingState.Loading,
+            initialValue = OnBoardingState.InProgress,
         )
 
     // todo this shit now don't emit new values when updateLanguage() executes
@@ -61,6 +61,6 @@ class MainViewModel(
 }
 
 sealed class OnBoardingState {
-    data object Loading : OnBoardingState()
+    data object InProgress : OnBoardingState()
     data class Success(val completed: Boolean) : OnBoardingState()
 }

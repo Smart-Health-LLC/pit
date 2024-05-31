@@ -1,9 +1,15 @@
 package presentation.ui.home
 
 import cafe.adriel.voyager.core.model.ScreenModel
+import domain.model.Schedule
 import domain.model.Segment
 import kotlinx.coroutines.flow.*
 import java.time.LocalTime
+
+data class HomeState(
+    val currentSchedule: Schedule = dualCore1,
+    val currentStreak: Int
+)
 
 class HomeViewModel : ScreenModel {
     private val _state = MutableStateFlow(dualCore1)

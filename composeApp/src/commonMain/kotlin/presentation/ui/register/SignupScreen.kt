@@ -17,6 +17,7 @@ import org.koin.core.component.KoinComponent
 import presentation.component.PasswordTextField
 import presentation.component.UsernameTextField
 import presentation.ui.login.LoginScreen
+import presentation.ui.main.MainScreen
 
 
 class SignupScreen : Screen, KoinComponent {
@@ -34,8 +35,8 @@ class SignupScreen : Screen, KoinComponent {
             confirmPassword = "password",
             onConfirmPasswordChanged = {},
             isValidConfirmPassword = false,
-            onNavigateUp = { navigator.push(LoginScreen()) },
-            onSignUpClick = {},
+            onNavigateUp = { navigator.replace(LoginScreen()) },
+            onSignUpClick = { navigator.replaceAll(MainScreen()) },
             onDialogDismiss = {},
             isValidUsername = false,
             isValidPassword = false,

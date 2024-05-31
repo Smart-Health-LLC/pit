@@ -2,15 +2,16 @@ package presentation.ui.rate
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import domain.model.Segment
-import domain.model.SegmentReport
+import domain.model.*
 import domain.repository.SegmentReportRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import presentation.ui.home.dualCore1
 import java.time.LocalDate
 import java.time.LocalTime
 
 data class SegmentRateInfo(
+    val currentSchedule: Schedule = dualCore1,
     val isSegmentSkipped: Boolean = false,
 
     val isSegmentDiffersFromScheduled: Boolean = false,

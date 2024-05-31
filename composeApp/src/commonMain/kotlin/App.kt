@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.lyricist.LocalStrings
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.ScaleTransition
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.annotation.ExperimentalCoilApi
@@ -48,6 +49,7 @@ fun App(
                     getAsyncImageLoader(context)
                 }
 
+
                 when (onBoardingState) {
                     is OnBoardingState.Success -> {
                         Surface(
@@ -56,7 +58,6 @@ fun App(
                         ) {
 
                             Navigator(
-                                screen =
                                 if (Konnection.instance.isConnected()) {
                                     MainScreen()
                                 } else {
@@ -68,11 +69,13 @@ fun App(
 //                                    OnboardingScreen()
 //                                },
 //                                content = { CurrentScreen() },
-                            )
+                            ) { navigator ->
+                                ScaleTransition(navigator)
+                            }
                         }
                     }
 
-                    is OnBoardingState.Loading -> {}
+                    is OnBoardingState.InProgress -> {}
                 }
             }
         }

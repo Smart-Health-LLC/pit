@@ -32,11 +32,13 @@ class NoInternetScreen : Screen {
         if (isConnected) {
             nav.replaceAll(MainScreen())
         }
+
+        NoInternetScreenContent()
     }
 }
 
 @Composable
-fun NoInternetScreenContent(onRefreshPressed: () -> Unit) {
+fun NoInternetScreenContent() {
     Surface(
         modifier = Modifier
             .fillMaxSize()

@@ -34,7 +34,7 @@ class LoginScreen : Screen {
             LoginForm()
 
             SignUpLink(
-                goToSignUpClick = { navigator.push(SignupScreen()) },
+                goToSignUpClick = { navigator.replace(SignupScreen()) },
                 Modifier.align(Alignment.CenterHorizontally)
             )
         }
@@ -94,7 +94,9 @@ private fun LoginForm(
     CustomFullWidthButton(
         text = strings.login,
         onClick = {
-            navigator.push(MainScreen())
+            navigator.replaceAll(
+                MainScreen()
+            )
         },
         modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
     )

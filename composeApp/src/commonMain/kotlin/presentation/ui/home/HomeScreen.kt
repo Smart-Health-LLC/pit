@@ -26,6 +26,7 @@ import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.*
 import presentation.component.*
 import presentation.icon.BombIcon
+import presentation.theme.Inter
 import presentation.ui.change_schedule.ChangeScheduleScreen
 import presentation.ui.rate.RateSegmentScreen
 import java.time.LocalDate
@@ -171,7 +172,6 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                     Spacer_8dp()
                     Text(text = "Set tiredness bomb")
                 }
-
             }
 
             item(span = { GridItemSpan(2) }) {
@@ -214,7 +214,8 @@ fun InfoUnit(icon: DrawableResource, title: String, value: String, iconColor: Co
         Text(
             value,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontFamily = Inter()
         )
     }
 }
