@@ -191,8 +191,11 @@ fun DayOverview(
     // ############## Real life segments
     // todo extract calculation to parent provider class
     val sortedSegmentsUiData = realSegments.sortedBy { it.start }
-    if (sortedSegmentsUiData.last().end < sortedSegmentsUiData[1].start) {
-        sortedSegmentsUiData.last().end = LocalTime.MAX
+
+    if (realSegments.isNotEmpty()) {
+        if (sortedSegmentsUiData.last().end < sortedSegmentsUiData[1].start) {
+            sortedSegmentsUiData.last().end = LocalTime.MAX
+        }
     }
 
     val realSegmentsComposablesList = @Composable {
