@@ -55,6 +55,7 @@ splashScreen                          = "1.0.1"
 compose-settings                      = "2.4.0"
 coil                                  = "3.0.0-alpha01"
 konnection                            = "1.3.1"
+glanceAppwidget                       = "1.0.0"
 
 [libraries]
 
@@ -70,6 +71,10 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 # ktor-client-darwin       = { module = "io.ktor:ktor-client-darwin"                      , version.ref = "ktor" }
 # ktor-ios                 = { module = "io.ktor:ktor-client-ios"                         , version.ref = "ktor" }
 
+
+# ==== Glance ====
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceAppwidget" }
+androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceAppwidget" }
 
 # ==== Coil just to rick roll cause I have to ====
 coil-gif          = {module  = "io.coil-kt.coil3:coil-gif"         , version.ref = "coil"}

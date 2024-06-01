@@ -78,6 +78,12 @@ kotlin {
             implementation(libs.ktor.client.android)
             implementation(libs.sqldelight.android)
             implementation(libs.splashscreen)
+
+            // Glance
+            // For AppWidgets support
+            implementation(libs.androidx.glance.appwidget)
+            // For interop APIs with Material 3
+            implementation(libs.androidx.glance.material3)
         }
         commonMain.dependencies {
 
@@ -202,6 +208,8 @@ android {
         debugImplementation(libs.compose.ui.tooling)
         implementation(libs.koin.android)
     }
+
+
 }
 
 compose.desktop {
