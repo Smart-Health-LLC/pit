@@ -59,5 +59,6 @@ val EnStrings = Strings(
     settings = "Settings",
     lack = "Lack",
     excess = "Excess",
-    graphEase = "Adaptation ease"
+    graphEase = "Adaptation ease",
+    chooseDate = "Choose date"
 )

@@ -59,7 +59,8 @@ data class Strings(
     val settings: String,
     val lack: String,
     val excess: String,
-    val graphEase: String
+    val graphEase: String,
+    val chooseDate: String
 )
 
 val TagToStringsMapper: Map<LanguageTag, Strings> = mapOf(

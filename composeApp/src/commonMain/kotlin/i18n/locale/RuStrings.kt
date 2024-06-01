@@ -61,5 +61,6 @@ val RuStrings = Strings(
     settings = "Настройки",
     lack = "Недостаток",
     excess = "Избыток",
-    graphEase = "Лёгкость"
+    graphEase = "Лёгкость",
+    chooseDate = "Выберите дату"
 )

@@ -17,6 +17,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.model.Segment
 import org.koin.compose.koinInject
+import presentation.component.DatePickerWithDialog
 import presentation.component.Spacer_4dp
 import presentation.extention.supportWideScreen
 import presentation.theme.Inter
@@ -31,46 +32,48 @@ import java.time.format.DateTimeFormatter
 class RateSegmentScreen : Screen {
     @Composable
     override fun Content() {
-
-        Column(
-            modifier = Modifier.clip(MaterialTheme.shapes.large)
-                .padding(bottom = 35.dp, start = 20.dp, end = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
+        Surface {
+            Column(
+                modifier = Modifier.clip(MaterialTheme.shapes.large)
+                    .padding(bottom = 35.dp, start = 20.dp, end = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                BottomSheetDefaults.DragHandle(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-                TextButton(
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    onClick = {},
-                    enabled = true
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text(text = strings.save, fontWeight = FontWeight.Bold)
+                    DatePickerWithDialog(modifier = Modifier.align(Alignment.CenterStart))
+                    BottomSheetDefaults.DragHandle(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                    TextButton(
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        onClick = {},
+                        enabled = true
+                    ) {
+                        Text(text = strings.save, fontWeight = FontWeight.Bold)
+                    }
                 }
+                TimeEdgesQuestion(
+                )
+                // 2 sliders
+                SliderQuestion(
+                    questionTitleText = strings.wakeUpEase,
+                    value = 4f,
+                    onValueChange = {},
+                    startTextResource = strings.easeLow,
+                    neutralTextResource = strings.easeMiddle,
+                    endTextResource = strings.easeHigh
+                )
+                SliderQuestion(
+                    questionTitleText = strings.fallAsleepEase,
+                    value = 3f,
+                    onValueChange = {},
+                    startTextResource = strings.easeLow,
+                    neutralTextResource = strings.easeMiddle,
+                    endTextResource = strings.easeHigh
+                )
+                Textarea(modifier = Modifier.height(120.dp))
             }
-            TimeEdgesQuestion(
-            )
-            // 2 sliders
-            SliderQuestion(
-                questionTitleText = strings.wakeUpEase,
-                value = 4f,
-                onValueChange = {},
-                startTextResource = strings.easeLow,
-                neutralTextResource = strings.easeMiddle,
-                endTextResource = strings.easeHigh
-            )
-            SliderQuestion(
-                questionTitleText = strings.fallAsleepEase,
-                value = 3f,
-                onValueChange = {},
-                startTextResource = strings.easeLow,
-                neutralTextResource = strings.easeMiddle,
-                endTextResource = strings.easeHigh
-            )
-            Textarea(modifier = Modifier.height(120.dp))
         }
     }
 }
