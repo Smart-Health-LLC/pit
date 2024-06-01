@@ -282,7 +282,7 @@ fun DayOverview(
                 if (showTodayIndicator) {
                     val minutesToNow =
                         ChronoUnit.MINUTES
-                            .between(LocalTime.MIN, LocalTime.now())
+                            .between(LocalTime.MIN, currentTime)
                             .toInt()
                     val nowIndicatorOffsetY = minutesToNow * (hourHeight / 60)
 
