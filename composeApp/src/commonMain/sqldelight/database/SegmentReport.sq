@@ -1,13 +1,13 @@
-import kotlin.Boolean;
-
-CREATE TABLE IF NOT EXISTS SegmentReportLocalEntity (
+-- todo uncomment on prod
+-- CREATE TABLE IF NOT EXISTS
+CREATE TABLE SegmentReportLocalEntity (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     day TEXT NOT NULL,
     timeStart TEXT NOT NULL,
     timeEnd TEXT NOT NULL,
-    isSkipped INTEGER AS Boolean NOT NULL DEFAULT 0, -- 0 or 1
     wakeUpEaseLevel INTEGER NOT NULL,
-    fallAsleepEaseLevel INTEGER NOT NULL
+    fallAsleepEaseLevel INTEGER NOT NULL,
+    note TEXT
 );
 
 
@@ -19,13 +19,13 @@ SELECT * FROM SegmentReportLocalEntity WHERE id = ?;
 
 -- todo cool to have weekly summary maybe
 
-getReportByDay:
+getReportsByDay:
 SELECT * FROM SegmentReportLocalEntity WHERE day = ?;
 
 insertReport:
 INSERT OR REPLACE
-INTO SegmentReportLocalEntity (day, timeStart, timeEnd, isSkipped, wakeUpEaseLevel, fallAsleepEaseLevel)
-VALUES (?,?,?,?,?,?);
+INTO SegmentReportLocalEntity (day, timeStart, timeEnd, wakeUpEaseLevel, fallAsleepEaseLevel, note)
+VALUES (?,?,?,?,?, ?);
 
 updateReport:
-UPDATE SegmentReportLocalEntity SET day = ?, timeEnd = ?, timeEnd = ?, isSkipped = ?, wakeUpEaseLevel = ?, fallAsleepEaseLevel = ? WHERE id = ?;
+UPDATE SegmentReportLocalEntity SET day = ?, timeEnd = ?, timeEnd = ?, wakeUpEaseLevel = ?, fallAsleepEaseLevel = ?, note = ? WHERE id = ?;

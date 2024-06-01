@@ -5,5 +5,8 @@ import java.time.LocalTime
 
 
 data class Segment(
-    val start: LocalTime, val end: LocalTime, val day: LocalDate? = null
+    val start: LocalTime,
+    // var because of shit happening inside DayOverview component
+    var end: LocalTime,
+    val day: LocalDate? = null
 )

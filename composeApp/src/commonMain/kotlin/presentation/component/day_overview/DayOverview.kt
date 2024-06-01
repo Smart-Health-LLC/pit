@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import domain.model.Segment
+import domain.model.SegmentReport
 import kotlinx.coroutines.delay
 import presentation.theme.Inter
 import java.time.LocalTime
@@ -31,7 +32,8 @@ import kotlin.math.roundToInt
  */
 @Composable
 fun RealSegment(
-    segmentUiData: SegmentUiData,
+    segmentReport: SegmentReport,
+    color: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier,
 ) {
     var showText by remember {
@@ -41,31 +43,37 @@ fun RealSegment(
         modifier = modifier
             .fillMaxSize()
             .padding(bottom = 2.dp)
-            .background(segmentUiData.color, shape = RoundedCornerShape(4.dp))
+            .background(color, shape = RoundedCornerShape(4.dp))
             .padding(4.dp)
             .onSizeChanged {
                 showText = it.height >= 100
             }
             .clickable {
-                println("clicked $segmentUiData")
+                println("clicked $segmentReport")
             }
     ) {
-        val textColor = getContrastColor(segmentUiData.color)
+        val textColor = getContrastColor(color)
         if (showText) {
             Text(
-                text = "${segmentUiData.segment.start.format(timeFormatter)} - ${
-                    segmentUiData.segment.end.format(
+                text = "${segmentReport.start.format(timeFormatter)} - ${
+                    segmentReport.end.format(
                         timeFormatter
                     )
                 }",
                 color = textColor
             )
 
-            Text(
-                text = segmentUiData.label,
-                fontWeight = FontWeight.Bold,
-                color = textColor
-            )
+            if (segmentReport.note != null) {
+                val maxSymbols = 80
+                Text(
+                    text = if (segmentReport.note.length > maxSymbols) segmentReport.note.take(
+                        maxSymbols
+                    ) + "…" else segmentReport.note,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor
+                )
+
+            }
         }
     }
 }
@@ -131,10 +139,10 @@ fun DayOverview(
     },
 
     // Real segments
-    realSegments: List<SegmentUiData>,
+    realSegments: List<SegmentReport>,
     realSegmentsColumnWidthInPercents: Float = if (showBaseSchedule) 80f else 100f,
-    realSegmentComponent: @Composable (segmentUiData: SegmentUiData) -> Unit = {
-        RealSegment(segmentUiData = it)
+    realSegmentComponent: @Composable (segmentReport: SegmentReport) -> Unit = {
+        RealSegment(segmentReport = it)
     },
 
     // Hour indicators
@@ -182,9 +190,9 @@ fun DayOverview(
 
     // ############## Real life segments
     // todo extract calculation to parent provider class
-    val sortedSegmentsUiData = realSegments.sortedBy { it.segment.start }
-    if (sortedSegmentsUiData.last().segment.end < sortedSegmentsUiData[1].segment.start) {
-        sortedSegmentsUiData.last().segment.end = LocalTime.MAX
+    val sortedSegmentsUiData = realSegments.sortedBy { it.start }
+    if (sortedSegmentsUiData.last().end < sortedSegmentsUiData[1].start) {
+        sortedSegmentsUiData.last().end = LocalTime.MAX
     }
 
     val realSegmentsComposablesList = @Composable {
@@ -214,7 +222,7 @@ fun DayOverview(
         sortedBaseSegments.forEach { baseSegment ->
             Box(
                 modifier = Modifier
-                    .provideSegmentUiDataToParent(baseSegment.toSegmentUiData())
+                    .provideSegmentUiDataToParent(baseSegment.toSegmentReport())
                     .padding(start = columnPadding / 2)
             ) {
                 baseSegmentComponent(baseSegment)
@@ -240,7 +248,7 @@ fun DayOverview(
             realSegmentsComposablesList,
             baseSegmentsComposablesList,
         ),
-        modifier = Modifier
+        modifier = modifier
             .transformable(state = transformState)
             .verticalScroll(rememberScrollState())
 
@@ -318,14 +326,14 @@ fun DayOverview(
         fun getSegmentPlaceable(
             segmentMeasurables: List<Measurable>,
             columnWidth: Int
-        ): List<Pair<Placeable, SegmentUiData>> {
+        ): List<Pair<Placeable, SegmentReport>> {
             return segmentMeasurables.map { measurable ->
-                val segmentUiData = measurable.parentData as SegmentUiData
+                val segmentReport = measurable.parentData as SegmentReport
 
                 val segmentDurationMinutes =
                     ChronoUnit.MINUTES.between(
-                        segmentUiData.segment.start,
-                        segmentUiData.segment.end
+                        segmentReport.start,
+                        segmentReport.end
                     )
 
                 val segmentHeight =
@@ -340,7 +348,7 @@ fun DayOverview(
                     )
                 )
 
-                Pair(segmentPlaceable, segmentUiData)
+                Pair(segmentPlaceable, segmentReport)
             }
         }
 
@@ -383,11 +391,11 @@ fun DayOverview(
             /**
              * Places segments column
              */
-            fun placeSegments(segments: List<Pair<Placeable, SegmentUiData>>, columnOffsetX: Int) {
+            fun placeSegments(segments: List<Pair<Placeable, SegmentReport>>, columnOffsetX: Int) {
                 segments
                     .forEach { (placeable, segmentUiData) ->
                         val segmentOffsetMinutes =
-                            ChronoUnit.MINUTES.between(LocalTime.MIN, segmentUiData.segment.start)
+                            ChronoUnit.MINUTES.between(LocalTime.MIN, segmentUiData.start)
 
                         val segmentOffsetY =
                             ((segmentOffsetMinutes / 60f) * hourHeight.toPx()).roundToInt()

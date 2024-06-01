@@ -1,8 +1,8 @@
 package presentation.ui.daily_stats
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,11 +16,10 @@ import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.Res
 import pit.composeapp.generated.resources.redo
 import presentation.component.*
+import presentation.component.day_overview.DayOverview
 import presentation.icon.CalendarMonthIcon
-import presentation.icon.NoDataIcon
-import presentation.ui.home.everyman1
+import presentation.ui.home.dualCore1
 import java.time.LocalDate
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
@@ -33,10 +32,10 @@ class DailyStatsScreen : Screen {
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
-    var selectedDay by remember { mutableStateOf(LocalDate.now()) }
+//    var selectedDay by remember { mutableStateOf(LocalDate.now()) }
+    val state by viewModel.state.collectAsState()
 
     /**
      * Update week days to display on the stripe
@@ -52,79 +51,47 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
         return displayDays
     }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(18.dp)
-    ) {
-        stickyHeader {
-            Surface {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    CalendarTop(onTodayClick = { selectedDay = LocalDate.now() }, selectedDay)
-                    Spacer_8dp()
-                    CalendarWeek(selectedDate = selectedDay,
-                        days = updateWeek(LocalDate.now()),
-                        onDaySelected = { newDay -> selectedDay = newDay })
-                }
-            }
+    Surface {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            CalendarTop(
+                onTodayClick = { viewModel.updateReports(LocalDate.now()) },
+                state.selectedDay
+            )
+            Spacer_8dp()
+            CalendarWeek(selectedDate = state.selectedDay,
+                days = updateWeek(LocalDate.now()),
+                onDaySelected = { newDay -> viewModel.updateReports(newDay) })
+
+            DayOverview(
+                baseSegments = dualCore1.segments,
+                realSegments = state.dayReports
+            )
+
+
+//            if (state.dayReports.isNotEmpty()) {
+//
+//
+//                DayOverview(
+//                    baseSegments = dualCore1.segments,
+//                    realSegments = state.dayReports
+//                )
+//
+//
+//            } else {
+//                Row(
+//                    modifier = Modifier.fillMaxSize(),
+//                    horizontalArrangement = Arrangement.Center
+//                ) {
+//                    Icon(
+//                        NoDataIcon,
+//                        null,
+//                        tint = MaterialTheme.colorScheme.primary,
+//                        modifier = Modifier.size(280.dp).padding(top = 80.dp)
+//                    )
+//                }
+//            }
         }
-
-        if (selectedDay <= LocalDate.now()) {
-            item {
-                StaticScheduleComponent(everyman1, 250, 130f)
-                Spacer_8dp()
-            }
-
-            item {
-                SegmentReportCard(
-                    LocalTime.of(5, 0),
-                    LocalTime.of(7, 30),
-                    3,
-                    4,
-                    LocalTime.of(3, 28),
-                    LocalTime.of(8, 43),
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                )
-            }
-            item {
-                SegmentReportCard(
-                    LocalTime.of(5, 0),
-                    LocalTime.of(7, 30),
-                    3,
-                    4,
-                    LocalTime.of(3, 28),
-                    LocalTime.of(8, 43),
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                )
-            }
-            item {
-                SegmentReportCard(
-                    LocalTime.of(5, 0),
-                    LocalTime.of(7, 30),
-                    3,
-                    4,
-                    LocalTime.of(3, 28),
-                    LocalTime.of(8, 43),
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                )
-            }
-            item {
-                Spacer_32dp()
-            }
-        } else {
-            item {
-                Row(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
-                    Icon(
-                        NoDataIcon,
-                        null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(280.dp).padding(top = 80.dp)
-                    )
-                }
-            }
-        }
-
     }
-
-
 }
 
 

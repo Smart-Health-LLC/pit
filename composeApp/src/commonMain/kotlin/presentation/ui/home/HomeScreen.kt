@@ -7,8 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,16 +19,17 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.dokar.sonner.rememberToasterState
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.*
 import presentation.component.*
+import presentation.extention.toFancyString
 import presentation.icon.BombIcon
 import presentation.theme.Inter
-import presentation.ui.change_schedule.ChangeScheduleScreen
 import presentation.ui.rate.RateSegmentScreen
-import java.time.LocalDate
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
@@ -47,6 +47,19 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
     val localNavigator = LocalNavigator.currentOrThrow
 
     val schedule = viewModel.state.collectAsState().value
+
+    val homeState = viewModel.newState.collectAsState().value
+
+    val reportsToday = viewModel.reports.collectAsState().value
+
+    val updateIntervalMinutes = 1L
+    LaunchedEffect(updateIntervalMinutes) {
+        while (true) {
+            delay(updateIntervalMinutes * 60 * 1000) // Convert minutes to milliseconds
+            viewModel.updateNapIn(schedule)
+        }
+    }
+
 
     // Screen content holder
     Column(
@@ -107,13 +120,33 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
             InfoUnit(
                 Res.drawable.ic_clear_night_filled_24px,
                 strings.napIn,
-                "01:18",
+                homeState.napIn.toFancyString(),
                 Color.Blue
             )
+
+
+            // yeah thats crap
+            val tstToday = Duration.ZERO
+            reportsToday.filter { it.day == LocalDate.now() }.forEach {
+                tstToday.plus(
+
+                    // todo really good to have that in separate function
+                    if (!it.start.isBefore(it.end)) {
+                        Duration.between(it.start, LocalTime.MAX)
+                            .plus(
+                                Duration.between(LocalTime.MIN, it.end)
+                            ).plusMinutes(1)
+                    } else {
+                        Duration.between(it.start, it.end)
+                    }
+
+                )
+            }
+
             InfoUnit(
                 Res.drawable.ic_hourglass_filled_24px,
                 strings.tstToday,
-                "04:16",
+                tstToday.toFancyString(),
                 Color(0xffe08a1a)
             )
             InfoUnit(Res.drawable.ic_whatshot_filled_24px, strings.streak, "3 days", Color.Red)
@@ -143,7 +176,7 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                 // change schedule
                 Button(
                     onClick = {
-                        localNavigator.push(ChangeScheduleScreen(schedule, viewModel))
+//                        localNavigator.push(ChangeScheduleScreen(schedule, viewModel))
                     }, modifier = Modifier.height(56.dp)
                 ) {
                     Icon(

@@ -127,9 +127,8 @@ class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRep
                     day = thisSegmentInfo.day ?: LocalDate.now(),
                     fallAsleepEaseLevel = state.value.fallAsleepEaseLevel,
                     wakeUpEaseLevel = state.value.wakeApEaseLevel,
-                    isSkipped = state.value.isSegmentSkipped,
-                    timeStart = state.value.newStartTime ?: thisSegmentInfo.start,
-                    timeEnd = state.value.newEndTime ?: thisSegmentInfo.end
+                    start = state.value.newStartTime ?: thisSegmentInfo.start,
+                    end = state.value.newEndTime ?: thisSegmentInfo.end,
                 )
             )
         }

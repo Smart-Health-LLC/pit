@@ -88,7 +88,7 @@ fun commonModule() = module {
 
 
     single<HomeViewModel> {
-        HomeViewModel()
+        HomeViewModel(get())
     }
 
 

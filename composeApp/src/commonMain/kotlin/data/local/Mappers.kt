@@ -17,9 +17,8 @@ import kotlin.coroutines.CoroutineContext
 fun SegmentReportLocalEntity.toSegmentReport() = SegmentReport(
     id                  = id,
     day                 = LocalDate.parse(day, DateTimeFormatter.ISO_LOCAL_DATE),
-    timeStart           = LocalTime.parse(timeStart, DateTimeFormatter.ISO_LOCAL_TIME),
-    timeEnd             = LocalTime.parse(timeEnd, DateTimeFormatter.ISO_LOCAL_TIME),
-    isSkipped           = isSkipped,
+    start           = LocalTime.parse(timeStart, DateTimeFormatter.ISO_LOCAL_TIME),
+    end             = LocalTime.parse(timeEnd, DateTimeFormatter.ISO_LOCAL_TIME),
     wakeUpEaseLevel     = wakeUpEaseLevel.toInt(),
     fallAsleepEaseLevel = fallAsleepEaseLevel.toInt()
 )
@@ -27,11 +26,11 @@ fun SegmentReportLocalEntity.toSegmentReport() = SegmentReport(
 fun SegmentReport.toSegmentReportLocalEntity() = SegmentReportLocalEntity(
     id                  = id,
     day                 = day.format(DateTimeFormatter.ISO_LOCAL_DATE),
-    timeStart           = timeStart.format(DateTimeFormatter.ISO_LOCAL_TIME),
-    timeEnd             = timeEnd.format(DateTimeFormatter.ISO_LOCAL_TIME),
-    isSkipped           = isSkipped,
+    timeStart           = start.format(DateTimeFormatter.ISO_LOCAL_TIME),
+    timeEnd             = end.format(DateTimeFormatter.ISO_LOCAL_TIME),
     wakeUpEaseLevel     = wakeUpEaseLevel.toLong(),
-    fallAsleepEaseLevel = fallAsleepEaseLevel.toLong()
+    fallAsleepEaseLevel = fallAsleepEaseLevel.toLong(),
+    note                = note
 )
 // @formatter:on
 

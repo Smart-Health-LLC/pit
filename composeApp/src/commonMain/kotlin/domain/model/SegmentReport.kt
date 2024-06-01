@@ -6,9 +6,9 @@ import java.time.LocalTime
 data class SegmentReport(
     val id: Long = 1,
     val day: LocalDate,
-    val timeStart: LocalTime,
-    val timeEnd: LocalTime,
-    val isSkipped: Boolean,
+    val start: LocalTime,
+    var end: LocalTime,
     val wakeUpEaseLevel: Int,
-    val fallAsleepEaseLevel: Int
+    val fallAsleepEaseLevel: Int,
+    val note: String? = null
 )

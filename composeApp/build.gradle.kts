@@ -221,6 +221,7 @@ sqldelight {
         create("PitDatabase") {
             packageName.set("com.smarthealth.pit.database")
             schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+            // todo uncomment for prod
             verifyMigrations.set(true)
         }
     }
