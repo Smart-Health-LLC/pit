@@ -47,7 +47,7 @@ fun AdaptationStatsScreenContent(viewModel: AdaptationStatsViewModel = koinInjec
                 ) {
                     Text(
                         textAlign = TextAlign.Start,
-                        text = "Легкость",
+                        text = strings.graphEase,
                         style = MaterialTheme.typography.headlineLarge
                     )
                 }
@@ -60,9 +60,9 @@ fun AdaptationStatsScreenContent(viewModel: AdaptationStatsViewModel = koinInjec
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    GraphLegendItem("Легкость подъема", Color.Green, 15.dp)
+                    GraphLegendItem(strings.wakeUpEase, Color.Green, 15.dp)
                     Spacer_16dp()
-                    GraphLegendItem("Легкость засыпания", Color.Magenta, 15.dp)
+                    GraphLegendItem(strings.fallAsleepEase, Color.Magenta, 15.dp)
                 }
             }
         }

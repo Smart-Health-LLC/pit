@@ -54,8 +54,7 @@ fun App(
                     is OnBoardingState.Success -> {
                         Surface(
                             modifier = Modifier.fillMaxSize(),
-
-                            ) {
+                        ) {
 
                             BottomSheetNavigator(
                                 sheetGesturesEnabled = true,

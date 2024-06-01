@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
+import cafe.adriel.lyricist.strings
 import i18n.LocaleInfo
 
 
@@ -21,7 +22,7 @@ fun SingleChoiceAlertDialog(
 
     AlertDialog(
         onDismissRequest = onDialogDismiss,
-        title = { Text(text = "Select new language") },
+        title = { Text(text = strings.selectNewLanguage) },
         text = {
             Column {
                 items.forEach { localeItem ->
@@ -40,7 +41,7 @@ fun SingleChoiceAlertDialog(
                 TextButton(
                     onClick = onDialogDismiss,
                 ) {
-                    Text(text = "Cancel")
+                    Text(text = strings.cancel)
                 }
             }
         }
@@ -50,7 +51,7 @@ fun SingleChoiceAlertDialog(
                 TextButton(
                     onClick = { onItemSelected(userSelectedItem.value) },
                 ) {
-                    Text(text = "Select")
+                    Text(text = strings.confirm)
                 }
             }
         },
@@ -62,7 +63,7 @@ fun SingleChoiceAlertDialog(
                 TextButton(
                     onClick = onDialogDismiss,
                 ) {
-                    Text(text = "Clear")
+                    Text(text = strings.clearChoice)
                 }
             }
         },

@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,6 +21,7 @@ import i18n.getLocalesInfo
 import org.koin.compose.koinInject
 import presentation.component.ToasterWrapper
 import presentation.icon.ScheduleIcon
+import presentation.icon.WatchLater
 import presentation.ui.choose_schedule.ChooseScheduleScreen
 import presentation.ui.main.MainViewModel
 import presentation.ui.settings.component.SingleChoiceAlertDialog
@@ -42,7 +43,9 @@ fun SettingsScreenContent(
     val localNavigator = LocalNavigator.currentOrThrow
 
     val toasterState = rememberToasterState { }
+    val toastMessage = strings.inDevelopment
     ToasterWrapper(toasterState)
+
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -51,7 +54,7 @@ fun SettingsScreenContent(
     ) {
 
         item {
-            Text(text = "Настройки", style = MaterialTheme.typography.displaySmall)
+            Text(text = strings.settings, style = MaterialTheme.typography.displaySmall)
         }
 
         item {
@@ -78,7 +81,7 @@ fun SettingsScreenContent(
         }
         item {
             SettingsMenuLink(
-                title = { Text(text = strings.timeFormat) },
+                title = { Text(text = strings.timeFormat24h) },
                 modifier = Modifier,
                 enabled = true,
                 action = {
@@ -86,9 +89,7 @@ fun SettingsScreenContent(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "12h", style = MaterialTheme.typography.bodyLarge)
                         Switch(true, {})
-                        Text(text = "24h", style = MaterialTheme.typography.bodyLarge)
                     }
                 },
                 icon = {
@@ -100,7 +101,100 @@ fun SettingsScreenContent(
                     )
                 },
                 onClick = {
-                    toasterState.show("Not supported yet")
+                    toasterState.show(toastMessage)
+                },
+            )
+        }
+        item {
+            SettingsMenuLink(
+                title = { Text(text = strings.dateFormat) },
+                subtitle = { Text(text = "yyyy-mm-dd") },
+                modifier = Modifier,
+                enabled = true,
+                icon = {
+                    Icon(
+                        Icons.Outlined.DateRange,
+                        null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                onClick = {
+                    toasterState.show(toastMessage)
+                },
+            )
+        }
+        item {
+            SettingsMenuLink(
+                title = { Text(text = strings.durationFormat) },
+                subtitle = { Text(text = "HH:mm") },
+                modifier = Modifier,
+                enabled = true,
+                icon = {
+                    Icon(
+                        Icons.Outlined.WatchLater,
+                        null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                onClick = {
+                    toasterState.show(toastMessage)
+                },
+            )
+        }
+
+        item {
+            SettingsMenuLink(
+                title = { Text(text = strings.firstTab) },
+                subtitle = { Text(text = strings.tabDailyStats) },
+                modifier = Modifier,
+                enabled = true,
+                icon = {
+                    Icon(
+                        Icons.Outlined.Place,
+                        null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                onClick = {
+                    toasterState.show(toastMessage)
+                },
+            )
+        }
+
+        item {
+            SettingsMenuLink(
+                title = { Text(text = strings.firstDayOfWeek) },
+                subtitle = { Text(text = strings.monday) },
+                modifier = Modifier,
+                enabled = true,
+                icon = {
+                    Icon(
+                        Icons.Outlined.Star,
+                        null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                onClick = {
+                    toasterState.show(toastMessage)
+                },
+            )
+        }
+
+        item {
+            SettingsMenuLink(
+                title = { Text(text = strings.appTheme) },
+                subtitle = { Text(text = strings.appThemeFollowSystem) },
+                modifier = Modifier,
+                enabled = true,
+                icon = {
+                    Icon(
+                        Icons.Outlined.Build,
+                        null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                onClick = {
+                    toasterState.show(toastMessage)
                 },
             )
         }

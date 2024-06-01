@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import presentation.theme.Inter
 import java.time.LocalTime
 
@@ -55,14 +56,14 @@ fun DialogTimePickerByButton(
                             .fillMaxWidth(), horizontalArrangement = Arrangement.End
                     ) {
                         TextButton(onClick = { showDialog = false }) {
-                            Text(text = "Dismiss")
+                            Text(text = strings.dismiss)
                         }
                         TextButton(onClick = {
                             showDialog = false
                             segmentLocalTimeEdge = LocalTime.of(timeState.hour, timeState.minute)
                             updateSegmentEdge(index, segmentLocalTimeEdge)
                         }) {
-                            Text(text = "Confirm")
+                            Text(text = strings.confirm)
                         }
                     }
                 }

@@ -192,9 +192,10 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
             item {
 
                 // track a tiredness bomb
+                val toastMessage = strings.inDevelopment
                 Button(
                     onClick = {
-                        toasterState.show(message = "Not supported yet")
+                        toasterState.show(message = toastMessage)
                     }, modifier = Modifier.height(56.dp)
                 ) {
                     Icon(
