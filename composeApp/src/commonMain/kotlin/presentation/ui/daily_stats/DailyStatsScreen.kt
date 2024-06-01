@@ -1,8 +1,8 @@
 package presentation.ui.daily_stats
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.Res
@@ -19,6 +20,7 @@ import presentation.component.*
 import presentation.component.day_overview.DayOverview
 import presentation.icon.CalendarMonthIcon
 import presentation.ui.home.dualCore1
+import presentation.ui.rate.RateSegmentScreen
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -51,45 +53,35 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
         return displayDays
     }
 
-    Surface {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            CalendarTop(
-                onTodayClick = { viewModel.updateReports(LocalDate.now()) },
-                state.selectedDay
-            )
-            Spacer_8dp()
-            CalendarWeek(selectedDate = state.selectedDay,
-                days = updateWeek(LocalDate.now()),
-                onDaySelected = { newDay -> viewModel.updateReports(newDay) })
 
-            DayOverview(
-                baseSegments = dualCore1.segments,
-                realSegments = state.dayReports
-            )
+    val bottomSheetNavigator = LocalBottomSheetNavigator.current
 
-
-//            if (state.dayReports.isNotEmpty()) {
-//
-//
-//                DayOverview(
-//                    baseSegments = dualCore1.segments,
-//                    realSegments = state.dayReports
-//                )
-//
-//
-//            } else {
-//                Row(
-//                    modifier = Modifier.fillMaxSize(),
-//                    horizontalArrangement = Arrangement.Center
-//                ) {
-//                    Icon(
-//                        NoDataIcon,
-//                        null,
-//                        tint = MaterialTheme.colorScheme.primary,
-//                        modifier = Modifier.size(280.dp).padding(top = 80.dp)
-//                    )
-//                }
-//            }
+    Scaffold(
+        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    bottomSheetNavigator.show(RateSegmentScreen())
+                },
+            ) {
+                Icon(Icons.Filled.Add, "Floating action button.")
+            }
+        }
+    ) {
+        Surface {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                CalendarTop(
+                    onTodayClick = { viewModel.updateReports(LocalDate.now()) },
+                    state.selectedDay
+                )
+                WeekStripe(selectedDate = state.selectedDay,
+                    days = updateWeek(LocalDate.now()),
+                    onDaySelected = { newDay -> viewModel.updateReports(newDay) })
+                DayOverview(
+                    baseSegments = dualCore1.segments,
+                    realSegments = state.dayReports
+                )
+            }
         }
     }
 }
@@ -101,7 +93,7 @@ fun CalendarTop(onTodayClick: () -> Unit, date: LocalDate) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
+        modifier = Modifier.fillMaxWidth()
     ) {
 
         Surface(onClick = {}) {
@@ -162,12 +154,11 @@ fun CalendarTop(onTodayClick: () -> Unit, date: LocalDate) {
 
 
 @Composable
-fun CalendarDay(
+fun WeekDay(
     activeDay: LocalDate,
     onDaySelected: (selectedDay: LocalDate) -> Unit,
     displayDay: LocalDate,
 ) {
-
     // Calendar stripe's one day block
     Surface(
         onClick = { onDaySelected(displayDay) },
@@ -207,9 +198,8 @@ fun CalendarDay(
 }
 
 
-// Calendar stripe
 @Composable
-fun CalendarWeek(
+fun WeekStripe(
     onDaySelected: (selectedDay: LocalDate) -> Unit, selectedDate: LocalDate, days: List<LocalDate>
 ) {
     Row(
@@ -217,7 +207,7 @@ fun CalendarWeek(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         days.forEach { day ->
-            CalendarDay(
+            WeekDay(
                 selectedDate, displayDay = day, onDaySelected = onDaySelected
             )
         }

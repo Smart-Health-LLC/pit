@@ -6,7 +6,6 @@ import i18n.Strings
 
 @LyricistStrings(languageTag = Locales.EN, default = true)
 val EnStrings = Strings(
-    simple = "Hello Compose!",
     startedAt = "Started at ",
     changeSchedule = "Change schedule",
     napIn = "Sleep in",
@@ -33,7 +32,14 @@ val EnStrings = Strings(
     chooseAnotherSchedule = "Choose another schedule",
     tabHome = "Home",
     tabAdaptationStats = "Adaptation",
-    tabDailyStats = "Daily",
+    tabDailyStats = "Day",
     tabMore = "More",
-    timeFormat = "Time format"
+    timeFormat = "Time format",
+    wakeUpEase = "Wake up ease level",
+    fallAsleepEase = "Fall asleep ease level",
+    easeMiddle = "Viable",
+    easeLow = "Hard",
+    easeHigh = "Easy",
+    save = "Save",
+    note = "Note"
 )

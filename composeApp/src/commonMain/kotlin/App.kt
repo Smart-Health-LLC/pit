@@ -1,12 +1,12 @@
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import cafe.adriel.lyricist.LocalStrings
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.transitions.ScaleTransition
 import coil3.ImageLoader
 import coil3.PlatformContext
@@ -54,23 +54,31 @@ fun App(
                     is OnBoardingState.Success -> {
                         Surface(
                             modifier = Modifier.fillMaxSize(),
-                            color = MaterialTheme.colorScheme.background,
-                        ) {
 
-                            Navigator(
-                                if (Konnection.instance.isConnected()) {
-                                    MainScreen()
-                                } else {
-                                    NoInternetScreen()
-                                },
+                            ) {
+
+                            BottomSheetNavigator(
+                                sheetGesturesEnabled = true,
+                                sheetElevation = BottomSheetDefaults.Elevation,
+                                sheetShape = MaterialTheme.shapes.large,
+                                sheetContentColor = BottomSheetDefaults.ContainerColor,
+                                skipHalfExpanded = false
+                            ) {
+                                Navigator(
+                                    if (Konnection.instance.isConnected()) {
+                                        MainScreen()
+                                    } else {
+                                        NoInternetScreen()
+                                    },
 //                                screen = if (onBoardingState.completed) {
 //                                    MainScreen()
 //                                } else {
 //                                    OnboardingScreen()
 //                                },
 //                                content = { CurrentScreen() },
-                            ) { navigator ->
-                                ScaleTransition(navigator)
+                                ) { navigator ->
+                                    ScaleTransition(navigator)
+                                }
                             }
                         }
                     }

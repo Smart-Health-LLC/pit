@@ -4,9 +4,10 @@ import cafe.adriel.lyricist.LyricistStrings
 import i18n.Locales
 import i18n.Strings
 
+
+@SuppressWarnings("SpellCheckingInspection")
 @LyricistStrings(languageTag = Locales.RU)
 val RuStrings = Strings(
-    simple = "Здарова",
     startedAt = "Начат ",
     changeSchedule = "Изменить график",
     napIn = "Сон через",
@@ -33,7 +34,15 @@ val RuStrings = Strings(
     chooseAnotherSchedule = "Выбрать другой режим",
     tabHome = "Главная",
     tabAdaptationStats = "Адаптация",
-    tabDailyStats = "По дням",
+    tabDailyStats = "День",
     tabMore = "Больше",
-    timeFormat = "Формат времени"
+    timeFormat = "Формат времени",
+    wakeUpEase = "Лёгкость подъёма",
+    fallAsleepEase = "Лёгкость засыпания",
+    easeMiddle = "Приемлемо",
+    easeLow = "Сложно",
+    easeHigh = "Легко",
+    save = "Сохранить",
+    note = "Заметка"
+
 )

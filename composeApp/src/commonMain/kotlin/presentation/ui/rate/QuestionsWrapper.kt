@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import presentation.component.Spacer_16dp
+import presentation.component.Spacer_8dp
 import presentation.theme.slightlyDeEmphasizedAlpha
 import presentation.theme.stronglyDeEmphasizedAlpha
 
@@ -35,7 +36,7 @@ fun QuestionWrapper(
             Spacer_16dp()
             QuestionDescription(it)
         }
-        Spacer_16dp()
+        Spacer_8dp()
 
         content()
     }
@@ -56,7 +57,7 @@ private fun CustomQuestionTitle(
                 color = MaterialTheme.colorScheme.inverseOnSurface,
                 shape = MaterialTheme.shapes.small
             )
-            .padding(vertical = 24.dp, horizontal = 16.dp)
+            .padding(vertical = 10.dp, horizontal = 16.dp)
     )
 }
 

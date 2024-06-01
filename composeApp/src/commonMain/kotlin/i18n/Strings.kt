@@ -6,7 +6,6 @@ import i18n.locale.EnStrings
 import i18n.locale.RuStrings
 
 data class Strings(
-    val simple: String,
     val startedAt: String,
     val changeSchedule: String,
     val napIn: String,
@@ -35,7 +34,14 @@ data class Strings(
     val tabAdaptationStats: String,
     val tabDailyStats: String,
     val tabMore: String,
-    val timeFormat: String
+    val timeFormat: String,
+    val wakeUpEase: String,
+    val fallAsleepEase: String,
+    val easeMiddle: String,
+    val easeLow: String,
+    val easeHigh: String,
+    val save: String,
+    val note: String
 )
 
 val TagToStringsMapper: Map<LanguageTag, Strings> = mapOf(

@@ -7,9 +7,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -19,7 +21,8 @@ import presentation.component.Spacer_4dp
 import presentation.extention.supportWideScreen
 import presentation.theme.Inter
 import presentation.theme.stronglyDeEmphasizedAlpha
-import presentation.ui.rate.question_type.*
+import presentation.ui.rate.question_type.SliderQuestion
+import presentation.ui.rate.question_type.TimeEdgesQuestion
 import presentation.wtf.dateFormat
 import presentation.wtf.dateTimeFormatter
 import java.time.format.DateTimeFormatter
@@ -28,7 +31,47 @@ import java.time.format.DateTimeFormatter
 class RateSegmentScreen : Screen {
     @Composable
     override fun Content() {
-        RateSegmentScreenContent()
+
+        Column(
+            modifier = Modifier.clip(MaterialTheme.shapes.large)
+                .padding(bottom = 35.dp, start = 20.dp, end = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                BottomSheetDefaults.DragHandle(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                TextButton(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    onClick = {},
+                    enabled = true
+                ) {
+                    Text(text = strings.save, fontWeight = FontWeight.Bold)
+                }
+            }
+            TimeEdgesQuestion(
+            )
+            // 2 sliders
+            SliderQuestion(
+                questionTitleText = strings.wakeUpEase,
+                value = 4f,
+                onValueChange = {},
+                startTextResource = strings.easeLow,
+                neutralTextResource = strings.easeMiddle,
+                endTextResource = strings.easeHigh
+            )
+            SliderQuestion(
+                questionTitleText = strings.fallAsleepEase,
+                value = 3f,
+                onValueChange = {},
+                startTextResource = strings.easeLow,
+                neutralTextResource = strings.easeMiddle,
+                endTextResource = strings.easeHigh
+            )
+            Textarea(modifier = Modifier.height(120.dp))
+        }
     }
 }
 
@@ -57,49 +100,36 @@ fun RateSegmentScreenContent(
                 .padding(horizontal = 15.dp),
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
+
             item {
-                CheckboxQuestion(
-                    text = "Skipped?",
-                    selected = state.isSegmentSkipped,
-                    onOptionSelected = viewModel::toggleSkippedStatus
+                TimeEdgesQuestion()
+            }
+
+            item {
+                // 2 sliders
+                SliderQuestion(
+                    questionTitleText = strings.wakeUpEase,
+                    value = state.wakeApEaseLevel.toFloat(),
+                    onValueChange = viewModel::updateWakeUpEaseLevel,
+                    startTextResource = strings.easeLow,
+                    neutralTextResource = strings.easeMiddle,
+                    endTextResource = strings.easeHigh
                 )
             }
 
-            if (!state.isSegmentSkipped) {
-                item {
-                    TimeEdgesQuestion(
-                        "New time edges",
-                        selected = state.isSegmentDiffersFromScheduled,
-                        onOptionSelected = viewModel::toggleDifferFromScheduleStatus
-                    )
-                }
+            item {
+                SliderQuestion(
+                    questionTitleText = strings.fallAsleepEase,
+                    value = state.fallAsleepEaseLevel.toFloat(),
+                    onValueChange = viewModel::updateFallAsleepEaseLevel,
+                    startTextResource = strings.easeLow,
+                    neutralTextResource = strings.easeMiddle,
+                    endTextResource = strings.easeHigh
+                )
+            }
 
-                item {
-                    // 2 sliders
-                    SliderQuestion(
-                        questionTitleText = "Оцените легкость подъема",
-                        value = state.wakeApEaseLevel.toFloat(),
-                        onValueChange = viewModel::updateWakeUpEaseLevel,
-                        startTextResource = "Сложно",
-                        neutralTextResource = "Пойдёт",
-                        endTextResource = "Легко"
-                    )
-                }
-
-                item {
-                    SliderQuestion(
-                        questionTitleText = "Оцените легкость засыпания",
-                        value = state.fallAsleepEaseLevel.toFloat(),
-                        onValueChange = viewModel::updateFallAsleepEaseLevel,
-                        startTextResource = "Сложно",
-                        neutralTextResource = "Не знаю",
-                        endTextResource = "Легко"
-                    )
-                }
-
-                item {
-                    Textarea()
-                }
+            item {
+                Textarea()
             }
         }
     }
@@ -107,25 +137,24 @@ fun RateSegmentScreenContent(
 
 
 @Composable
-fun Textarea() {
-    val text = rememberSaveable { mutableStateOf("") }
+fun Textarea(modifier: Modifier = Modifier) {
+    var text by rememberSaveable { mutableStateOf("") }
     OutlinedTextField(
-        value = text.value,
+        value = text,
         onValueChange = {
-            text.value = it
+            text = it
         },
         label = {
             Text(
-                text = "Заметочка",
+                text = strings.note,
                 style = MaterialTheme.typography.bodyMedium,
             )
         },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         textStyle = MaterialTheme.typography.bodyMedium,
-        singleLine = true
+        singleLine = false
     )
-
 }
 
 @Composable

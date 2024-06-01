@@ -85,6 +85,7 @@ fun RealSegment(
 @Composable
 fun BaseSegment(
     segment: Segment,
+    color: Color = MaterialTheme.colorScheme.secondary,
     modifier: Modifier = Modifier,
 ) {
     var showText by remember {
@@ -94,7 +95,7 @@ fun BaseSegment(
         modifier = modifier
             .fillMaxSize()
             .padding(bottom = 2.dp)
-            .background(Color.Gray, shape = RoundedCornerShape(4.dp))
+            .background(color, shape = RoundedCornerShape(4.dp))
             .padding(4.dp)
             .onSizeChanged {
                 showText = it.height >= 50
@@ -107,7 +108,7 @@ fun BaseSegment(
                         timeFormatter
                     )
                 }",
-                color = getContrastColor(Color.Gray)
+                color = getContrastColor(color)
             )
         }
     }
