@@ -5,23 +5,25 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.lyricist.strings
+import io.github.aakira.napier.Napier
+import presentation.wtf.CUSTOM_TAG
 import java.time.*
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 
 @Composable
 fun DatePickerWithDialog(
     modifier: Modifier = Modifier,
+    onDayUpdate: (newDate: LocalDate) -> Unit,
     initialData: LocalDate = LocalDate.now()
 ) {
-    val dateState = rememberDatePickerState()
-    val millisToLocalDate = dateState.selectedDateMillis?.let {
-        DateUtils().convertMillisToLocalDate(it)
+    val datePickerState = rememberDatePickerState()
+    val selectedLocalDate = datePickerState.selectedDateMillis?.let {
+        convertMillisToLocalDate(it)
     }
-    val dateToString = millisToLocalDate?.let {
-        DateUtils().dateToString(millisToLocalDate)
-    } ?: initialData.toString()
+    val selectedDateInString = selectedLocalDate?.let {
+        selectedLocalDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
+    } ?: initialData.format(DateTimeFormatter.ISO_LOCAL_DATE)
 
     var showDialog by remember { mutableStateOf(false) }
 
@@ -31,7 +33,7 @@ fun DatePickerWithDialog(
         },
         enabled = true
     ) {
-        Text(text = dateToString, fontWeight = FontWeight.Bold)
+        Text(text = selectedDateInString, fontWeight = FontWeight.Bold)
     }
 
     if (showDialog) {
@@ -39,7 +41,14 @@ fun DatePickerWithDialog(
             onDismissRequest = { showDialog = false },
             confirmButton = {
                 TextButton(
-                    onClick = { showDialog = false }
+                    onClick = {
+                        showDialog = false
+                        if (datePickerState.selectedDateMillis != null) {
+                            onDayUpdate(convertMillisToLocalDate(datePickerState.selectedDateMillis!!))
+                        } else {
+                            Napier.d(tag = CUSTOM_TAG) { "[DatePickerWithDialog] nonsense! dateState.selectedDateMillis == null" }
+                        }
+                    }
                 ) {
                     Text(text = strings.ok)
                 }
@@ -53,7 +62,7 @@ fun DatePickerWithDialog(
             }
         ) {
             DatePicker(
-                state = dateState,
+                state = datePickerState,
                 showModeToggle = true
             )
         }
@@ -61,36 +70,9 @@ fun DatePickerWithDialog(
 }
 
 
-class DateUtils {
-
-    fun convertMillisToLocalDate(millis: Long): LocalDate {
-        return Instant
-            .ofEpochMilli(millis)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate()
-    }
-
-    private fun convertMillisToLocalDateWithFormatter(
-        date: LocalDate,
-        dateTimeFormatter: DateTimeFormatter
-    ): LocalDate {
-        //Convert the date to a long in millis using a dateformmater
-        val dateInMillis = LocalDate.parse(date.format(dateTimeFormatter), dateTimeFormatter)
-            .atStartOfDay(ZoneId.systemDefault())
-            .toInstant()
-            .toEpochMilli()
-
-        //Convert the millis to a localDate object
-        return Instant
-            .ofEpochMilli(dateInMillis)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate()
-    }
-
-
-    fun dateToString(date: LocalDate): String {
-        val dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", Locale.getDefault())
-        val dateInMillis = convertMillisToLocalDateWithFormatter(date, dateFormatter)
-        return dateFormatter.format(dateInMillis)
-    }
+fun convertMillisToLocalDate(millis: Long): LocalDate {
+    return Instant
+        .ofEpochMilli(millis)
+        .atZone(ZoneId.systemDefault())
+        .toLocalDate()
 }

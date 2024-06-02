@@ -61,7 +61,12 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    bottomSheetNavigator.show(RateSegmentScreen())
+                    bottomSheetNavigator.show(
+                        RateSegmentScreen(
+                            afterSavePressed = viewModel::updateReports,
+                            dailyScreenDay = state.selectedDay
+                        )
+                    )
                 },
             ) {
                 Icon(Icons.Filled.Add, "Floating action button.")

@@ -35,17 +35,17 @@ class AuthViewModel(
 
     public fun checkToken() {
         // todo check token
-        Napier.i(tag = "PitDev", message = "checking token")
+        Napier.d(tag = "PitDev", message = "checking token")
     }
 
     public fun login() {
         // todo perform login process
-        Napier.i(tag = "PitDev", message = "performing login")
+        Napier.d(tag = "PitDev", message = "performing login")
     }
 
     public fun register() {
         // todo perform register process
-        Napier.i(tag = "PitDev", message = "performing signup")
+        Napier.d(tag = "PitDev", message = "performing signup")
     }
 
 
@@ -65,7 +65,7 @@ class AuthViewModel(
 
 
     public fun onRetryNetwork() {
-        Napier.i(tag = "PitDev", message = "performing on retry network")
+        Napier.d(tag = "PitDev", message = "performing on retry network")
     }
 
 

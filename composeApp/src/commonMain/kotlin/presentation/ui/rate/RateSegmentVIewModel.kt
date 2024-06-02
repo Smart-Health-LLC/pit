@@ -25,11 +25,14 @@ data class SegmentRateInfo(
     val isFormComplete: Boolean = true
 )
 
-class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRepository) :
+class RateSegmentViewModel(
+    private val segmentReportRepository: SegmentReportRepository,
+    initialState: SegmentRateInfo
+) :
     ScreenModel {
     // todo get data about current segment
 
-    private val _state = MutableStateFlow(SegmentRateInfo())
+    private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
 
 
@@ -51,9 +54,10 @@ class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRep
         return false
     }
 
+
     private fun updateFormCompletionStatus() {
         if (!isSegmentCorrect()) {
-            Napier.i(tag = CUSTOM_TAG) { "meh" }
+            Napier.d(tag = CUSTOM_TAG) { "meh" }
             if (state.value.isFormComplete) {
                 _state.update {
                     it.copy(isFormComplete = false)
@@ -72,6 +76,14 @@ class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRep
     fun updateStartTime(newStartTime: LocalTime) {
         _state.update {
             it.copy(start = newStartTime)
+        }
+        updateFormCompletionStatus()
+    }
+
+
+    fun updateDay(newDay: LocalDate) {
+        _state.update {
+            it.copy(day = newDay)
         }
         updateFormCompletionStatus()
     }

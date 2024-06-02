@@ -24,10 +24,10 @@ class MainViewModel(
     )
 
     init {
-        Napier.i(tag = CUSTOM_TAG) { "here we go" }
+        Napier.d(tag = CUSTOM_TAG) { "here we go" }
         screenModelScope.launch {
             reportRepository.getReports().collect {
-                Napier.i(tag = CUSTOM_TAG) { it.toString() }
+                Napier.d(tag = CUSTOM_TAG) { it.toString() }
             }
         }
     }

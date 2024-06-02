@@ -11,23 +11,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.dokar.sonner.rememberToasterState
-import org.koin.compose.koinInject
+import io.github.aakira.napier.Napier
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 import presentation.component.DatePickerWithDialog
 import presentation.component.ToasterWrapper
 import presentation.ui.rate.question_type.SliderQuestion
 import presentation.ui.rate.question_type.TimeEdgesQuestion
+import presentation.wtf.CUSTOM_TAG
+import java.time.LocalDate
 
 
-class RateSegmentScreen : Screen {
+data class RateSegmentScreen(
+    val segmentRateInfo: SegmentRateInfo = SegmentRateInfo(),
+    val afterSavePressed: ((day: LocalDate) -> Unit)? = null,
+    // the day selected on the DailyStatsScreen
+    // needed to determine whether DailyStatsScreen should update reports right after saving new report or not
+    val dailyScreenDay: LocalDate = LocalDate.now()
+) : Screen,
+    KoinComponent {
     @Composable
     override fun Content() {
-        val viewModel: RateSegmentViewModel = koinInject()
-
-        val localNavigator = LocalNavigator.currentOrThrow
+        val viewModel: RateSegmentViewModel by inject { parametersOf(segmentRateInfo) }
 
         val state by viewModel.state.collectAsState()
 
@@ -45,7 +53,13 @@ class RateSegmentScreen : Screen {
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     // Date time picker
-                    DatePickerWithDialog(modifier = Modifier.align(Alignment.CenterStart))
+                    DatePickerWithDialog(
+                        modifier = Modifier.align(Alignment.CenterStart),
+                        initialData = state.day,
+                        onDayUpdate = {
+                            viewModel.updateDay(it)
+                        }
+                    )
                     BottomSheetDefaults.DragHandle(
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -55,6 +69,10 @@ class RateSegmentScreen : Screen {
                         onClick = {
                             viewModel.onSavePressed()
                             localBottomSheetNavigation.hide()
+                            if (state.day == dailyScreenDay && afterSavePressed != null) {
+                                Napier.d(tag = CUSTOM_TAG) { "so im gonna update this reports" }
+                                afterSavePressed.invoke(state.day)
+                            }
                         },
                         enabled = state.isFormComplete,
                     ) {

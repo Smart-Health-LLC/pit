@@ -15,9 +15,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.strings
+import com.dokar.sonner.rememberToasterState
 import org.koin.compose.koinInject
 import presentation.component.*
 import presentation.icon.AchievementIcon
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -115,18 +118,23 @@ fun HighProfileBlock() {
                 fontWeight = FontWeight.W500
             )
             Text(
-                strings.startedAt + "2023/01/23",
+                strings.startedAt + LocalDate.now().minusMonths(1)
+                    .format(DateTimeFormatter.ISO_LOCAL_DATE),
                 style = MaterialTheme.typography.labelLarge,
                 color = Color.LightGray,
                 modifier = Modifier.padding(start = 3.dp)
             )
         }
 
+        val toasterState = rememberToasterState { }
+        ToasterWrapper(toasterState)
+        val toasterMessage = strings.inDevelopment
         // Motivation button
-        Surface(
+        IconButton(
             onClick = {
-
-            }
+                toasterState.show(toasterMessage)
+            },
+            enabled = true
         ) {
             Icon(AchievementIcon, null, modifier = Modifier.size(25.dp))
         }

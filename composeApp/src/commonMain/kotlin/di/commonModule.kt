@@ -97,8 +97,8 @@ fun commonModule() = module {
     }
 
 
-    single<RateSegmentViewModel> {
-        RateSegmentViewModel(segmentReportRepository = get())
+    single<RateSegmentViewModel> { params ->
+        RateSegmentViewModel(segmentReportRepository = get(), initialState = params.get())
     }
 
     /**
