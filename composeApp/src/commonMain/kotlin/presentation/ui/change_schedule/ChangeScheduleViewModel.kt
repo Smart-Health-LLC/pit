@@ -2,7 +2,9 @@ package presentation.ui.change_schedule
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import domain.model.Segment
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.*
+import presentation.CUSTOM_TAG
 import presentation.component.getDurationBetween
 import presentation.ui.home.dualCore1
 import java.time.Duration
@@ -20,7 +22,8 @@ enum class ErrorCode {
     OVERLAP,
     HUGE_AWAKE_TIME,
     TST_STRONGLY_DIFFERS_FROM_BASE,
-    ANOMALY_LONG_SEGMENT
+    ANOMALY_LONG_SEGMENT,
+    SEGMENT_ZERO_DURATION
 }
 
 // that insanely stupid, because it is just fancy names for true\false but it easier to understand
@@ -50,27 +53,34 @@ class ChangeScheduleViewModel : ScreenModel {
 
     private fun validateSchedule() {
 
+        _screenState.value.editableSegments.forEach {
+            if (it.end == it.start) {
+                addError(ErrorCode.SEGMENT_ZERO_DURATION)
+                // no reason to check something else
+                return
+            }
+        }
+
+        removeError(ErrorCode.SEGMENT_ZERO_DURATION)
+
         // todo maybe separate checks into functions
         val sortedSegments = _screenState.value.editableSegments.sortedBy { it.start }
         val segmentsAmount = sortedSegments.size
 
         // check overlaps and clipped segments
-        var isOverlapsDetected = false
         for (i in sortedSegments.indices) {
             if (sortedSegments[i].end >= sortedSegments[(i + 1) % segmentsAmount].start) {
                 addError(ErrorCode.OVERLAP)
-                isOverlapsDetected = true
-                break
+                // if overlaps exists no reason to check anything else
+                return
             }
         }
 
-        if (!isOverlapsDetected) {
-            removeError(ErrorCode.OVERLAP)
-        }
+        removeError(ErrorCode.OVERLAP)
 
 
         // distance between segments detection
-        val maxWakeTime = Duration.ofHours(6)
+        val maxWakeTime = Duration.ofHours(10)
         var isHugeAwakeTimeDetected = false
 
         for (i in sortedSegments.indices) {
@@ -91,17 +101,17 @@ class ChangeScheduleViewModel : ScreenModel {
 
 
         // tst check
-        val baseTst: Duration = Duration.ZERO
+        var baseTst: Duration = Duration.ZERO
         _screenState.value.currentBaseSegments.forEach {
-            baseTst.plus(getDurationBetween(it.start, it.end))
+            baseTst = baseTst.plus(getDurationBetween(it.start, it.end))
         }
 
-        val newScheduleTst: Duration = Duration.ZERO
+        var newScheduleTst: Duration = Duration.ZERO
         _screenState.value.editableSegments.forEach {
-            newScheduleTst.plus(getDurationBetween(it.start, it.end))
+            newScheduleTst = newScheduleTst.plus(getDurationBetween(it.start, it.end))
         }
 
-        val allowedTstDifferenceInPercents = 10
+        val allowedTstDifferenceInPercents = 50
         if (
             abs(baseTst.toMinutes() - newScheduleTst.toMinutes()) /
             /* ------------------------------------------------- */
@@ -121,9 +131,10 @@ class ChangeScheduleViewModel : ScreenModel {
         for (i in sortedSegments.indices) {
             if (getDurationBetween(
                     sortedSegments[i].start,
-                    sortedSegments[(i + 1) % segmentsAmount].end
+                    sortedSegments[i].end
                 ) > maxSegmentDuration
             ) {
+                Napier.d(tag = CUSTOM_TAG) { "so im gonna tell about huge segment I found : " }
                 addError(ErrorCode.ANOMALY_LONG_SEGMENT)
                 isAnomalySegmentDurationDetected = true
                 break
@@ -145,10 +156,9 @@ class ChangeScheduleViewModel : ScreenModel {
                         newScheduleState = NewScheduleState.EDITED
                     )
                 }
-
-                return
-
             }
+
+            return
         }
 
         val sortedEditableSegments = _screenState.value.editableSegments.sortedBy { it.start }
@@ -175,7 +185,6 @@ class ChangeScheduleViewModel : ScreenModel {
 
         // now edited
         if (_screenState.value.newScheduleState != NewScheduleState.MATCH_CURRENT) { // don't update if already marked as matching current
-
             _screenState.update {
                 it.copy(
                     newScheduleState = NewScheduleState.MATCH_CURRENT
@@ -190,59 +199,79 @@ class ChangeScheduleViewModel : ScreenModel {
         if (_screenState.value.errors.contains(error)) {
             return
         } else {
-            _screenState.value.errors.add(error)
+            _screenState.update {
+                val savedList = it.errors.toMutableList()
+                savedList.add(error)
+                it.copy(
+                    errors = savedList
+                )
+            }
         }
     }
 
 
     private fun removeError(error: ErrorCode) {
-        _screenState.value.errors.removeAll(listOf(error))
+        _screenState.update {
+            val savedList = it.errors.toMutableList()
+            savedList.removeAll(listOf(error))
+            it.copy(
+                errors = savedList
+            )
+        }
     }
 
 
     fun updateSegmentStartTime(segment: Segment, newStartTime: LocalTime) {
-
         _screenState.update {
-            val indexSegment = it.editableSegments.indexOf(segment)
-            if (indexSegment != -1) {
-                it.editableSegments[indexSegment] =
-                    it.editableSegments[indexSegment].copy(start = newStartTime)
-            }
-            it
+            val segmentIndex = it.editableSegments.indexOf(segment)
+            val savedList = it.editableSegments.toMutableList()
+            savedList[segmentIndex] = it.editableSegments[segmentIndex].copy(
+                start = newStartTime
+            )
+            it.copy(
+                editableSegments = savedList
+            )
         }
+
+        validateSchedule()
+        determineWhetherScheduleEdited()
     }
 
     fun updateSegmentEndTime(segment: Segment, newEndTime: LocalTime) {
-
-        // i'll try indexOf() and set()
-        // and map and replace whole list
-
-        // try to use indexOf() and set()
         _screenState.update {
-            val indexSegment = it.editableSegments.indexOf(segment)
-            if (indexSegment != -1) {
-                it.editableSegments[indexSegment] =
-                    it.editableSegments[indexSegment].copy(end = newEndTime)
-            }
-            it
+            val segmentIndex = it.editableSegments.indexOf(segment)
+            val savedList = it.editableSegments.toMutableList()
+            savedList[segmentIndex] = it.editableSegments[segmentIndex].copy(
+                end = newEndTime
+            )
+
+            it.copy(
+                editableSegments = savedList
+            )
         }
+
         validateSchedule()
-//        editedSegment = _screenState.value.editableSegments.find { it.start == segment.start && it.end == segment.end }
+        determineWhetherScheduleEdited()
     }
 
     fun addSegment(segment: Segment) {
         _screenState.update {
-            it.editableSegments.add(segment)
-            it
+            val newSegments = it.editableSegments.toMutableList()
+            newSegments.add(segment)
+            it.copy(editableSegments = newSegments)
         }
         validateSchedule()
+        determineWhetherScheduleEdited()
     }
 
     fun deleteSegment(segment: Segment) {
         _screenState.update {
-            it.editableSegments.remove(segment)
-            it
+            val segmentIndex = it.editableSegments.indexOf(segment)
+            val savedList = it.editableSegments.toMutableList()
+            savedList.remove(segment)
+            it.copy(editableSegments = savedList)
         }
         validateSchedule()
+        determineWhetherScheduleEdited()
     }
 }

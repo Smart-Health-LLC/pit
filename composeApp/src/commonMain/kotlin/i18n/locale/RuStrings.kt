@@ -71,9 +71,10 @@ val RuStrings = Strings(
     errorDescriptionByCode = {
         when (it) {
             ErrorCode.OVERLAP -> "Сегменты пересекаются"
-            ErrorCode.TST_STRONGLY_DIFFERS_FROM_BASE -> "Время нового режима ощутимо меньше базового"
+            ErrorCode.TST_STRONGLY_DIFFERS_FROM_BASE -> "Общее время сна нового режима ощутимо отличается от базового"
             ErrorCode.HUGE_AWAKE_TIME -> "Между некоторыми сегментами расстояние больше 6 часов"
             ErrorCode.ANOMALY_LONG_SEGMENT -> "Один из сегментов чрезмерно долгий"
+            ErrorCode.SEGMENT_ZERO_DURATION -> "Один из сегментов заканчивается сразу как начался"
         }
     },
     rulesBroken = "Нарушены правила",

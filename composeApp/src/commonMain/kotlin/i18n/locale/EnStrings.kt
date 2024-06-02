@@ -69,9 +69,10 @@ val EnStrings = Strings(
     errorDescriptionByCode = {
         when (it) {
             ErrorCode.OVERLAP -> "Segments overlap"
-            ErrorCode.TST_STRONGLY_DIFFERS_FROM_BASE -> "The time of the new mode is perceptibly shorter than the base mode"
+            ErrorCode.TST_STRONGLY_DIFFERS_FROM_BASE -> "Total sleep time of the new schedule is perceptibly different than the base schedule"
             ErrorCode.HUGE_AWAKE_TIME -> "Some segments are more than 6 hours apart"
             ErrorCode.ANOMALY_LONG_SEGMENT -> "One of the segments is extremely long"
+            ErrorCode.SEGMENT_ZERO_DURATION -> "One of the segments ends in the moment of the start"
         }
     },
     rulesBroken = "Rules broken",

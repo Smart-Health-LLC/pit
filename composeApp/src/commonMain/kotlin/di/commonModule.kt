@@ -70,7 +70,7 @@ fun commonModule() = module {
         AdaptationStatsViewModel()
     }
 
-    single<DailyStatsViewModel> {
+    factory<DailyStatsViewModel> {
         DailyStatsViewModel(segmentReportRepository = get())
     }
 
@@ -80,7 +80,7 @@ fun commonModule() = module {
         )
     }
 
-    single<ChangeScheduleViewModel> {
+    factory<ChangeScheduleViewModel> {
         ChangeScheduleViewModel()
     }
 

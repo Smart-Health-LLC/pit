@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import cafe.adriel.lyricist.strings
 import domain.model.Segment
 import presentation.component.*
@@ -31,11 +32,14 @@ fun CreateSegmentDialog(
     }
 
     BasicAlertDialog(
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        ),
         onDismissRequest = onDismiss
     ) {
         Surface(
             modifier = modifier
-                .wrapContentWidth(),
+                .fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
             tonalElevation = AlertDialogDefaults.TonalElevation
         ) {

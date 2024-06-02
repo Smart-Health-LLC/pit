@@ -52,10 +52,11 @@ fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject(
         Column(
             modifier = Modifier
                 .padding(bottom = 20.dp)
+                .padding(top = 15.dp)
                 .padding(paddingValues = it)
         ) {
 
-            ScheduleComponent(state.editableSegments, 250, 120f)
+            ScheduleComponent(state.editableSegments, 320, 190f, useRandomColors = true)
             Spacer_12dp()
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
@@ -104,7 +105,7 @@ fun ControlPanel(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
         modifier = Modifier
-            .width(320.dp)
+//            .width(320.dp)
             .clip(MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.tertiaryContainer)
             .animateContentSize()
@@ -112,7 +113,9 @@ fun ControlPanel(
     ) {
 
         ControlItem(
-            onClick = onSave,
+            onClick = {
+                isAddNewDialogOpen = true
+            },
             icon = Icons.Outlined.Add,
             label = strings.add
         )
@@ -122,9 +125,9 @@ fun ControlPanel(
                 onClick = onSave,
                 icon = SaveIcon,
                 strings.save,
-                contentColor = Color.Green
             )
-        } else {
+        }
+        if (errorCodes.isNotEmpty()) {
             ControlItem(
                 onClick = {
                     isErrorsDialogOpen = true
@@ -138,7 +141,7 @@ fun ControlPanel(
 
     if (isErrorsDialogOpen) {
         ErrorMessagesDialog(
-            title = strings.errors,
+            title = strings.rulesBroken,
             messages = errorCodes.map { strings.errorDescriptionByCode(it) },
             onDismiss = { isErrorsDialogOpen = false }
         )
@@ -149,6 +152,7 @@ fun ControlPanel(
             title = strings.defineSegment,
             onCreate = {
                 onCreateSegment(it)
+                isAddNewDialogOpen = false
             },
             onDismiss = {
                 isAddNewDialogOpen = false
@@ -165,7 +169,7 @@ fun ControlItem(
     label: String,
     contentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer
 ) {
-    TextButton(
+    IconButton(
         modifier = Modifier.background(Color.Transparent),
         onClick = onClick,
         content = {
@@ -178,7 +182,7 @@ fun ControlItem(
                     contentDescription = null,
                     tint = contentColor,
                 )
-                Text(text = label, color = contentColor)
+//                Text(text = label, color = contentColor)
             }
         }
     )

@@ -1,5 +1,6 @@
 package presentation.component
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
@@ -12,6 +13,7 @@ import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.unit.dp
 import domain.model.Segment
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalTime
 
@@ -29,11 +31,21 @@ fun timeToGrad(time: LocalTime): Float {
     return grads.toFloat()
 }
 
+val randomColors = listOf(
+    Color.Red.copy(alpha = 0.4f),
+    Color.Blue.copy(alpha = 0.4f),
+    Color.Gray.copy(alpha = 0.4f),
+    Color.Green.copy(alpha = 0.4f),
+    Color.Yellow.copy(alpha = 0.4f),
+    Color.Cyan.copy(alpha = 0.4f),
+    Color.Magenta.copy(alpha = 0.4f),
+)
+
 /**
  * Returns segment duration in minutes taking into account that segment can belongs to different days
  */
 fun getDurationBetween(start: LocalTime, end: LocalTime): Duration {
-    return if (!start.isBefore(end)) {
+    val test = if (!start.isBefore(end)) {
         Duration
             .ofMinutes(
                 Duration.between(start, LocalTime.MAX).toMinutes() +
@@ -43,6 +55,7 @@ fun getDurationBetween(start: LocalTime, end: LocalTime): Duration {
     } else {
         Duration.between(start, end)
     }
+    return test
 }
 
 // todo add desktop foundation like and other stuff
@@ -62,6 +75,7 @@ fun ScheduleComponent(
     componentRadius: Int,
     strokeWidth: Float,
     showCurrentTime: Boolean = false,
+    useRandomColors: Boolean = false
 ) {
     var currentTime by remember { mutableStateOf(LocalTime.now()) }
     if (showCurrentTime) {
@@ -73,7 +87,21 @@ fun ScheduleComponent(
             }
         }
     }
+    val coroutineScope = rememberCoroutineScope()
 
+    // Creating animation
+    val animateFloat = remember { Animatable(0f) }
+
+    val stuff = mutableListOf<Animatable<Float, AnimationVector1D>>()
+
+    repeat(segments.size) {
+        stuff.add(remember { Animatable(0f) })
+    }
+
+    val colors = mutableListOf<Color>()
+    repeat(segments.size) {
+        colors.add(randomColors[it % randomColors.size])
+    }
 
     Canvas(
         modifier = Modifier
@@ -84,21 +112,52 @@ fun ScheduleComponent(
             size.width / 2 - componentRadius,
             size.height / 2 - componentRadius
         ) {
-            drawCircle(
-                color = backColor,
-                radius = componentRadius.toFloat(),
-                center = center,
-                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-            )
 
-            segments.forEach {
+            coroutineScope.launch {
+                animateFloat.animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(durationMillis = 80, easing = EaseIn)
+                )
+            }
+
+            drawCircle(
+                color = if (useRandomColors) backColor.copy(alpha = 0.08f) else backColor,
+                radius = componentRadius.toFloat() * animateFloat.value,
+                center = center,
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
+            )
+            if (useRandomColors) {
+                drawCircle(
+                    color = backColor.copy(alpha = 0.3f),
+                    radius = (componentRadius - strokeWidth / 2) * animateFloat.value,
+                    center = center,
+                    style = Stroke(width = 3f, cap = StrokeCap.Round),
+                )
+                drawCircle(
+                    color = backColor.copy(alpha = 0.3f),
+                    radius = (componentRadius + strokeWidth / 2) * animateFloat.value,
+                    center = center,
+                    style = Stroke(width = 3f, cap = StrokeCap.Round),
+                )
+            }
+
+            segments.forEachIndexed { index, it ->
+
                 val minutes = getDurationBetween(it.start, it.end).toMinutes()
+
+                coroutineScope.launch {
+                    stuff[index].animateTo(
+                        targetValue = 1f,
+                        animationSpec = tween(durationMillis = 120, easing = EaseIn)
+                    )
+
+                }
 
                 drawArc(
                     startAngle = timeToGrad(it.start),
-                    sweepAngle = timeToGrad(minutes),
+                    sweepAngle = timeToGrad(minutes) * stuff[index].value,
                     useCenter = false,
-                    color = frontColor,
+                    color = if (useRandomColors) colors[index] else frontColor,
                     style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
                 )
             }

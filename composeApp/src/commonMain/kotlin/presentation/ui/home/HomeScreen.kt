@@ -27,7 +27,6 @@ import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.*
 import presentation.component.*
 import presentation.extention.toFancyString
-import presentation.icon.BombIcon
 import presentation.theme.Inter
 import presentation.ui.change_schedule.ChangeScheduleScreen
 import java.time.*
@@ -175,36 +174,37 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                 Button(
                     onClick = {
                         localNavigator.push(ChangeScheduleScreen())
-                    }, modifier = Modifier.height(56.dp)
+                    }, modifier = Modifier.height(56.dp).wrapContentWidth()
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         contentDescription = null,
                         modifier = Modifier.size(ButtonDefaults.IconSize)
                     )
+                    Spacer_12dp()
                     Text(text = strings.changeSchedule)
                 }
 
             }
 
-            item {
-
-                // track a tiredness bomb
-                val toastMessage = strings.inDevelopment
-                Button(
-                    onClick = {
-                        toasterState.show(message = toastMessage)
-                    }, modifier = Modifier.height(56.dp)
-                ) {
-                    Icon(
-                        imageVector = BombIcon,
-                        contentDescription = null,
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
-                    )
-                    Spacer_8dp()
-                    Text(text = "Set tiredness bomb")
-                }
-            }
+//            item {
+//
+//                // track a tiredness bomb
+//                val toastMessage = strings.inDevelopment
+//                Button(
+//                    onClick = {
+//                        toasterState.show(message = toastMessage)
+//                    }, modifier = Modifier.height(56.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = BombIcon,
+//                        contentDescription = null,
+//                        modifier = Modifier.size(ButtonDefaults.IconSize)
+//                    )
+//                    Spacer_8dp()
+//                    Text(text = "Set tiredness bomb")
+//                }
+//            }
         }
     }
 }
