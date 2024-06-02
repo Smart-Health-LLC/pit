@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.strings
-import presentation.theme.Inter
+import presentation.theme.FiraCode
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,7 +79,7 @@ fun DialogTimePickerByButton(
             ),
             style = MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = Inter()
+            fontFamily = FiraCode()
         )
     }
 }

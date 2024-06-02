@@ -212,6 +212,7 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
 
 @Composable
 fun InfoUnit(icon: DrawableResource, title: String, value: String, iconColor: Color) {
+    Typography().bodyLarge
     Column(horizontalAlignment = Alignment.Start) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
