@@ -17,11 +17,11 @@ import io.github.aakira.napier.Napier
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import presentation.CUSTOM_TAG
 import presentation.component.DatePickerWithDialog
 import presentation.component.ToasterWrapper
 import presentation.ui.rate.question_type.SliderQuestion
 import presentation.ui.rate.question_type.TimeEdgesQuestion
-import presentation.wtf.CUSTOM_TAG
 import java.time.LocalDate
 
 

@@ -8,7 +8,7 @@ import i18n.*
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import presentation.wtf.CUSTOM_TAG
+import presentation.CUSTOM_TAG
 
 class MainViewModel(
     private val settingsRepository: SettingsRepository,

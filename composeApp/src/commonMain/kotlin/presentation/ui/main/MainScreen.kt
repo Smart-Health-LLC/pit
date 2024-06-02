@@ -9,7 +9,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.tab.*
 import presentation.component.MainNavigationRail
 
@@ -37,7 +36,8 @@ class MainScreen : Screen {
                             MainTabs.SettingsTab,
                         ),
                     )
-                    CurrentScreen()
+//                    CurrentScreen()
+                    CurrentTab()
                 }
             } else {
                 Scaffold(
@@ -48,7 +48,8 @@ class MainScreen : Screen {
                                 .padding(top = 15.dp)
                                 .padding(horizontal = 15.dp)
                         ) {
-                            CurrentScreen()
+//                            CurrentScreen()
+                            CurrentTab()
                         }
                     },
                     bottomBar = {

@@ -4,6 +4,7 @@ import cafe.adriel.lyricist.LanguageTag
 import cafe.adriel.lyricist.Lyricist
 import i18n.locale.EnStrings
 import i18n.locale.RuStrings
+import presentation.ui.change_schedule.ErrorCode
 
 data class Strings(
     val startedAt: String,
@@ -60,7 +61,14 @@ data class Strings(
     val lack: String,
     val excess: String,
     val graphEase: String,
-    val chooseDate: String
+    val chooseDate: String,
+    val add: String,
+    val delete: String,
+    val warnings: String,
+    val errors: String,
+    val errorDescriptionByCode: (code: ErrorCode) -> String,
+    val rulesBroken: String,
+    val defineSegment: String
 )
 
 val TagToStringsMapper: Map<LanguageTag, Strings> = mapOf(

@@ -11,7 +11,7 @@ import io.ktor.client.plugins.observer.ResponseObserver
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import presentation.wtf.CUSTOM_TAG
+import presentation.CUSTOM_TAG
 
 const val HTTP_TIMEOUT = 60000L
 const val REFRESH_TOKEN_ROUTE = "/refresh-token"

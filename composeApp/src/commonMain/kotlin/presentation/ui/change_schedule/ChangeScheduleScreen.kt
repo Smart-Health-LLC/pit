@@ -1,21 +1,26 @@
 package presentation.ui.change_schedule
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
-import com.dokar.sonner.rememberToasterState
 import domain.model.Segment
 import org.koin.compose.koinInject
-import presentation.component.DialogTimePickerByButton
-import presentation.component.ToasterWrapper
-import presentation.icon.ArrowRightIcon
-import java.time.LocalTime
+import presentation.component.*
+import presentation.icon.SaveIcon
 
 class ChangeScheduleScreen : Screen {
     @Composable
@@ -27,88 +32,154 @@ class ChangeScheduleScreen : Screen {
 
 @Composable
 fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject()) {
-
-    // todo fix notification
     val state by viewModel.screenState.collectAsState()
+    // todo maybe add error toaster
 
-
-    val toasterState = rememberToasterState(onToastDismissed = {
-//            viewModel.updateToastState(false)
-    })
-    ToasterWrapper(toasterState)
-    val showToaster = viewModel.toastState.collectAsState().value
-//        toasterState.li
-    if (showToaster) {
-        toasterState.show("shit happends")
-    }
-
-
-    Column(
-        modifier = Modifier
-            .padding(vertical = 20.dp)
-            .padding(horizontal = 15.dp)
+    Scaffold(
+        topBar = {},
+        bottomBar = {},
+        floatingActionButton = {
+            // floating action block
+            ControlPanel(
+                errorCodes = state.errors,
+                onCreateSegment = viewModel::addSegment,
+                onSave = viewModel::updateSchedule,
+                newScheduleState = state.newScheduleState
+            )
+        },
+        floatingActionButtonPosition = FabPosition.Center
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 25.dp), horizontalArrangement = Arrangement.SpaceBetween
+                .padding(bottom = 20.dp)
+                .padding(paddingValues = it)
         ) {
-            Button(onClick = { viewModel.updateSchedule() }) {
-                Text(text = "Save")
+
+            ScheduleComponent(state.editableSegments, 250, 120f)
+            Spacer_12dp()
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+
+                // time edges components
+                state.editableSegments.forEach { segment ->
+                    item {
+                        SegmentTimeEdges(
+                            segment = segment,
+                            updateSegmentEnd = { newTime ->
+                                viewModel.updateSegmentEndTime(segment, newTime)
+                            },
+                            updateSegmentStart = { newTime ->
+                                viewModel.updateSegmentStartTime(segment, newTime)
+                            },
+                            onDelete = {
+                                viewModel.deleteSegment(segment)
+                            }
+                        )
+                    }
+                }
+
+                // padding to be able to scroll in the bottom and see last item even with floating action block
+                item {
+                    Spacer(modifier = Modifier.padding(40.dp))
+                }
             }
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                onClick = { /* TODO */ }) {
-                Text(text = "Warnings")
-            }
-            Button(onClick = { /* TODO check if the specified interval not conflict with existing ones */ }) {
-                Text(text = "Add")
-            }
-        }
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(25.dp),
-        ) {
-//            item {
-//                var index = 0
-//                schedule.segments.forEach {
-//                    index += 1
-//                    SegmentItem(
-//                        index,
-//                        it,
-//                        viewModel::updateSegmentStartTime,
-//                        viewModel::updateSegmentEndTime,
-//                    )
-//                    Spacer(modifier = Modifier.padding(12.dp))
-//                }
-//            }
         }
     }
 }
 
 
 @Composable
-fun SegmentItem(
-    segment: Segment,
-    updateSegmentStart: (time: LocalTime) -> Unit,
-    updateSegmentEnd: (time: LocalTime) -> Unit,
+fun ControlPanel(
+    errorCodes: List<ErrorCode>,
+    onCreateSegment: (newSegment: Segment) -> Unit,
+    onSave: () -> Unit,
+    newScheduleState: NewScheduleState
 ) {
+    var isErrorsDialogOpen by remember { mutableStateOf(false) }
+    var isAddNewDialogOpen by remember { mutableStateOf(false) }
+
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier
+            .width(320.dp)
+            .clip(MaterialTheme.shapes.large)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .animateContentSize()
+            .padding(horizontal = 16.dp, vertical = 10.dp) // standard FAB m3 padding
     ) {
-        DialogTimePickerByButton(true, segment.start, updateSegmentStart)
-        Icon(
-            imageVector = ArrowRightIcon,
-            contentDescription = null,
-            modifier = Modifier.size(35.dp)
+
+        ControlItem(
+            onClick = onSave,
+            icon = Icons.Outlined.Add,
+            label = strings.add
         )
-        DialogTimePickerByButton(true, segment.end, updateSegmentEnd)
+
+        if (errorCodes.isEmpty() && newScheduleState == NewScheduleState.EDITED) {
+            ControlItem(
+                onClick = onSave,
+                icon = SaveIcon,
+                strings.save,
+                contentColor = Color.Green
+            )
+        } else {
+            ControlItem(
+                onClick = {
+                    isErrorsDialogOpen = true
+                },
+                icon = Icons.Outlined.Warning,
+                label = strings.errors,
+                contentColor = MaterialTheme.colorScheme.error
+            )
+        }
+    }
+
+    if (isErrorsDialogOpen) {
+        ErrorMessagesDialog(
+            title = strings.errors,
+            messages = errorCodes.map { strings.errorDescriptionByCode(it) },
+            onDismiss = { isErrorsDialogOpen = false }
+        )
+    }
+
+    if (isAddNewDialogOpen) {
+        CreateSegmentDialog(
+            title = strings.defineSegment,
+            onCreate = {
+                onCreateSegment(it)
+            },
+            onDismiss = {
+                isAddNewDialogOpen = false
+            }
+        )
     }
 }
 
 
+@Composable
+fun ControlItem(
+    onClick: () -> Unit,
+    icon: ImageVector,
+    label: String,
+    contentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer
+) {
+    TextButton(
+        modifier = Modifier.background(Color.Transparent),
+        onClick = onClick,
+        content = {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint = contentColor,
+                )
+                Text(text = label, color = contentColor)
+            }
+        }
+    )
+}

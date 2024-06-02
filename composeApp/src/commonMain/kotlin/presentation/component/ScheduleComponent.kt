@@ -10,13 +10,14 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.unit.dp
-import domain.model.Schedule
+import domain.model.Segment
 import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.LocalTime
 
 const val minuteInGrad = 0.25
 const val startPosInGrads = 270
+
 val backColor = Color(0xff91C3FF)
 val frontColor = Color(0xff3775D2)
 
@@ -26,6 +27,22 @@ fun timeToGrad(time: LocalTime): Float {
     if (grads >= 360)
         grads -= 360
     return grads.toFloat()
+}
+
+/**
+ * Returns segment duration in minutes taking into account that segment can belongs to different days
+ */
+fun getDurationBetween(start: LocalTime, end: LocalTime): Duration {
+    return if (!start.isBefore(end)) {
+        Duration
+            .ofMinutes(
+                Duration.between(start, LocalTime.MAX).toMinutes() +
+                        Duration.between(LocalTime.MIN, end).toMinutes()
+                        + 1
+            )
+    } else {
+        Duration.between(start, end)
+    }
 }
 
 // todo add desktop foundation like and other stuff
@@ -38,21 +55,14 @@ fun timeToGrad(minutes: Long): Float {
     return grads.toFloat()
 }
 
-@Composable
-fun minutesLeft(updateIntervalMinutes: Long) {
-
-}
-
 
 @Composable
 fun ScheduleComponent(
-    schedule: Schedule,
+    segments: List<Segment>,
     componentRadius: Int,
     strokeWidth: Float,
-    showCurrentTime: Boolean = false
+    showCurrentTime: Boolean = false,
 ) {
-    val scheduleState = remember { schedule }
-
     var currentTime by remember { mutableStateOf(LocalTime.now()) }
     if (showCurrentTime) {
         val updateIntervalMinutes = 5L
@@ -81,18 +91,9 @@ fun ScheduleComponent(
                 style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
             )
 
-            scheduleState.segments.forEach {
-                val minutes: Long
-                if (!it.start.isBefore(it.end)) {
-                    minutes =
-                        Duration.between(it.start, LocalTime.MAX).toMinutes() + Duration.between(
-                            LocalTime.MIN,
-                            it.end
-                        ).toMinutes() + 1
-                } else {
-                    val duration = Duration.between(it.start, it.end)
-                    minutes = duration.toMinutes()
-                }
+            segments.forEach {
+                val minutes = getDurationBetween(it.start, it.end).toMinutes()
+
                 drawArc(
                     startAngle = timeToGrad(it.start),
                     sweepAngle = timeToGrad(minutes),
@@ -108,53 +109,6 @@ fun ScheduleComponent(
                     sweepAngle = timeToGrad(5),
                     useCenter = false,
                     color = Color.Red,
-                    style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
-                )
-            }
-        }
-    }
-}
-
-// WARNING: mega huge stooopido copy-paste detected. Call that guy dumb
-@Composable
-fun StaticScheduleComponent(
-    schedule: Schedule,
-    componentRadius: Int,
-    strokeWidth: Float
-) {
-    Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .requiredHeight(componentRadius.dp)
-    ) {
-        inset(
-            size.width / 2 - componentRadius,
-            size.height / 2 - componentRadius
-        ) {
-            drawCircle(
-                color = backColor,
-                radius = componentRadius.toFloat(),
-                center = center,
-                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-            )
-
-            schedule.segments.forEach {
-                val minutes: Long
-                if (!it.start.isBefore(it.end)) {
-                    minutes =
-                        Duration.between(it.start, LocalTime.MAX).toMinutes() + Duration.between(
-                            LocalTime.MIN,
-                            it.end
-                        ).toMinutes() + 1
-                } else {
-                    val duration = Duration.between(it.start, it.end)
-                    minutes = duration.toMinutes()
-                }
-                drawArc(
-                    startAngle = timeToGrad(it.start),
-                    sweepAngle = timeToGrad(minutes),
-                    useCenter = false,
-                    color = frontColor,
                     style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
                 )
             }

@@ -29,6 +29,7 @@ import presentation.component.*
 import presentation.extention.toFancyString
 import presentation.icon.BombIcon
 import presentation.theme.Inter
+import presentation.ui.change_schedule.ChangeScheduleScreen
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -102,7 +103,7 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                 .fillMaxWidth()
                 .padding(vertical = 20.dp), contentAlignment = Alignment.Center
         ) {
-            ScheduleComponent(schedule, 350, 170f, showCurrentTime = true)
+            ScheduleComponent(schedule.segments, 350, 170f, showCurrentTime = true)
         }
 
 
@@ -154,13 +155,11 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
 
         Spacer_16dp()
 
-
         // Action buttons
 
         val toasterState = rememberToasterState()
 
         ToasterWrapper(toasterState)
-
 
         // button - edit schedule
         LazyVerticalGrid(
@@ -172,11 +171,10 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                 .fillMaxWidth()
         ) {
             item {
-
                 // change schedule
                 Button(
                     onClick = {
-//                        localNavigator.push(ChangeScheduleScreen(schedule, viewModel))
+                        localNavigator.push(ChangeScheduleScreen())
                     }, modifier = Modifier.height(56.dp)
                 ) {
                     Icon(

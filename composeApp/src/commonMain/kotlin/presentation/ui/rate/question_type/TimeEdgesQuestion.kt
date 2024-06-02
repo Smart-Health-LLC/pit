@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import presentation.ui.change_schedule.SegmentItem
+import presentation.component.SegmentTimeEdges
 import java.time.LocalTime
 
 @Composable
@@ -33,10 +33,10 @@ fun TimeEdgesQuestion(
                 .padding(horizontal = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SegmentItem(
+            SegmentTimeEdges(
                 segment = domain.model.Segment(start, end),
-                updateSegmentStart,
-                updateSegmentEnd
+                updateSegmentStart = updateSegmentStart,
+                updateSegmentEnd = updateSegmentEnd
             )
         }
     }

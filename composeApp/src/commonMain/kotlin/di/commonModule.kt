@@ -17,7 +17,6 @@ import presentation.ui.change_schedule.ChangeScheduleViewModel
 import presentation.ui.daily_stats.DailyStatsViewModel
 import presentation.ui.home.HomeViewModel
 import presentation.ui.main.MainViewModel
-import presentation.ui.onboarding.OnboardingViewModel
 import presentation.ui.rate.RateSegmentViewModel
 import presentation.ui.settings.SettingsViewModel
 
@@ -75,12 +74,6 @@ fun commonModule() = module {
         DailyStatsViewModel(segmentReportRepository = get())
     }
 
-    single<OnboardingViewModel> {
-        OnboardingViewModel(
-            settingsRepository = get(),
-        )
-    }
-
     single<SettingsViewModel> {
         SettingsViewModel(
             settingsRepository = get(),
@@ -124,7 +117,6 @@ fun commonModule() = module {
     single<ActiveScheduleRepository> {
         ActiveScheduleRepositoryImpl(pitDatabase = get())
     }
-
 }
 
 

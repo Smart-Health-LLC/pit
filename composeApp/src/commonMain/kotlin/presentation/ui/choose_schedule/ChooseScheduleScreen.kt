@@ -10,7 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import domain.model.Schedule
-import presentation.component.StaticScheduleComponent
+import presentation.component.ScheduleComponent
+import presentation.component.Spacer_16dp
 import presentation.ui.home.*
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -74,9 +75,8 @@ private fun CategoryItem(
                 .fillMaxWidth()
                 .padding(vertical = 24.dp),
         ) {
-            StaticScheduleComponent(category, 100, 50f)
-//            Image(imageVector = Icons.Outlined.Person, contentDescription = "asht")
-            Spacer(modifier = Modifier.height(16.dp))
+            ScheduleComponent(category.segments, 100, 50f)
+            Spacer_16dp()
             Text(text = category.name)
         }
     }

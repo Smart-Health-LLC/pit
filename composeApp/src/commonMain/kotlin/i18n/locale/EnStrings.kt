@@ -3,6 +3,7 @@ package i18n.locale
 import cafe.adriel.lyricist.LyricistStrings
 import i18n.Locales
 import i18n.Strings
+import presentation.ui.change_schedule.ErrorCode
 
 @LyricistStrings(languageTag = Locales.EN, default = true)
 val EnStrings = Strings(
@@ -60,5 +61,19 @@ val EnStrings = Strings(
     lack = "Lack",
     excess = "Excess",
     graphEase = "Adaptation ease",
-    chooseDate = "Choose date"
+    chooseDate = "Choose date",
+    add = "Add",
+    delete = "Delete",
+    warnings = "Warnings",
+    errors = "Errors",
+    errorDescriptionByCode = {
+        when (it) {
+            ErrorCode.OVERLAP -> "Segments overlap"
+            ErrorCode.TST_STRONGLY_DIFFERS_FROM_BASE -> "The time of the new mode is perceptibly shorter than the base mode"
+            ErrorCode.HUGE_AWAKE_TIME -> "Some segments are more than 6 hours apart"
+            ErrorCode.ANOMALY_LONG_SEGMENT -> "One of the segments is extremely long"
+        }
+    },
+    rulesBroken = "Rules broken",
+    defineSegment = "Define segment"
 )

@@ -7,7 +7,7 @@ import domain.repository.SegmentReportRepository
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import presentation.wtf.CUSTOM_TAG
+import presentation.CUSTOM_TAG
 import java.time.*
 
 data class SegmentRateInfo(

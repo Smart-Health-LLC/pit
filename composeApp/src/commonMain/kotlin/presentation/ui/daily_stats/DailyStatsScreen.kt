@@ -3,6 +3,7 @@ package presentation.ui.daily_stats
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -10,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
+import com.dokar.sonner.rememberToasterState
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import pit.composeapp.generated.resources.Res
@@ -42,6 +45,7 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
     /**
      * Update week days to display on the stripe
      */
+    // todo move it to view model and connect to calendar picker
     fun updateWeek(selectedDate: LocalDate): List<LocalDate> {
         // if new week on day selection - refresh week info
         // set selected day in the middle of the stripe
@@ -53,23 +57,40 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
         return displayDays
     }
 
+    val toasterState = rememberToasterState { }
+    ToasterWrapper(toasterState)
+    val toasterMessage = strings.inDevelopment
+
 
     val bottomSheetNavigator = LocalBottomSheetNavigator.current
 
     Scaffold(
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    bottomSheetNavigator.show(
-                        RateSegmentScreen(
-                            afterSavePressed = viewModel::updateReports,
-                            dailyScreenDay = state.selectedDay
+            Column(horizontalAlignment = Alignment.End) {
+                SmallFloatingActionButton(
+                    onClick = {
+                        toasterState.show(toasterMessage)
+                    },
+                ) {
+                    Icon(Icons.Outlined.Info, "Floating action button.")
+                }
+
+
+
+                Spacer_12dp()
+                FloatingActionButton(
+                    onClick = {
+                        bottomSheetNavigator.show(
+                            RateSegmentScreen(
+                                afterSavePressed = viewModel::updateReports,
+                                dailyScreenDay = state.selectedDay
+                            )
                         )
-                    )
-                },
-            ) {
-                Icon(Icons.Filled.Add, "Floating action button.")
+                    },
+                ) {
+                    Icon(Icons.Filled.Add, "Floating action button.")
+                }
             }
         }
     ) {
@@ -84,6 +105,7 @@ fun DailyStatsScreenContent(viewModel: DailyStatsViewModel = koinInject()) {
                     onDaySelected = { newDay -> viewModel.updateReports(newDay) })
                 DayOverview(
                     baseSegments = dualCore1.segments,
+                    // todo fix the situation when this day overwiev con
                     realSegments = state.dayReports
                 )
             }

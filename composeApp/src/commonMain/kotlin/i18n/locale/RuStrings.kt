@@ -3,6 +3,7 @@ package i18n.locale
 import cafe.adriel.lyricist.LyricistStrings
 import i18n.Locales
 import i18n.Strings
+import presentation.ui.change_schedule.ErrorCode
 
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -62,5 +63,19 @@ val RuStrings = Strings(
     lack = "Недостаток",
     excess = "Избыток",
     graphEase = "Лёгкость",
-    chooseDate = "Выберите дату"
+    chooseDate = "Выберите дату",
+    add = "Добавить",
+    delete = "Удалить",
+    warnings = "Предупреждения",
+    errors = "Ошибки",
+    errorDescriptionByCode = {
+        when (it) {
+            ErrorCode.OVERLAP -> "Сегменты пересекаются"
+            ErrorCode.TST_STRONGLY_DIFFERS_FROM_BASE -> "Время нового режима ощутимо меньше базового"
+            ErrorCode.HUGE_AWAKE_TIME -> "Между некоторыми сегментами расстояние больше 6 часов"
+            ErrorCode.ANOMALY_LONG_SEGMENT -> "Один из сегментов чрезмерно долгий"
+        }
+    },
+    rulesBroken = "Нарушены правила",
+    defineSegment = "Определите сегмент"
 )

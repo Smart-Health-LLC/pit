@@ -73,6 +73,7 @@ flowchart TB
 - Nothing worse imo than create "util" folder with bunch of general shit. That's better to honestly
   say "idk wft located here but I need this", so unless project structure is forming, "wtf" packages
   exists :(
+- Prefer named arguments on function call
 
 # Dependencies overview
 
@@ -81,9 +82,6 @@ flowchart TB
 - Settings multiplatform
     - I found more examples with that, later probably better to use data store
 - Voyager
-    - Maybe future migration
-      to [androidx.lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle) and
-      compose-navigation
 - Koin
 - SQLDelight
 - Lyricist

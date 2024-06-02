@@ -21,6 +21,7 @@ import domain.model.Segment
 import domain.model.SegmentReport
 import kotlinx.coroutines.delay
 import presentation.theme.Inter
+import presentation.timeFormatter
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
@@ -33,6 +34,7 @@ import kotlin.math.roundToInt
 @Composable
 fun RealSegment(
     segmentReport: SegmentReport,
+//    onSegmentClick: (segmentReport: SegmentReport) -> Unit,
     color: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier,
 ) {
@@ -49,7 +51,7 @@ fun RealSegment(
                 showText = it.height >= 100
             }
             .clickable {
-                println("clicked $segmentReport")
+//                onSegmentClick(segmentReport)
             }
     ) {
         val textColor = getContrastColor(color)
@@ -85,6 +87,7 @@ fun RealSegment(
 @Composable
 fun BaseSegment(
     segment: Segment,
+//    onSegmentClick: (report: SegmentReport) -> Unit,
     color: Color = MaterialTheme.colorScheme.secondary,
     modifier: Modifier = Modifier,
 ) {
@@ -99,6 +102,9 @@ fun BaseSegment(
             .padding(4.dp)
             .onSizeChanged {
                 showText = it.height >= 50
+            }
+            .clickable {
+//                onSegmentClick(segment.toSegmentReport())
             }
     ) {
         if (showText) {
@@ -125,10 +131,14 @@ fun BaseSegment(
 fun DayOverview(
     modifier: Modifier = Modifier,
 
+    // Tap interaction with segments
+    onSegmentClick: () -> Unit = {},
+    onBaseSegmentClick: () -> Unit = {},
+
+    // Today indicator
     todayIndicatorColor: Color = MaterialTheme.colorScheme.onSurface,
     showTodayIndicator: Boolean = true,
 
-    // todo extract defaults to config file
     columnPadding: Dp = 4.dp,
     gridColor: Color = MaterialTheme.colorScheme.outlineVariant,
 
@@ -376,13 +386,9 @@ fun DayOverview(
             val baseSegmentsColumnOffsetX =
                 (constraints.maxWidth * realSegmentsColumnWidthInPercents / 100).toInt()
 
-            fun placeHourLabels() {
-
-            }
-
             // Place hour labels
             startTime = LocalTime.of(1, 0)
-            hourPlaceables.forEachIndexed() { i, placeable ->
+            hourPlaceables.forEachIndexed { i, placeable ->
                 val segmentOffsetMinutes =
                     ChronoUnit.MINUTES.between(LocalTime.MIN, startTime.plusHours(i.toLong()))
 

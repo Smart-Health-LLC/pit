@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.lyricist.strings
 import io.github.aakira.napier.Napier
-import presentation.wtf.CUSTOM_TAG
+import presentation.CUSTOM_TAG
 import java.time.*
 import java.time.format.DateTimeFormatter
 
