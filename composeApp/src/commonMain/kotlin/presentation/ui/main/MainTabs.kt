@@ -37,7 +37,7 @@ sealed class MainTabs {
             @Composable
             get() {
                 val title = "Home"
-                val icon = painterResource(Res.drawable.space_dashboard_24px)
+                val icon = painterResource(Res.drawable.ic_data_exploration_24px)
 
                 return remember {
                     TabOptions(
@@ -62,7 +62,7 @@ sealed class MainTabs {
         override val options: TabOptions
             @Composable
             get() {
-                val title = "Statistics"
+                val title = "Adaptation"
                 val icon = painterResource(Res.drawable.ic_data_exploration_24px)
 
                 return remember {
@@ -89,7 +89,7 @@ sealed class MainTabs {
         override val options: TabOptions
             @Composable
             get() {
-                val title = "Notes"
+                val title = "DailyStats"
                 val icon = painterResource(Res.drawable.ic_note_alt_24px)
 
                 return remember {

@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import presentation.icon.SleepSegmentIcon
-import presentation.ui.adaptation_stats.generateRandomEaseLevel
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 

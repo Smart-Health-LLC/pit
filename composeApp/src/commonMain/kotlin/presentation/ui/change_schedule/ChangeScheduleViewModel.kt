@@ -69,6 +69,10 @@ class ChangeScheduleViewModel : ScreenModel {
 
         // check overlaps and clipped segments
         for (i in sortedSegments.indices) {
+            // if the last segment belongs to just one current day, no checks on overlaps needed anymore
+            if (i == segmentsAmount - 1 && sortedSegments[i].start < sortedSegments[i].end) {
+                break
+            }
             if (sortedSegments[i].end >= sortedSegments[(i + 1) % segmentsAmount].start) {
                 addError(ErrorCode.OVERLAP)
                 // if overlaps exists no reason to check anything else
@@ -266,7 +270,6 @@ class ChangeScheduleViewModel : ScreenModel {
 
     fun deleteSegment(segment: Segment) {
         _screenState.update {
-            val segmentIndex = it.editableSegments.indexOf(segment)
             val savedList = it.editableSegments.toMutableList()
             savedList.remove(segment)
             it.copy(editableSegments = savedList)

@@ -19,7 +19,8 @@ import java.time.format.DateTimeFormatter
 fun DaySleepOverviewComponent() {
     OutlinedCard(
         modifier = Modifier
-            .size(width = 340.dp, height = 122.dp)
+            .height(122.dp)
+            .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier

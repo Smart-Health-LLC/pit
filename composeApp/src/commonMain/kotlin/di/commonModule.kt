@@ -12,7 +12,6 @@ import domain.usecase.LoginUseCase
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import platform.LocalDatabaseDriverFactory
-import presentation.ui.adaptation_stats.AdaptationStatsViewModel
 import presentation.ui.change_schedule.ChangeScheduleViewModel
 import presentation.ui.daily_stats.DailyStatsViewModel
 import presentation.ui.home.HomeViewModel
@@ -66,15 +65,11 @@ fun commonModule() = module {
         )
     }
 
-    single<AdaptationStatsViewModel> {
-        AdaptationStatsViewModel()
-    }
-
     factory<DailyStatsViewModel> {
         DailyStatsViewModel(segmentReportRepository = get())
     }
 
-    single<SettingsViewModel> {
+    factory<SettingsViewModel> {
         SettingsViewModel(
             settingsRepository = get(),
         )
@@ -85,7 +80,7 @@ fun commonModule() = module {
     }
 
 
-    single<HomeViewModel> {
+    factory<HomeViewModel> {
         HomeViewModel(get())
     }
 

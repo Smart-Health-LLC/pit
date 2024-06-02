@@ -32,7 +32,7 @@ class MainScreen : Screen {
                         navRailItems = listOf(
                             MainTabs.HomeTab,
                             MainTabs.DailyStatsTab,
-                            MainTabs.AdaptationStatsTab,
+//                            MainTabs.AdaptationStatsTab,
                             MainTabs.SettingsTab,
                         ),
                     )
@@ -56,7 +56,7 @@ class MainScreen : Screen {
                         NavigationBar()
                         {
                             TabNavigationItem(MainTabs.HomeTab)
-                            TabNavigationItem(MainTabs.AdaptationStatsTab)
+//                            TabNavigationItem(MainTabs.AdaptationStatsTab)
                             TabNavigationItem(MainTabs.DailyStatsTab)
                             TabNavigationItem(MainTabs.SettingsTab)
                         }

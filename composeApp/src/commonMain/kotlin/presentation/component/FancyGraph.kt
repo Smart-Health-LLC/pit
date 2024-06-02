@@ -1,9 +1,10 @@
-package presentation.ui.adaptation_stats
+package presentation.component
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +14,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 import kotlin.random.Random
@@ -203,3 +205,24 @@ val fallAsleepLevelsData = listOf(
 
 data class MetricLevel(val date: LocalDate, val value: Float)
 data class Point(val x: Float, val y: Float)
+
+
+@Composable
+fun GraphLegendItem(name: String, color: Color, colorSize: Dp) {
+    Row {
+        FilledCircle(color, colorSize)
+        Spacer_4dp()
+        Text(text = name, style = MaterialTheme.typography.labelSmall)
+    }
+}
+
+@Composable
+fun FilledCircle(color: Color, sizeCircle: Dp) {
+    androidx.compose.foundation.Canvas(modifier = Modifier.size(sizeCircle)) {
+        drawCircle(
+            color = color,
+            radius = size.minDimension / 2,
+            style = Fill
+        )
+    }
+}
