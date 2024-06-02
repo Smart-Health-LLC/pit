@@ -12,6 +12,7 @@ fun ToasterWrapper(state: ToasterState) {
         state = state,
         maxVisibleToasts = 1,
         alignment = Alignment.TopCenter,
-        darkTheme = isSystemInDarkTheme()
+        darkTheme = isSystemInDarkTheme(),
+        swipeable = true
     )
 }

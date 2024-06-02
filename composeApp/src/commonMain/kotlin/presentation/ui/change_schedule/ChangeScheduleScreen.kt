@@ -90,10 +90,9 @@ fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject(
 
 @Composable
 fun SegmentItem(
-    index: Int,
     segment: Segment,
-    updateSegmentStart: (index: Int, time: LocalTime) -> Unit,
-    updateSegmentEnd: (index: Int, time: LocalTime) -> Unit,
+    updateSegmentStart: (time: LocalTime) -> Unit,
+    updateSegmentEnd: (time: LocalTime) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -102,16 +101,13 @@ fun SegmentItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        DialogTimePickerByButton(true, index, segment.start, updateSegmentStart)
+        DialogTimePickerByButton(true, segment.start, updateSegmentStart)
         Icon(
             imageVector = ArrowRightIcon,
             contentDescription = null,
             modifier = Modifier.size(35.dp)
         )
-        DialogTimePickerByButton(true, index, segment.end, updateSegmentEnd)
-//        IconButton(onClick = { /*TODO*/ }) {
-//            Icon(Icons.Outlined.Delete, contentDescription = null)
-//        }
+        DialogTimePickerByButton(true, segment.end, updateSegmentEnd)
     }
 }
 

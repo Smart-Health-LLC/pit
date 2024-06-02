@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import presentation.icon.OversleepIcon
 import presentation.icon.UndersleepIcon
 import java.time.LocalTime
@@ -28,9 +29,9 @@ fun DaySleepOverviewComponent() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            OverViewItem(LocalTime.of(5, 32), "Избыток", OversleepIcon)
+            OverViewItem(LocalTime.of(5, 32), strings.excess, OversleepIcon)
             VerticalDivider()
-            OverViewItem(LocalTime.of(2, 2), "Недостаток", UndersleepIcon)
+            OverViewItem(LocalTime.of(2, 2), strings.lack, UndersleepIcon)
         }
     }
 }

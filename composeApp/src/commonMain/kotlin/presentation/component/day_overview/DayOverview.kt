@@ -194,7 +194,7 @@ fun DayOverview(
     val sortedSegmentsUiData = realSegments.sortedBy { it.start }
 
     if (realSegments.isNotEmpty()) {
-        if (sortedSegmentsUiData.last().end < sortedSegmentsUiData[1].start) {
+        if (sortedSegmentsUiData.last().end < sortedSegmentsUiData.last().start) {
             sortedSegmentsUiData.last().end = LocalTime.MAX
         }
     }
@@ -218,8 +218,11 @@ fun DayOverview(
     val sortedBaseSegments = baseSegments.sortedBy { it.start }
     // that is fix situation when one segment belongs to this and next day simultaneously
     // todo in future check if the time edge equal to LocalTime.MAX
-    if (sortedBaseSegments.last().end < sortedBaseSegments[1].start) {
-        sortedBaseSegments.last().end = LocalTime.MAX
+
+    if (baseSegments.isNotEmpty()) {
+        if (sortedBaseSegments.last().end < sortedBaseSegments.last().start) {
+            sortedBaseSegments.last().end = LocalTime.MAX
+        }
     }
 
     val baseSegmentsComposablesList = @Composable {

@@ -2,18 +2,19 @@ package presentation.ui.rate
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import domain.model.Segment
 import domain.model.SegmentReport
 import domain.repository.SegmentReportRepository
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.LocalTime
+import presentation.wtf.CUSTOM_TAG
+import java.time.*
 
 data class SegmentRateInfo(
     // by default it is considered standard short nap
     val end: LocalTime = LocalTime.now(),
     val start: LocalTime = end.minusMinutes(25),
+    val day: LocalDate = LocalDate.now(),
 
     val wakeApEaseLevel: Int = 3, // middle of MAX_LEVEL
     val fallAsleepEaseLevel: Int = 3, // middle of MAX_LEVEL
@@ -28,17 +29,18 @@ class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRep
     ScreenModel {
     // todo get data about current segment
 
-    val thisSegmentInfo = Segment(
-        start = LocalTime.of(21, 30),
-        end = LocalTime.of(0, 50),
-        day = LocalDate.of(2024, 5, 21)
-    )
-
     private val _state = MutableStateFlow(SegmentRateInfo())
     val state = _state.asStateFlow()
 
 
     private fun isSegmentCorrect(): Boolean {
+        // how can you sleep in future?
+        if (LocalDateTime.of(_state.value.day, _state.value.start) > LocalDateTime.now() ||
+            LocalDateTime.of(_state.value.day, _state.value.end) > LocalDateTime.now()
+        ) {
+            return false
+        }
+
         // start time can be more than end time so only
         // equality has to be checked and
         // new any of new time edges have to be differ from ideal ones
@@ -51,11 +53,13 @@ class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRep
 
     private fun updateFormCompletionStatus() {
         if (!isSegmentCorrect()) {
+            Napier.i(tag = CUSTOM_TAG) { "meh" }
             if (state.value.isFormComplete) {
                 _state.update {
                     it.copy(isFormComplete = false)
                 }
             }
+            return
         }
 
         if (!state.value.isFormComplete) {
@@ -85,6 +89,12 @@ class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRep
         }
     }
 
+    fun updateNote(content: String) {
+        _state.update {
+            it.copy(note = content)
+        }
+    }
+
     fun updateFallAsleepEaseLevel(level: Int) {
         _state.update {
             it.copy(fallAsleepEaseLevel = level)
@@ -95,7 +105,7 @@ class RateSegmentViewModel(private val segmentReportRepository: SegmentReportRep
         screenModelScope.launch {
             segmentReportRepository.addReport(
                 SegmentReport(
-                    day = thisSegmentInfo.day ?: LocalDate.now(),
+                    day = state.value.day,
                     fallAsleepEaseLevel = state.value.fallAsleepEaseLevel,
                     wakeUpEaseLevel = state.value.wakeApEaseLevel,
                     start = state.value.start,

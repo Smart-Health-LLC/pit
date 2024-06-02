@@ -15,9 +15,8 @@ import java.time.LocalTime
 @Composable
 fun DialogTimePickerByButton(
     is24Hour: Boolean,
-    index: Int,
     segmentTimeEdge: LocalTime,
-    updateSegmentEdge: (index: Int, time: LocalTime) -> Unit,
+    updateSegmentEdge: (time: LocalTime) -> Unit,
 ) {
     // viewmodel information
     var segmentLocalTimeEdge by remember { mutableStateOf(segmentTimeEdge) }
@@ -61,7 +60,7 @@ fun DialogTimePickerByButton(
                         TextButton(onClick = {
                             showDialog = false
                             segmentLocalTimeEdge = LocalTime.of(timeState.hour, timeState.minute)
-                            updateSegmentEdge(index, segmentLocalTimeEdge)
+                            updateSegmentEdge(segmentLocalTimeEdge)
                         }) {
                             Text(text = strings.confirm)
                         }
@@ -73,7 +72,11 @@ fun DialogTimePickerByButton(
 
     Surface(onClick = { showDialog = true }) {
         Text(
-            text = "${timeState.hour}:${timeState.minute}",
+            text = String.format(
+                "%02d:%02d",
+                timeState.hour,
+                timeState.minute
+            ),
             style = MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.SemiBold,
             fontFamily = Inter()

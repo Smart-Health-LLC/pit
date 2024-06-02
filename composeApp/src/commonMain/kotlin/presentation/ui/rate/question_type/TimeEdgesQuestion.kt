@@ -14,34 +14,30 @@ import java.time.LocalTime
 @Composable
 fun TimeEdgesQuestion(
     modifier: Modifier = Modifier,
+    start: LocalTime,
+    end: LocalTime,
+    updateSegmentStart: (time: LocalTime) -> Unit,
+    updateSegmentEnd: (time: LocalTime) -> Unit,
 ) {
     Surface(
         shape = MaterialTheme.shapes.small,
-
         border = BorderStroke(
             width = 1.dp,
             color = MaterialTheme.colorScheme.inverseOnSurface,
         ),
         modifier = modifier
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth().padding(horizontal = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SegmentItem(
-                    1,
-                    segment = domain.model.Segment(
-                        LocalTime.of(12, 43),
-                        LocalTime.of(14, 15),
-                    ),
-                    { roa, ht -> }, { roah, aht -> }
-                )
-            }
+            SegmentItem(
+                segment = domain.model.Segment(start, end),
+                updateSegmentStart,
+                updateSegmentEnd
+            )
         }
     }
 }

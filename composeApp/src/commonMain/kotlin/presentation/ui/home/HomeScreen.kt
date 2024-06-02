@@ -2,7 +2,8 @@ package presentation.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -28,7 +29,6 @@ import presentation.component.*
 import presentation.extention.toFancyString
 import presentation.icon.BombIcon
 import presentation.theme.Inter
-import presentation.ui.rate.RateSegmentScreen
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -196,23 +196,6 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                 Button(
                     onClick = {
                         toasterState.show(message = toastMessage)
-                    }, modifier = Modifier.height(56.dp)
-                ) {
-                    Icon(
-                        imageVector = BombIcon,
-                        contentDescription = null,
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
-                    )
-                    Spacer_8dp()
-                    Text(text = "Set tiredness bomb")
-                }
-            }
-
-            item(span = { GridItemSpan(2) }) {
-                // test if no internet
-                Button(
-                    onClick = {
-                        localNavigator.push(RateSegmentScreen())
                     }, modifier = Modifier.height(56.dp)
                 ) {
                     Icon(
