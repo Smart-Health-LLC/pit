@@ -22,7 +22,7 @@ import presentation.component.Spacer_12dp
 import presentation.component.Spacer_32dp
 import presentation.ui.main.MainScreen
 
-class NoInternetScreen : Screen {
+class NoInternetScreen() : Screen {
 
     @Composable
     override fun Content() {
@@ -30,7 +30,7 @@ class NoInternetScreen : Screen {
         val isConnected by Konnection.instance.observeHasConnection()
             .collectAsState(initial = false)
         if (isConnected) {
-            nav.replaceAll(MainScreen())
+            nav.replace(MainScreen())
         }
 
         NoInternetScreenContent()

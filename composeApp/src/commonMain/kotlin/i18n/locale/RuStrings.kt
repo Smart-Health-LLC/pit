@@ -78,5 +78,8 @@ val RuStrings = Strings(
         }
     },
     rulesBroken = "Нарушены правила",
-    defineSegment = "Определите сегмент"
+    defineSegment = "Определите сегмент",
+    profile = "Профиль",
+    dateAndTime = "Дата и время",
+    interfaceSettingsGroup = "Интерфейс"
 )

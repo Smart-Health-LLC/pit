@@ -68,7 +68,10 @@ data class Strings(
     val errors: String,
     val errorDescriptionByCode: (code: ErrorCode) -> String,
     val rulesBroken: String,
-    val defineSegment: String
+    val defineSegment: String,
+    val dateAndTime: String,
+    val interfaceSettingsGroup: String,
+    val profile: String
 )
 
 val TagToStringsMapper: Map<LanguageTag, Strings> = mapOf(

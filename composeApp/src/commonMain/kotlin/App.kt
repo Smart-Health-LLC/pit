@@ -7,19 +7,16 @@ import cafe.adriel.lyricist.LocalStrings
 import cafe.adriel.lyricist.ProvideStrings
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
-import cafe.adriel.voyager.transitions.ScaleTransition
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
-import dev.tmapps.konnection.Konnection
 import i18n.defaultLocale
 import i18n.lyricist
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
 import presentation.ui.main.*
-import presentation.ui.no_internet.NoInternetScreen
 
 
 fun getAsyncImageLoader(context: PlatformContext) =
@@ -64,20 +61,15 @@ fun App(
                                 skipHalfExpanded = false
                             ) {
                                 Navigator(
-                                    if (Konnection.instance.isConnected()) {
-                                        MainScreen()
-                                    } else {
-                                        NoInternetScreen()
-                                    },
+//                                    if (Konnection.instance.isConnected()) {
+                                    MainScreen()
 //                                screen = if (onBoardingState.completed) {
 //                                    MainScreen()
 //                                } else {
 //                                    OnboardingScreen()
 //                                },
 //                                content = { CurrentScreen() },
-                                ) { navigator ->
-                                    ScaleTransition(navigator)
-                                }
+                                )
                             }
                         }
                     }

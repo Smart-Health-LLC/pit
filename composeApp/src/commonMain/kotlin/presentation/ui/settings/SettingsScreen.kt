@@ -14,6 +14,7 @@ import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.alorma.compose.settings.ui.SettingsGroup
 import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.dokar.sonner.rememberToasterState
 import i18n.LocaleInfo
@@ -56,11 +57,126 @@ fun SettingsScreenContent(
         item {
             Text(text = strings.settings, style = MaterialTheme.typography.displaySmall)
         }
+        item {
+            SampleSection(strings.dateAndTime)
+            {
+                SettingsMenuLink(
+                    title = { Text(text = strings.timeFormat24h) },
+                    modifier = Modifier,
+                    enabled = true,
+                    action = {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Switch(true, {})
+                        }
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Outlined.Notifications,
+                            null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    onClick = {
+                        toasterState.show(toastMessage)
+                    },
+                )
+
+                SettingsMenuLink(
+                    title = { Text(text = strings.dateFormat) },
+                    subtitle = { Text(text = "yyyy-mm-dd") },
+                    modifier = Modifier,
+                    enabled = true,
+                    icon = {
+                        Icon(
+                            Icons.Outlined.DateRange,
+                            null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    onClick = {
+                        toasterState.show(toastMessage)
+                    },
+                )
+
+                SettingsMenuLink(
+                    title = { Text(text = strings.durationFormat) },
+                    subtitle = { Text(text = "HH:mm") },
+                    modifier = Modifier,
+                    enabled = true,
+                    icon = {
+                        Icon(
+                            Icons.Outlined.WatchLater,
+                            null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    onClick = {
+                        toasterState.show(toastMessage)
+                    },
+                )
+
+                SettingsMenuLink(
+                    title = { Text(text = strings.firstDayOfWeek) },
+                    subtitle = { Text(text = strings.monday) },
+                    modifier = Modifier,
+                    enabled = true,
+                    icon = {
+                        Icon(
+                            Icons.Outlined.Star,
+                            null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    onClick = {
+                        toasterState.show(toastMessage)
+                    },
+                )
+            }
+        }
 
         item {
-            SettingLanguage(currentLanguageInfo = selectedLocaleInfo, onLanguageUpdate = {
-                mainViewModel.updateLanguage(it)
-            })
+            SampleSection(strings.interfaceSettingsGroup) {
+                SettingLanguage(currentLanguageInfo = selectedLocaleInfo, onLanguageUpdate = {
+                    mainViewModel.updateLanguage(it)
+                })
+
+                SettingsMenuLink(
+                    title = { Text(text = strings.firstTab) },
+                    subtitle = { Text(text = strings.tabDailyStats) },
+                    modifier = Modifier,
+                    enabled = true,
+                    icon = {
+                        Icon(
+                            Icons.Outlined.Place,
+                            null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    onClick = {
+                        toasterState.show(toastMessage)
+                    },
+                )
+
+                SettingsMenuLink(
+                    title = { Text(text = strings.appTheme) },
+                    subtitle = { Text(text = strings.appThemeFollowSystem) },
+                    modifier = Modifier,
+                    enabled = true,
+                    icon = {
+                        Icon(
+                            Icons.Outlined.Build,
+                            null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    onClick = {
+                        toasterState.show(toastMessage)
+                    },
+                )
+            }
         }
         item {
             SettingsMenuLink(
@@ -79,126 +195,6 @@ fun SettingsScreenContent(
                 onClick = { localNavigator.push(ChooseScheduleScreen()) },
             )
         }
-        item {
-            SettingsMenuLink(
-                title = { Text(text = strings.timeFormat24h) },
-                modifier = Modifier,
-                enabled = true,
-                action = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Switch(true, {})
-                    }
-                },
-                icon = {
-                    Icon(
-                        Icons.Outlined.Notifications,
-                        null,
-                        tint = MaterialTheme.colorScheme.primary
-//                        modifier = Modifier.size(25.dp)
-                    )
-                },
-                onClick = {
-                    toasterState.show(toastMessage)
-                },
-            )
-        }
-        item {
-            SettingsMenuLink(
-                title = { Text(text = strings.dateFormat) },
-                subtitle = { Text(text = "yyyy-mm-dd") },
-                modifier = Modifier,
-                enabled = true,
-                icon = {
-                    Icon(
-                        Icons.Outlined.DateRange,
-                        null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                },
-                onClick = {
-                    toasterState.show(toastMessage)
-                },
-            )
-        }
-        item {
-            SettingsMenuLink(
-                title = { Text(text = strings.durationFormat) },
-                subtitle = { Text(text = "HH:mm") },
-                modifier = Modifier,
-                enabled = true,
-                icon = {
-                    Icon(
-                        Icons.Outlined.WatchLater,
-                        null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                },
-                onClick = {
-                    toasterState.show(toastMessage)
-                },
-            )
-        }
-
-        item {
-            SettingsMenuLink(
-                title = { Text(text = strings.firstTab) },
-                subtitle = { Text(text = strings.tabDailyStats) },
-                modifier = Modifier,
-                enabled = true,
-                icon = {
-                    Icon(
-                        Icons.Outlined.Place,
-                        null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                },
-                onClick = {
-                    toasterState.show(toastMessage)
-                },
-            )
-        }
-
-        item {
-            SettingsMenuLink(
-                title = { Text(text = strings.firstDayOfWeek) },
-                subtitle = { Text(text = strings.monday) },
-                modifier = Modifier,
-                enabled = true,
-                icon = {
-                    Icon(
-                        Icons.Outlined.Star,
-                        null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                },
-                onClick = {
-                    toasterState.show(toastMessage)
-                },
-            )
-        }
-
-        item {
-            SettingsMenuLink(
-                title = { Text(text = strings.appTheme) },
-                subtitle = { Text(text = strings.appThemeFollowSystem) },
-                modifier = Modifier,
-                enabled = true,
-                icon = {
-                    Icon(
-                        Icons.Outlined.Build,
-                        null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                },
-                onClick = {
-                    toasterState.show(toastMessage)
-                },
-            )
-        }
-
     }
 }
 
@@ -231,10 +227,23 @@ private fun SettingLanguage(
             onItemSelected = { newLanguage ->
                 onLanguageUpdate(newLanguage)
                 toggleDialog()
-                // HAHAHHA what a stupid shit ooooh boi enough
                 rememberedCurrentLanguageInfo.value = newLanguage
             },
             onDialogDismiss = { toggleDialog() }
         )
+    }
+}
+
+@Composable
+internal fun SampleSection(
+    title: String,
+    enabled: Boolean = true,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    SettingsGroup(
+        enabled = enabled,
+        title = { Text(text = title) },
+    ) {
+        ElevatedCard { content() }
     }
 }

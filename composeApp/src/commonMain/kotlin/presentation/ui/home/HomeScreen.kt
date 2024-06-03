@@ -229,56 +229,6 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                 Spacer_24dp()
                 Spacer_24dp()
             }
-
-
-            // Action buttons
-
-            // button - edit schedule
-//        LazyVerticalGrid(
-//            columns = GridCells.Adaptive(minSize = 128.dp),
-//            contentPadding = PaddingValues(10.dp),
-//            verticalArrangement = Arrangement.spacedBy(10.dp),
-//            horizontalArrangement = Arrangement.spacedBy(10.dp),
-//            modifier = Modifier
-//                .fillMaxWidth()
-//        ) {
-//            item {
-//                // change schedule
-//                Button(
-//                    onClick = {
-//                        localNavigator.push(ChangeScheduleScreen())
-//                    }, modifier = Modifier.height(56.dp).wrapContentWidth()
-//                ) {
-//                    Icon(
-//                        imageVector = Icons.Filled.Edit,
-//                        contentDescription = null,
-//                        modifier = Modifier.size(ButtonDefaults.IconSize)
-//                    )
-//                    Spacer_12dp()
-//                    Text(text = strings.changeSchedule)
-//                }
-//
-//            }
-
-//            item {
-//
-//                // track a tiredness bomb
-//                val toastMessage = strings.inDevelopment
-//                Button(
-//                    onClick = {
-//                        toasterState.show(message = toastMessage)
-//                    }, modifier = Modifier.height(56.dp)
-//                ) {
-//                    Icon(
-//                        imageVector = BombIcon,
-//                        contentDescription = null,
-//                        modifier = Modifier.size(ButtonDefaults.IconSize)
-//                    )
-//                    Spacer_8dp()
-//                    Text(text = "Set tiredness bomb")
-//                }
-//            }
-//        }
         }
     }
 }

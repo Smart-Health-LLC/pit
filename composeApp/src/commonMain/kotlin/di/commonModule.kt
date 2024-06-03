@@ -58,7 +58,7 @@ fun commonModule() = module {
     /**
      * View models
      */
-    single<MainViewModel> {
+    factory<MainViewModel> {
         MainViewModel(
             settingsRepository = get(),
             reportRepository = get()

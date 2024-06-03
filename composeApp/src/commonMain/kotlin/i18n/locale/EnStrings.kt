@@ -76,5 +76,8 @@ val EnStrings = Strings(
         }
     },
     rulesBroken = "Rules broken",
-    defineSegment = "Define segment"
+    defineSegment = "Define segment",
+    interfaceSettingsGroup = "Interface",
+    profile = "Profile",
+    dateAndTime = "Date and time"
 )

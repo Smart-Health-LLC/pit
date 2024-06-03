@@ -4,13 +4,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.*
+import dev.tmapps.konnection.Konnection
+import kotlinx.coroutines.launch
 import presentation.component.MainNavigationRail
+import presentation.ui.no_internet.NoInternetScreen
 
 /**
  * Serves as a container with tab navigation
@@ -20,6 +26,23 @@ class MainScreen : Screen {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Composable
     override fun Content() {
+        val coroutineScope = rememberCoroutineScope()
+        val navigator = LocalNavigator.currentOrThrow
+
+
+//        val isConnected by konnection.observeHasConnection()
+//            .collectAsState(initial = false)
+//        if (isConnected) {
+//            navigator.replace(NoInternetScreen(konnection))
+//        }
+
+        coroutineScope.launch {
+            Konnection.instance.observeHasConnection().collect { hasConnection ->
+                if (!hasConnection) {
+                    navigator.replace(NoInternetScreen())
+                }
+            }
+        }
         val windowSizeClass = calculateWindowSizeClass()
         val useNavRail = windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact
         TabNavigator(
