@@ -2,20 +2,25 @@ package presentation.component
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.inset
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import domain.model.Segment
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalTime
+import kotlin.math.atan2
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 const val minuteInGrad = 0.25
 const val startPosInGrads = 270
@@ -68,6 +73,38 @@ fun timeToGrad(minutes: Long): Float {
     return grads.toFloat()
 }
 
+/**
+ * Calculates the angle between the center of the canvas and the given offset.
+ * The angle is calculated using the atan2 function and then converted to degrees.
+ * The result is adjusted to ensure it falls within the range of 0 to 360 degrees.
+ *
+ * @param offset The offset for which the angle is to be calculated. It represents the position of the touch event on the screen.
+ * @param size The size of the canvas. It is used to calculate the center of the canvas.
+ * @return The calculated angle in degrees.
+ */
+private fun calculateAngle(offset: Offset, size: IntSize): Float {
+    val centerX = size.width / 2
+    val centerY = size.height / 2
+    val angle = Math.toDegrees(
+        atan2((offset.y - centerY).toDouble(), (offset.x - centerX).toDouble())
+    ).toFloat()
+    return (angle + 450) % 360
+}
+
+/**
+ * Converts an angle to a LocalTime object.
+ * The angle is first converted to total minutes, considering that 360 degrees represent 24 hours.
+ * The total minutes are then divided into hours and minutes to create a LocalTime object.
+ *
+ * @param angle The angle in degrees to be converted to LocalTime.
+ * @return A LocalTime object representing the time corresponding to the given angle.
+ */
+private fun angleToLocalTime(angle: Float): LocalTime {
+    val totalMinutes = (angle / 360 * 24 * 60).toInt()
+    val hours = totalMinutes / 60
+    val minutes = totalMinutes % 60
+    return LocalTime.of(hours, minutes)
+}
 
 @Composable
 fun ScheduleComponent(
@@ -75,7 +112,8 @@ fun ScheduleComponent(
     componentRadius: Int,
     strokeWidth: Float,
     showCurrentTime: Boolean = false,
-    useRandomColors: Boolean = false
+    useRandomColors: Boolean = false,
+    onAddSegment: (Segment) -> Unit = {}
 ) {
     var currentTime by remember { mutableStateOf(LocalTime.now()) }
     if (showCurrentTime) {
@@ -103,20 +141,51 @@ fun ScheduleComponent(
         colors.add(randomColors[it % randomColors.size])
     }
 
+    var startAngle by remember { mutableStateOf<Float?>(null) }
+    var endAngle by remember { mutableStateOf<Float?>(null) }
+    var isDragging by remember { mutableStateOf(false) }
+
     Canvas(
         modifier = Modifier
             .fillMaxWidth()
             .requiredHeight(componentRadius.dp)
+            .pointerInput(Unit) {
+                detectDragGestures(
+                    onDragStart = { offset ->
+                        val angle = calculateAngle(offset, size)
+                        startAngle = angle
+                        endAngle = null
+                        isDragging = true
+                    },
+                    onDragEnd = {
+                        isDragging = false
+                        if (startAngle != null && endAngle != null) {
+                            val startTime = angleToLocalTime(startAngle!!)
+                            val endTime = angleToLocalTime(endAngle!!)
+                            val segment = Segment(start = startTime, end = endTime)
+                            onAddSegment(segment)
+                        }
+                    },
+                    onDragCancel = {
+                        isDragging = false
+                    },
+                    onDrag = { change, _ ->
+                        if (isDragging) {
+                            endAngle = calculateAngle(change.position, size)
+                        }
+                    }
+                )
+            }
     ) {
         inset(
             size.width / 2 - componentRadius,
             size.height / 2 - componentRadius
         ) {
-
+            // todo | make pretty animation
             coroutineScope.launch {
                 animateFloat.animateTo(
                     targetValue = 1f,
-                    animationSpec = tween(durationMillis = 80, easing = EaseIn)
+                    animationSpec = tween(durationMillis = 0, easing = EaseIn)
                 )
             }
 
@@ -145,10 +214,11 @@ fun ScheduleComponent(
 
                 val minutes = getDurationBetween(it.start, it.end).toMinutes()
 
+                // todo | make pretty animation
                 coroutineScope.launch {
                     stuff[index].animateTo(
                         targetValue = 1f,
-                        animationSpec = tween(durationMillis = 120, easing = EaseIn)
+                        animationSpec = tween(durationMillis = 0, easing = EaseIn)
                     )
 
                 }
@@ -160,6 +230,22 @@ fun ScheduleComponent(
                     color = if (useRandomColors) colors[index] else frontColor,
                     style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
                 )
+            }
+
+            if (isDragging) {
+                if (startAngle != null && endAngle != null) {
+                    drawArc(
+                        startAngle = startAngle!! - 90,
+                        sweepAngle = if (endAngle!! >= startAngle!!) {
+                            endAngle!! - startAngle!!
+                        } else {
+                            360 - startAngle!! + endAngle!!
+                        },
+                        useCenter = false,
+                        color = frontColor,
+                        style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
+                    )
+                }
             }
 
             if (showCurrentTime) {
