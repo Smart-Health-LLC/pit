@@ -56,7 +56,15 @@ fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject(
                 .padding(paddingValues = it)
         ) {
 
-            ScheduleComponent(state.editableSegments, 320, 190f, useRandomColors = true)
+            ScheduleComponent(
+                segments = state.editableSegments,
+                componentRadius = 320,
+                strokeWidth = 190f,
+                useRandomColors = true,
+                onAddSegment = { segment ->
+                    viewModel.addSegment(segment)
+                }
+            )
             Spacer_12dp()
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
