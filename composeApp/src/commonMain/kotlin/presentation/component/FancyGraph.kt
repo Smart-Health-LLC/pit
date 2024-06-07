@@ -23,11 +23,7 @@ import kotlin.random.Random
 @Composable
 fun SmoothLineGraph(modifier: Modifier) {
     Box(
-        modifier = modifier.then(
-            Modifier
-//                .background(MaterialTheme.colorScheme.primaryContainer)
-                .fillMaxWidth()
-        )
+        modifier = modifier.fillMaxWidth()
     ) {
         val animationProgress = remember { Animatable(0f) }
 
@@ -159,53 +155,8 @@ fun generateSmoothPath(data: List<MetricLevel>, size: Size): Path {
     return path
 }
 
-fun generateRandomEaseLevel(): Float {
-    val min = 1f
-    val max = 5f
-    return Random.nextFloat() * (max - min) + min
-}
-
-val wakeUpLevelsData = listOf(
-    // @formatter:off
-    MetricLevel(LocalDate.now()                         , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(1) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(2) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(3) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(4) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(5) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(6) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(7) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(8) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(9) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(10), generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(11), generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(12), generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(13), generateRandomEaseLevel()),
-    // @formatter:on
-)
-
-val fallAsleepLevelsData = listOf(
-    // @formatter:off
-    MetricLevel(LocalDate.now()                         , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(1) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(2) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(3) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(4) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(5) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(6) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(7) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(8) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(9) , generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(10), generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(11), generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(12), generateRandomEaseLevel()),
-    MetricLevel(LocalDate.now().plusWeeks(13), generateRandomEaseLevel()),
-    // @formatter:on
-)
-
 data class MetricLevel(val date: LocalDate, val value: Float)
 data class Point(val x: Float, val y: Float)
-
 
 @Composable
 fun GraphLegendItem(name: String, color: Color, colorSize: Dp) {
@@ -225,4 +176,19 @@ fun FilledCircle(color: Color, sizeCircle: Dp) {
             style = Fill
         )
     }
+}
+
+
+fun generateRandomEaseLevel(): Float {
+    val min = 1f
+    val max = 5f
+    return Random.nextFloat() * (max - min) + min
+}
+
+val wakeUpLevelsData = List(13) {
+    MetricLevel(LocalDate.now().plusWeeks(it.toLong()), generateRandomEaseLevel())
+}
+
+val fallAsleepLevelsData = List(13) {
+    MetricLevel(LocalDate.now().plusWeeks(it.toLong()), generateRandomEaseLevel())
 }

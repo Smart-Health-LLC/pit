@@ -120,7 +120,6 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
         }
     ) {
 
-        // Screen content holder
         LazyColumn(
             modifier = Modifier.fillMaxWidth().padding(it)
         ) {
@@ -165,15 +164,15 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .clip(shape = MaterialTheme.shapes.medium)
-                        .background(color = MaterialTheme.colorScheme.primaryContainer)
+                        .background(color = MaterialTheme.colorScheme.secondaryContainer)
                         .padding(vertical = 16.dp, horizontal = 18.dp)
                         .fillMaxWidth()
                 ) {
                     InfoUnit(
-                        Res.drawable.ic_clear_night_filled_24px,
-                        strings.napIn,
-                        homeState.napIn.toFancyString(),
-                        Color.Blue
+                        icon = Res.drawable.ic_clear_night_filled_24px,
+                        title = strings.napIn,
+                        value = homeState.napIn.toFancyString(),
+                        iconColor = Color.Blue
                     )
 
 
@@ -196,16 +195,16 @@ fun HomeScreenContent(viewModel: HomeViewModel = koinInject()) {
                     }
 
                     InfoUnit(
-                        Res.drawable.ic_hourglass_filled_24px,
-                        strings.tstToday,
-                        tstToday.toFancyString(),
-                        Color(0xffe08a1a)
+                        icon = Res.drawable.ic_hourglass_filled_24px,
+                        title = strings.tstToday,
+                        value = tstToday.toFancyString(),
+                        iconColor = Color(0xffe08a1a)
                     )
                     InfoUnit(
-                        Res.drawable.ic_whatshot_filled_24px,
-                        strings.streak,
-                        "3 days",
-                        Color.Red
+                        icon = Res.drawable.ic_whatshot_filled_24px,
+                        title = strings.streak,
+                        value = "3 days",
+                        iconColor = Color.Red
                     )
                 }
 
@@ -241,7 +240,7 @@ fun GraphWrapper() {
         modifier = Modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
-            .background(MaterialTheme.colorScheme.primaryContainer),
+            .background(MaterialTheme.colorScheme.secondaryContainer),
     ) {
 
         Column(

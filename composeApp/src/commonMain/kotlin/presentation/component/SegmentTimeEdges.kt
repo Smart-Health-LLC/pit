@@ -13,7 +13,6 @@ import domain.model.Segment
 import presentation.icon.ArrowRightIcon
 import java.time.LocalTime
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SegmentTimeEdges(
     modifier: Modifier = Modifier,
