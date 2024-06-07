@@ -79,5 +79,6 @@ val EnStrings = Strings(
     defineSegment = "Define segment",
     interfaceSettingsGroup = "Interface",
     profile = "Profile",
-    dateAndTime = "Date and time"
+    dateAndTime = "Date and time",
+    noInternetConnection = "No internet connection"
 )

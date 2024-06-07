@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -129,15 +130,15 @@ fun NoInternetScreenContent() {
                 )
                 Spacer_32dp()
                 Text(
-                    "No internet connection",
+                    strings.noInternetConnection,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.headlineMedium
                 )
                 Spacer_12dp()
-                Text(
-                    "That sucks, because for now, there is no way to use the app offline. Yeah...",
-                    textAlign = TextAlign.Center
-                )
+//                Text(
+//                    "That sucks, because for now, there is no way to use the app offline. Yeah...",
+//                    textAlign = TextAlign.Center
+//                )
             }
         }
     }

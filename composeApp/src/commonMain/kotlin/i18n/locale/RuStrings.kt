@@ -81,5 +81,6 @@ val RuStrings = Strings(
     defineSegment = "Определите сегмент",
     profile = "Профиль",
     dateAndTime = "Дата и время",
-    interfaceSettingsGroup = "Интерфейс"
+    interfaceSettingsGroup = "Интерфейс",
+    noInternetConnection = "Нет подключения к интеренетy"
 )

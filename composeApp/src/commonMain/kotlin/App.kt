@@ -61,7 +61,6 @@ fun App(
                                 skipHalfExpanded = false
                             ) {
                                 Navigator(
-//                                    if (Konnection.instance.isConnected()) {
                                     MainScreen()
 //                                screen = if (onBoardingState.completed) {
 //                                    MainScreen()
