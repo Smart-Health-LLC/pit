@@ -29,7 +29,6 @@ class ChangeScheduleScreen : Screen {
     }
 }
 
-
 @Composable
 fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject()) {
     val state by viewModel.screenState.collectAsState()
@@ -55,7 +54,6 @@ fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject(
                 .padding(top = 15.dp)
                 .padding(paddingValues = it)
         ) {
-
             ScheduleComponent(
                 segments = state.editableSegments,
                 componentRadius = 320,
@@ -63,14 +61,16 @@ fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject(
                 useRandomColors = true,
                 onAddSegment = { segment ->
                     viewModel.addSegment(segment)
+                },
+                onUpdateSegment = { segment, newStart, newEnd ->
+                    viewModel.updateSegmentStartTimeAndEndTime(segment, newStart, newEnd)
                 }
             )
             Spacer_12dp()
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-
                 // time edges components
                 state.editableSegments.forEach { segment ->
                     item {
@@ -98,7 +98,6 @@ fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject(
     }
 }
 
-
 @Composable
 fun ControlPanel(
     errorCodes: List<ErrorCode>,
@@ -119,7 +118,6 @@ fun ControlPanel(
             .animateContentSize()
             .padding(horizontal = 16.dp, vertical = 10.dp) // standard FAB m3 padding
     ) {
-
         ControlItem(
             onClick = {
                 isAddNewDialogOpen = true
@@ -132,7 +130,7 @@ fun ControlPanel(
             ControlItem(
                 onClick = onSave,
                 icon = SaveIcon,
-                strings.save,
+                strings.save
             )
         }
         if (errorCodes.isNotEmpty()) {
@@ -169,7 +167,6 @@ fun ControlPanel(
     }
 }
 
-
 @Composable
 fun ControlItem(
     onClick: () -> Unit,
@@ -188,7 +185,7 @@ fun ControlItem(
                 Icon(
                     icon,
                     contentDescription = null,
-                    tint = contentColor,
+                    tint = contentColor
                 )
 //                Text(text = label, color = contentColor)
             }

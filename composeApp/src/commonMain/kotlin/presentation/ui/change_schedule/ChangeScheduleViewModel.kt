@@ -3,13 +3,15 @@ package presentation.ui.change_schedule
 import cafe.adriel.voyager.core.model.ScreenModel
 import domain.model.Segment
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.flow.*
-import presentation.CUSTOM_TAG
-import presentation.component.getDurationBetween
-import presentation.ui.home.dualCore1
 import java.time.Duration
 import java.time.LocalTime
 import kotlin.math.abs
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import presentation.CUSTOM_TAG
+import presentation.component.getDurationBetween
+import presentation.ui.home.dualCore1
 
 data class ChangeScheduleScreenState(
     val currentBaseSegments: List<Segment> = dualCore1.segments,
@@ -37,7 +39,6 @@ class ChangeScheduleViewModel : ScreenModel {
     private val _screenState = MutableStateFlow(ChangeScheduleScreenState())
     val screenState = _screenState.asStateFlow()
 
-
     private val _toastState = MutableStateFlow(false)
 
     // todo add state info to have more control of toast
@@ -52,7 +53,6 @@ class ChangeScheduleViewModel : ScreenModel {
     }
 
     private fun validateSchedule() {
-
         _screenState.value.editableSegments.forEach {
             if (it.end == it.start) {
                 addError(ErrorCode.SEGMENT_ZERO_DURATION)
@@ -82,7 +82,6 @@ class ChangeScheduleViewModel : ScreenModel {
 
         removeError(ErrorCode.OVERLAP)
 
-
         // distance between segments detection
         val maxWakeTime = Duration.ofHours(10)
         var isHugeAwakeTimeDetected = false
@@ -102,7 +101,6 @@ class ChangeScheduleViewModel : ScreenModel {
         if (!isHugeAwakeTimeDetected) {
             removeError(ErrorCode.HUGE_AWAKE_TIME)
         }
-
 
         // tst check
         var baseTst: Duration = Duration.ZERO
@@ -126,7 +124,6 @@ class ChangeScheduleViewModel : ScreenModel {
         } else {
             removeError(ErrorCode.TST_STRONGLY_DIFFERS_FROM_BASE)
         }
-
 
         // check anomaly segment duration
         val maxSegmentDuration = Duration.ofHours(8)
@@ -168,36 +165,35 @@ class ChangeScheduleViewModel : ScreenModel {
         val sortedEditableSegments = _screenState.value.editableSegments.sortedBy { it.start }
         val sortedBaseSegments = _screenState.value.currentBaseSegments.sortedBy { it.start }
 
+        var isEdited = false
 
         for (i in sortedEditableSegments.indices) {
             // so edited
-            if (sortedBaseSegments[i] != sortedEditableSegments[i])
-
-                if (_screenState.value.newScheduleState != NewScheduleState.EDITED) { // don't update if already marked as edited
-
-                    _screenState.update {
-                        it.copy(
-                            newScheduleState = NewScheduleState.EDITED
-                        )
-                    }
-
-                    return
-
-                }
+            if (sortedBaseSegments[i] != sortedEditableSegments[i]) {
+                isEdited = true
+                break
+            }
         }
 
+        if (isEdited) {
+            if (_screenState.value.newScheduleState != NewScheduleState.EDITED) { // don't update if already marked as edited
 
-        // now edited
-        if (_screenState.value.newScheduleState != NewScheduleState.MATCH_CURRENT) { // don't update if already marked as matching current
-            _screenState.update {
-                it.copy(
-                    newScheduleState = NewScheduleState.MATCH_CURRENT
-                )
+                _screenState.update {
+                    it.copy(
+                        newScheduleState = NewScheduleState.EDITED
+                    )
+                }
             }
-
+        } else {
+            if (_screenState.value.newScheduleState != NewScheduleState.MATCH_CURRENT) { // don't update if already marked as matching current
+                _screenState.update {
+                    it.copy(
+                        newScheduleState = NewScheduleState.MATCH_CURRENT
+                    )
+                }
+            }
         }
     }
-
 
     private fun addError(error: ErrorCode) {
         if (_screenState.value.errors.contains(error)) {
@@ -213,7 +209,6 @@ class ChangeScheduleViewModel : ScreenModel {
         }
     }
 
-
     private fun removeError(error: ErrorCode) {
         _screenState.update {
             val savedList = it.errors.toMutableList()
@@ -223,7 +218,6 @@ class ChangeScheduleViewModel : ScreenModel {
             )
         }
     }
-
 
     fun updateSegmentStartTime(segment: Segment, newStartTime: LocalTime) {
         _screenState.update {
@@ -252,6 +246,26 @@ class ChangeScheduleViewModel : ScreenModel {
             it.copy(
                 editableSegments = savedList
             )
+        }
+
+        validateSchedule()
+        determineWhetherScheduleEdited()
+    }
+
+    fun updateSegmentStartTimeAndEndTime(
+        segment: Segment,
+        newStartTime: LocalTime,
+        newEndTime: LocalTime
+    ) {
+        _screenState.update {
+            val segmentIndex = it.editableSegments.indexOf(segment)
+            val savedList = it.editableSegments.toMutableList()
+            savedList[segmentIndex] = it.editableSegments[segmentIndex].copy(
+                start = newStartTime,
+                end = newEndTime
+            )
+
+            it.copy(editableSegments = savedList)
         }
 
         validateSchedule()

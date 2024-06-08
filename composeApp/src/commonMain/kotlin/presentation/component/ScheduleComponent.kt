@@ -1,49 +1,55 @@
 package presentation.component
 
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.inset
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import domain.model.Segment
 import java.time.Duration
 import java.time.LocalTime
 import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-const val minuteInGrad = 0.25
-const val startPosInGrads = 270
+private const val EDITING_ARC_ANGLE = 7.5f
 
-val backColor = Color(0xff91C3FF)
-val frontColor = Color(0xff3775D2)
+private val backColor = Color(0xff91C3FF)
+private val frontColor = Color(0xff3775D2)
 
-fun timeToGrad(time: LocalTime): Float {
-    val minutes = time.hour * 60 + time.minute
-    var grads = startPosInGrads + minutes * minuteInGrad
-    if (grads >= 360)
-        grads -= 360
-    return grads.toFloat()
-}
-
-val randomColors = listOf(
+private val randomColors = listOf(
     Color.Red.copy(alpha = 0.4f),
     Color.Blue.copy(alpha = 0.4f),
     Color.Gray.copy(alpha = 0.4f),
     Color.Green.copy(alpha = 0.4f),
     Color.Yellow.copy(alpha = 0.4f),
     Color.Cyan.copy(alpha = 0.4f),
-    Color.Magenta.copy(alpha = 0.4f),
+    Color.Magenta.copy(alpha = 0.4f)
 )
 
 /**
@@ -54,8 +60,8 @@ fun getDurationBetween(start: LocalTime, end: LocalTime): Duration {
         Duration
             .ofMinutes(
                 Duration.between(start, LocalTime.MAX).toMinutes() +
-                        Duration.between(LocalTime.MIN, end).toMinutes()
-                        + 1
+                    Duration.between(LocalTime.MIN, end).toMinutes() +
+                    1
             )
     } else {
         Duration.between(start, end)
@@ -65,12 +71,13 @@ fun getDurationBetween(start: LocalTime, end: LocalTime): Duration {
 
 // todo add desktop foundation like and other stuff
 
-fun timeToGrad(minutes: Long): Float {
-    var grads = minutes * minuteInGrad
-    // kind of nonsense
-    if (grads >= 360)
-        grads -= 360
-    return grads.toFloat()
+private fun timeToGrad(time: LocalTime): Float {
+    val totalMinutes = time.hour * 60 + time.minute
+    return (totalMinutes.toFloat() / (24 * 60) * 360)
+}
+
+private fun timeToGrad(minutes: Long): Float {
+    return (minutes.toFloat() / (24 * 60) * 360)
 }
 
 /**
@@ -88,7 +95,7 @@ private fun calculateAngle(offset: Offset, size: IntSize): Float {
     val angle = Math.toDegrees(
         atan2((offset.y - centerY).toDouble(), (offset.x - centerX).toDouble())
     ).toFloat()
-    return (angle + 450) % 360
+    return (angle + 360) % 360
 }
 
 /**
@@ -100,10 +107,32 @@ private fun calculateAngle(offset: Offset, size: IntSize): Float {
  * @return A LocalTime object representing the time corresponding to the given angle.
  */
 private fun angleToLocalTime(angle: Float): LocalTime {
-    val totalMinutes = (angle / 360 * 24 * 60).toInt()
+    var adjustedAngle = angle % 360
+    if (adjustedAngle < 0) {
+        adjustedAngle += 360
+    }
+    val totalMinutes = (adjustedAngle / 360 * 24 * 60).toInt()
+    val roundedMinutes = (totalMinutes + 2) / 5 * 5
     val hours = totalMinutes / 60
-    val minutes = totalMinutes % 60
+    val minutes = roundedMinutes % 60
     return LocalTime.of(hours, minutes)
+}
+
+/**
+ * Calculates the position of a point on the circumference of a circle.
+ * The position is calculated using the given angle, radius, and center of the circle.
+ * The angle is first converted to radians, which is then used to calculate the x and y coordinates of the point.
+ *
+ * @param angle The angle in degrees. The angle is measured from the positive x-axis.
+ * @param radius The radius of the circle.
+ * @param center The center of the circle.
+ * @return An Offset object representing the position of the point on the circumference of the circle.
+ */
+private fun calculateTextPosition(angle: Float, radius: Float, center: Offset): Offset {
+    val radians = Math.toRadians(angle.toDouble())
+    val x = center.x + radius * cos(radians).toFloat()
+    val y = center.y + radius * sin(radians).toFloat()
+    return Offset(x, y)
 }
 
 @Composable
@@ -113,9 +142,13 @@ fun ScheduleComponent(
     strokeWidth: Float,
     showCurrentTime: Boolean = false,
     useRandomColors: Boolean = false,
-    onAddSegment: (Segment) -> Unit = {}
+    onAddSegment: ((Segment) -> Unit)? = null,
+    onUpdateSegment: ((Segment, LocalTime, LocalTime) -> Unit)? = null
 ) {
+    val textMeasurer = rememberTextMeasurer()
+    val currentSegments by rememberUpdatedState(segments)
     var currentTime by remember { mutableStateOf(LocalTime.now()) }
+
     if (showCurrentTime) {
         val updateIntervalMinutes = 5L
         LaunchedEffect(updateIntervalMinutes) {
@@ -125,54 +158,104 @@ fun ScheduleComponent(
             }
         }
     }
-    val coroutineScope = rememberCoroutineScope()
-
-    // Creating animation
-    val animateFloat = remember { Animatable(0f) }
-
-    val stuff = mutableListOf<Animatable<Float, AnimationVector1D>>()
-
-    repeat(segments.size) {
-        stuff.add(remember { Animatable(0f) })
-    }
 
     val colors = mutableListOf<Color>()
     repeat(segments.size) {
         colors.add(randomColors[it % randomColors.size])
     }
 
-    var startAngle by remember { mutableStateOf<Float?>(null) }
-    var endAngle by remember { mutableStateOf<Float?>(null) }
-    var isDragging by remember { mutableStateOf(false) }
+    // Creating / Moving / Editing segment
+    var segmentStartAngle by remember { mutableStateOf<Float?>(null) }
+    var segmentEndAngle by remember { mutableStateOf<Float?>(null) }
+
+    var isCreatingSegment by remember { mutableStateOf(false) }
+
+    var draggingSegment by remember { mutableStateOf<Segment?>(null) }
+    var draggingSegmentInitialAngle by remember { mutableStateOf<Float?>(null) }
+
+    var isEditingSegmentStart by remember { mutableStateOf(false) }
+    var isEditingSegmentEnd by remember { mutableStateOf(false) }
 
     Canvas(
         modifier = Modifier
             .fillMaxWidth()
             .requiredHeight(componentRadius.dp)
+            .rotate(-90f)
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDragStart = { offset ->
                         val angle = calculateAngle(offset, size)
-                        startAngle = angle
-                        endAngle = null
-                        isDragging = true
+                        segmentStartAngle = angle
+                        segmentEndAngle = null
+
+                        if (onUpdateSegment != null) {
+                            draggingSegment = currentSegments.find {
+                                val startAngle = timeToGrad(it.start)
+                                val endAngle = timeToGrad(it.end)
+                                if (startAngle <= endAngle) {
+                                    angle in startAngle..endAngle
+                                } else {
+                                    angle >= startAngle || angle <= endAngle
+                                }
+                            }
+                        }
+
+                        if (draggingSegment != null) {
+                            segmentStartAngle = timeToGrad(draggingSegment!!.start)
+                            segmentEndAngle = timeToGrad(draggingSegment!!.end)
+                            draggingSegmentInitialAngle = angle
+                            if (angle in segmentStartAngle!! -
+                                EDITING_ARC_ANGLE..segmentStartAngle!! + EDITING_ARC_ANGLE
+                            ) {
+                                isEditingSegmentStart = true
+                            } else if (angle in segmentEndAngle!! -
+                                EDITING_ARC_ANGLE..segmentEndAngle!! + EDITING_ARC_ANGLE
+                            ) {
+                                isEditingSegmentEnd = true
+                            }
+                        } else if (onAddSegment != null) {
+                            segmentStartAngle = angle
+                            segmentEndAngle = null
+                            isCreatingSegment = true
+                        }
+                    },
+                    onDrag = { change, _ ->
+                        val angle = calculateAngle(change.position, size)
+
+                        if (isCreatingSegment) {
+                            segmentEndAngle = angle
+                        } else if (draggingSegment != null) {
+                            if (isEditingSegmentStart) {
+                                segmentStartAngle = angle
+                            } else if (isEditingSegmentEnd) {
+                                segmentEndAngle = angle
+                            } else {
+                                val angleDiff = angle - (draggingSegmentInitialAngle ?: 0f)
+                                segmentStartAngle = (segmentStartAngle ?: 0f) + angleDiff
+                                segmentEndAngle = (segmentEndAngle ?: 0f) + angleDiff
+                                draggingSegmentInitialAngle = angle
+                            }
+                        }
                     },
                     onDragEnd = {
-                        isDragging = false
-                        if (startAngle != null && endAngle != null) {
-                            val startTime = angleToLocalTime(startAngle!!)
-                            val endTime = angleToLocalTime(endAngle!!)
-                            val segment = Segment(start = startTime, end = endTime)
-                            onAddSegment(segment)
+                        isCreatingSegment = false
+                        isEditingSegmentStart = false
+                        isEditingSegmentEnd = false
+                        if (segmentStartAngle != null && segmentEndAngle != null) {
+                            val startTime = angleToLocalTime(segmentStartAngle!!)
+                            val endTime = angleToLocalTime(segmentEndAngle!!)
+                            if (draggingSegment != null) {
+                                onUpdateSegment?.invoke(draggingSegment!!, startTime, endTime)
+                                draggingSegment = null
+                            } else {
+                                val segment = Segment(start = startTime, end = endTime)
+                                onAddSegment?.invoke(segment)
+                            }
                         }
                     },
                     onDragCancel = {
-                        isDragging = false
-                    },
-                    onDrag = { change, _ ->
-                        if (isDragging) {
-                            endAngle = calculateAngle(change.position, size)
-                        }
+                        isCreatingSegment = false
+                        draggingSegment = null
                     }
                 )
             }
@@ -181,69 +264,56 @@ fun ScheduleComponent(
             size.width / 2 - componentRadius,
             size.height / 2 - componentRadius
         ) {
-            // todo | make pretty animation
-            coroutineScope.launch {
-                animateFloat.animateTo(
-                    targetValue = 1f,
-                    animationSpec = tween(durationMillis = 0, easing = EaseIn)
-                )
-            }
-
-            drawCircle(
-                color = if (useRandomColors) backColor.copy(alpha = 0.08f) else backColor,
-                radius = componentRadius.toFloat() * animateFloat.value,
+            drawCircleWithOutline(
+                useRandomColors = useRandomColors,
+                backColor = backColor,
+                componentRadius = componentRadius.toFloat(),
                 center = center,
-                style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
+                strokeWidth = strokeWidth
             )
-            if (useRandomColors) {
-                drawCircle(
-                    color = backColor.copy(alpha = 0.3f),
-                    radius = (componentRadius - strokeWidth / 2) * animateFloat.value,
-                    center = center,
-                    style = Stroke(width = 3f, cap = StrokeCap.Round),
-                )
-                drawCircle(
-                    color = backColor.copy(alpha = 0.3f),
-                    radius = (componentRadius + strokeWidth / 2) * animateFloat.value,
-                    center = center,
-                    style = Stroke(width = 3f, cap = StrokeCap.Round),
-                )
-            }
 
             segments.forEachIndexed { index, it ->
+                if (it == draggingSegment) return@forEachIndexed
 
                 val minutes = getDurationBetween(it.start, it.end).toMinutes()
 
-                // todo | make pretty animation
-                coroutineScope.launch {
-                    stuff[index].animateTo(
-                        targetValue = 1f,
-                        animationSpec = tween(durationMillis = 0, easing = EaseIn)
-                    )
+                val startAngle = timeToGrad(it.start)
+                val sweepAngle = timeToGrad(minutes)
 
-                }
-
-                drawArc(
-                    startAngle = timeToGrad(it.start),
-                    sweepAngle = timeToGrad(minutes) * stuff[index].value,
-                    useCenter = false,
-                    color = if (useRandomColors) colors[index] else frontColor,
-                    style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
+                drawSegment(
+                    startAngle = startAngle,
+                    sweepAngle = sweepAngle,
+                    innerRadius = componentRadius - strokeWidth / 2,
+                    center = center,
+                    textMeasurer = textMeasurer,
+                    useRandomColors = useRandomColors,
+                    colors = colors,
+                    index = index,
+                    strokeWidth = strokeWidth,
+                    frontColor = frontColor
                 )
             }
 
-            if (isDragging) {
-                if (startAngle != null && endAngle != null) {
-                    drawArc(
-                        startAngle = startAngle!! - 90,
-                        sweepAngle = if (endAngle!! >= startAngle!!) {
-                            endAngle!! - startAngle!!
-                        } else {
-                            360 - startAngle!! + endAngle!!
-                        },
-                        useCenter = false,
-                        color = frontColor,
-                        style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
+            if (isCreatingSegment || draggingSegment != null) {
+                if (segmentStartAngle != null && segmentEndAngle != null) {
+                    val startAngle = segmentStartAngle!!
+                    val sweepAngle = if (segmentEndAngle!! >= segmentStartAngle!!) {
+                        segmentEndAngle!! - segmentStartAngle!!
+                    } else {
+                        360 - segmentStartAngle!! + segmentEndAngle!!
+                    }
+
+                    drawSegment(
+                        startAngle = startAngle,
+                        sweepAngle = sweepAngle,
+                        innerRadius = componentRadius - strokeWidth / 2,
+                        center = center,
+                        textMeasurer = textMeasurer,
+                        useRandomColors = false,
+                        colors = colors,
+                        index = 0,
+                        strokeWidth = strokeWidth,
+                        frontColor = frontColor
                     )
                 }
             }
@@ -258,5 +328,104 @@ fun ScheduleComponent(
                 )
             }
         }
+    }
+}
+
+// todo | fix text position
+private fun DrawScope.drawSegment(
+    startAngle: Float,
+    sweepAngle: Float,
+    innerRadius: Float,
+    center: Offset,
+    textMeasurer: TextMeasurer,
+    useRandomColors: Boolean,
+    colors: List<Color>,
+    index: Int,
+    strokeWidth: Float,
+    frontColor: Color
+) {
+    drawArc(
+        startAngle = startAngle,
+        sweepAngle = sweepAngle,
+        useCenter = false,
+        color = if (useRandomColors) colors[index] else frontColor,
+        style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
+    )
+
+    drawArc(
+        startAngle = startAngle,
+        sweepAngle = EDITING_ARC_ANGLE,
+        useCenter = false,
+        color = if (useRandomColors) colors[index] else frontColor,
+        style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
+    )
+
+    drawArc(
+        startAngle = startAngle + sweepAngle - EDITING_ARC_ANGLE,
+        sweepAngle = EDITING_ARC_ANGLE,
+        useCenter = false,
+        color = if (useRandomColors) colors[index] else frontColor,
+        style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
+    )
+
+    val startTextPosition = calculateTextPosition(startAngle, innerRadius, center)
+    val endTextPosition = calculateTextPosition(startAngle + sweepAngle, innerRadius, center)
+
+    withTransform({
+        rotate(90f, pivot = startTextPosition)
+    }) {
+        drawText(
+            textMeasurer = textMeasurer,
+            text = angleToLocalTime(startAngle).toString(),
+            topLeft = startTextPosition,
+            style = TextStyle(
+                color = Color.Black,
+                fontSize = 9.sp
+            )
+        )
+    }
+
+    withTransform({
+        rotate(90f, pivot = endTextPosition)
+    }) {
+        drawText(
+            textMeasurer = textMeasurer,
+            text = angleToLocalTime(startAngle + sweepAngle).toString(),
+            topLeft = endTextPosition,
+            style = TextStyle(
+                color = Color.Black,
+                fontSize = 9.sp,
+                textAlign = TextAlign.Center
+            )
+        )
+    }
+}
+
+private fun DrawScope.drawCircleWithOutline(
+    useRandomColors: Boolean,
+    backColor: Color,
+    componentRadius: Float,
+    center: Offset,
+    strokeWidth: Float
+) {
+    drawCircle(
+        color = if (useRandomColors) backColor.copy(alpha = 0.08f) else backColor,
+        radius = componentRadius,
+        center = center,
+        style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+    )
+    if (useRandomColors) {
+        drawCircle(
+            color = backColor.copy(alpha = 0.3f),
+            radius = (componentRadius - strokeWidth / 2),
+            center = center,
+            style = Stroke(width = 3f, cap = StrokeCap.Round)
+        )
+        drawCircle(
+            color = backColor.copy(alpha = 0.3f),
+            radius = (componentRadius + strokeWidth / 2),
+            center = center,
+            style = Stroke(width = 3f, cap = StrokeCap.Round)
+        )
     }
 }
