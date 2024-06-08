@@ -25,7 +25,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import pit.composeapp.generated.resources.*
 import presentation.component.*
-import presentation.ui.register.SignupScreen
+import presentation.ui.auth.register.SignupScreen
 
 class OnboardingScreen : Screen, KoinComponent {
     @OptIn(ExperimentalFoundationApi::class)

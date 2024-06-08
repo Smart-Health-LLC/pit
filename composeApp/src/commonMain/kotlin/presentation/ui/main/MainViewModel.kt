@@ -33,7 +33,7 @@ class MainViewModel(
     }
 
     val onBoardingState: StateFlow<OnBoardingState> =
-        settingsRepository.getUsername().map {
+        settingsRepository.getLogin().map {
             OnBoardingState.Success(it.isNullOrEmpty().not())
         }.stateIn(
             scope = screenModelScope,

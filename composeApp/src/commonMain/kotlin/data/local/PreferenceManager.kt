@@ -33,10 +33,19 @@ class PreferenceManager constructor(private val settings: Settings) {
 
     // @formatter:off
     companion object {
-        const val USERNAME            = "username_key"
-        const val APP_THEME           = "app_theme_key"
-        const val HOUR_FORMAT         = "hour_format_key"
-        const val LANGUAGE_ID         = "language_id"
+        const val LOGIN          = "login_key"
+        const val PASSWORD       = "password_key"
+        const val LAST_JWT       = "last_jwt_key"
+        const val REFRESH_TOKEN  = "refresh_token_key"
+
+        const val DATE_FORMAT    = "date_format_key"
+        const val TIME_FORMAT    = "time_format_key"
+        const val HOUR_FORMAT    = "hour_format_key"
+        const val FIRST_WEEK_DAY = "first_week_day_id"
+
+        const val FIRST_TAB      = "first_tab_key"
+        const val APP_THEME      = "app_theme_key"
+        const val LANGUAGE_TAG   = "language_tag"
     }
     // @formatter:on
 
