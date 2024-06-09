@@ -24,7 +24,8 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import pit.composeapp.generated.resources.*
-import presentation.component.*
+import presentation.component.Spacer_12dp
+import presentation.component.Spacer_32dp
 import presentation.ui.auth.register.RegisterScreen
 
 class OnboardingScreen : Screen, KoinComponent {
@@ -48,6 +49,23 @@ class OnboardingScreen : Screen, KoinComponent {
                 navigator.push(RegisterScreen())
             },
         )
+    }
+}
+
+
+@Composable
+fun CustomFullWidthButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(60.dp)
+    ) {
+        Text(text = text)
     }
 }
 
