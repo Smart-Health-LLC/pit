@@ -27,7 +27,7 @@ import presentation.ui.choose_schedule.ChooseScheduleScreen
 import presentation.ui.main.MainViewModel
 import presentation.ui.settings.component.SingleChoiceAlertDialog
 
-class SettingsScreen() : Screen {
+class SettingsScreen : Screen {
 
     @Composable
     override fun Content(
@@ -55,13 +55,16 @@ fun SettingsScreenContent(
     ) {
 
         item {
-            Text(text = strings.settings, style = MaterialTheme.typography.displaySmall)
+            Text(
+                text = strings.settingsStrings.settings,
+                style = MaterialTheme.typography.displaySmall
+            )
         }
         item {
-            SampleSection(strings.dateAndTime)
+            SampleSection(strings.settingsStrings.dateAndTime)
             {
                 SettingsMenuLink(
-                    title = { Text(text = strings.timeFormat24h) },
+                    title = { Text(text = strings.settingsStrings.timeFormat24h) },
                     modifier = Modifier,
                     enabled = true,
                     action = {
@@ -85,7 +88,7 @@ fun SettingsScreenContent(
                 )
 
                 SettingsMenuLink(
-                    title = { Text(text = strings.dateFormat) },
+                    title = { Text(text = strings.settingsStrings.dateFormat) },
                     subtitle = { Text(text = "yyyy-mm-dd") },
                     modifier = Modifier,
                     enabled = true,
@@ -102,7 +105,7 @@ fun SettingsScreenContent(
                 )
 
                 SettingsMenuLink(
-                    title = { Text(text = strings.durationFormat) },
+                    title = { Text(text = strings.settingsStrings.durationFormat) },
                     subtitle = { Text(text = "HH:mm") },
                     modifier = Modifier,
                     enabled = true,
@@ -119,8 +122,8 @@ fun SettingsScreenContent(
                 )
 
                 SettingsMenuLink(
-                    title = { Text(text = strings.firstDayOfWeek) },
-                    subtitle = { Text(text = strings.monday) },
+                    title = { Text(text = strings.settingsStrings.firstDayOfWeek) },
+                    subtitle = { Text(text = strings.weekDays.monday) },
                     modifier = Modifier,
                     enabled = true,
                     icon = {
@@ -138,14 +141,14 @@ fun SettingsScreenContent(
         }
 
         item {
-            SampleSection(strings.interfaceSettingsGroup) {
+            SampleSection(strings.settingsStrings.interfaceSettingsGroup) {
                 SettingLanguage(currentLanguageInfo = selectedLocaleInfo, onLanguageUpdate = {
                     mainViewModel.updateLanguage(it)
                 })
 
                 SettingsMenuLink(
-                    title = { Text(text = strings.firstTab) },
-                    subtitle = { Text(text = strings.tabDailyStats) },
+                    title = { Text(text = strings.settingsStrings.firstTab) },
+                    subtitle = { Text(text = strings.tabNames.tabDailyStats) },
                     modifier = Modifier,
                     enabled = true,
                     icon = {
@@ -161,8 +164,8 @@ fun SettingsScreenContent(
                 )
 
                 SettingsMenuLink(
-                    title = { Text(text = strings.appTheme) },
-                    subtitle = { Text(text = strings.appThemeFollowSystem) },
+                    title = { Text(text = strings.settingsStrings.appTheme) },
+                    subtitle = { Text(text = strings.settingsStrings.appThemeFollowSystem) },
                     modifier = Modifier,
                     enabled = true,
                     icon = {
@@ -213,7 +216,7 @@ private fun SettingLanguage(
 
     // @formatter:off
     SettingsMenuLink(
-        title    = { Text(text = strings.language) },
+        title    = { Text(text = strings.settingsStrings.language) },
         subtitle = { Text(text = rememberedCurrentLanguageInfo.value.name) },
         onClick  = { toggleDialog() },
         icon     = { Icon(Icons.Filled.Favorite, null, tint = MaterialTheme.colorScheme.primary ) },

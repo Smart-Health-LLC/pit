@@ -117,10 +117,10 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
 
                 // @formatter:off
                 text = when (tab.options.index) {
-                    MainTabs.HomeTab.INDEX            -> strings.tabHome
-                    MainTabs.AdaptationStatsTab.INDEX -> strings.tabAdaptationStats
-                    MainTabs.DailyStatsTab.INDEX      -> strings.tabDailyStats
-                    MainTabs.SettingsTab.INDEX        -> strings.tabMore
+                    MainTabs.HomeTab.INDEX            -> strings.tabNames.tabHome
+                    MainTabs.AdaptationStatsTab.INDEX -> strings.tabNames.tabAdaptationStats
+                    MainTabs.DailyStatsTab.INDEX      -> strings.tabNames.tabDailyStats
+                    MainTabs.SettingsTab.INDEX        -> strings.tabNames.tabMore
                     else -> error("Unknown tab")
                 },
                 // @formatter:on

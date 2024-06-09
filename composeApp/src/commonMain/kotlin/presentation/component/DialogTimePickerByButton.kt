@@ -55,14 +55,14 @@ fun DialogTimePickerByButton(
                             .fillMaxWidth(), horizontalArrangement = Arrangement.End
                     ) {
                         TextButton(onClick = { showDialog = false }) {
-                            Text(text = strings.dismiss)
+                            Text(text = strings.dialogStrings.dismiss)
                         }
                         TextButton(onClick = {
                             showDialog = false
                             segmentLocalTimeEdge = LocalTime.of(timeState.hour, timeState.minute)
                             updateSegmentEdge(segmentLocalTimeEdge)
                         }) {
-                            Text(text = strings.confirm)
+                            Text(text = strings.dialogStrings.confirm)
                         }
                     }
                 }

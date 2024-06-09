@@ -25,7 +25,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import pit.composeapp.generated.resources.*
 import presentation.component.*
-import presentation.ui.auth.register.SignupScreen
+import presentation.ui.auth.register.RegisterScreen
 
 class OnboardingScreen : Screen, KoinComponent {
     @OptIn(ExperimentalFoundationApi::class)
@@ -45,7 +45,7 @@ class OnboardingScreen : Screen, KoinComponent {
                 }
             },
             onClickGetStarted = {
-                navigator.push(SignupScreen())
+                navigator.push(RegisterScreen())
             },
         )
     }
@@ -64,13 +64,13 @@ fun OnboardingScreenContent(
             if (pagerState.currentPage == pageCount - 1) {
                 CustomFullWidthButton(
                     modifier = Modifier.padding(10.dp),
-                    text = strings.getStarted,
+                    text = strings.onboardingStrings.getStarted,
                     onClick = onClickGetStarted,
                 )
             } else {
                 CustomFullWidthButton(
                     modifier = Modifier.padding(10.dp),
-                    text = strings.next,
+                    text = strings.onboardingStrings.next,
                     onClick = onClickNext,
                 )
             }
@@ -137,8 +137,8 @@ private fun ColumnScope.PageIndicators(pageCount: Int, currentPage: Int) {
 @Composable
 private fun OnboardingFirstPage() {
     PageContent(
-        title = strings.changeTheWayYouSleep,
-        description = strings.firstOnboardingMessage,
+        title = strings.onboardingStrings.changeTheWayYouSleep,
+        description = strings.onboardingStrings.firstOnboardingMessage,
         illustration = Res.drawable.sleep,
     )
 }
@@ -146,8 +146,8 @@ private fun OnboardingFirstPage() {
 @Composable
 private fun OnboardingSecondPage() {
     PageContent(
-        title = strings.keepInMind,
-        description = strings.secondOnboardingMessage,
+        title = strings.onboardingStrings.keepInMind,
+        description = strings.onboardingStrings.secondOnboardingMessage,
         illustration = Res.drawable.medical,
     )
 }
@@ -155,7 +155,7 @@ private fun OnboardingSecondPage() {
 @Composable
 private fun PageContent(title: String, description: String, illustration: DrawableResource) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
@@ -167,7 +167,7 @@ private fun PageContent(title: String, description: String, illustration: Drawab
         Spacer_32dp()
         Text(
             text = title,
-            style = MaterialTheme.typography.displayLarge.copy(
+            style = MaterialTheme.typography.headlineLarge.copy(
                 fontWeight = FontWeight.SemiBold,
             ),
             modifier = Modifier.fillMaxWidth(),

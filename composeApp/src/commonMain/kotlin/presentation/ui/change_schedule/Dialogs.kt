@@ -72,14 +72,14 @@ fun CreateSegmentDialog(
                     TextButton(
                         onClick = onDismiss,
                     ) {
-                        Text(strings.dismiss)
+                        Text(strings.dialogStrings.dismiss)
                     }
                     TextButton(
                         onClick = {
                             onCreate(newSegment)
                         }
                     ) {
-                        Text(strings.ok)
+                        Text(strings.dialogStrings.ok)
                     }
                 }
             }
@@ -138,7 +138,7 @@ fun ErrorMessagesDialog(
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
                 ) {
-                    Text(strings.ok)
+                    Text(strings.dialogStrings.ok)
                 }
             }
         }

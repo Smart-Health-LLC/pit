@@ -22,7 +22,7 @@ fun SingleChoiceAlertDialog(
 
     AlertDialog(
         onDismissRequest = onDialogDismiss,
-        title = { Text(text = strings.selectNewLanguage) },
+        title = { Text(text = strings.settingsStrings.selectNewLanguage) },
         text = {
             Column {
                 items.forEach { localeItem ->
@@ -41,7 +41,7 @@ fun SingleChoiceAlertDialog(
                 TextButton(
                     onClick = onDialogDismiss,
                 ) {
-                    Text(text = strings.cancel)
+                    Text(text = strings.dialogStrings.cancel)
                 }
             }
         }
@@ -51,7 +51,7 @@ fun SingleChoiceAlertDialog(
                 TextButton(
                     onClick = { onItemSelected(userSelectedItem.value) },
                 ) {
-                    Text(text = strings.confirm)
+                    Text(text = strings.dialogStrings.confirm)
                 }
             }
         },
@@ -63,7 +63,7 @@ fun SingleChoiceAlertDialog(
                 TextButton(
                     onClick = onDialogDismiss,
                 ) {
-                    Text(text = strings.clearChoice)
+                    Text(text = strings.dialogStrings.clearChoice)
                 }
             }
         },

@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun DatePickerWithDialog(
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     onDayUpdate: (newDate: LocalDate) -> Unit,
     initialData: LocalDate = LocalDate.now()
 ) {
@@ -38,6 +38,7 @@ fun DatePickerWithDialog(
 
     if (showDialog) {
         DatePickerDialog(
+            modifier = modifier,
             onDismissRequest = { showDialog = false },
             confirmButton = {
                 TextButton(
@@ -50,14 +51,14 @@ fun DatePickerWithDialog(
                         }
                     }
                 ) {
-                    Text(text = strings.ok)
+                    Text(text = strings.dialogStrings.ok)
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showDialog = false }
                 ) {
-                    Text(text = strings.cancel)
+                    Text(text = strings.dialogStrings.cancel)
                 }
             }
         ) {

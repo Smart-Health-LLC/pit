@@ -31,6 +31,7 @@ fun Email(
             )
         },
         modifier = Modifier
+            .padding(bottom = 10.dp)
             .fillMaxWidth()
             .onFocusChanged { focusState ->
                 emailState.onFocusChange(focusState.isFocused)
@@ -64,6 +65,7 @@ fun Password(
     onImeAction: () -> Unit = {}
 ) {
     val showPassword = rememberSaveable { mutableStateOf(false) }
+
     OutlinedTextField(
         value = passwordState.text,
         onValueChange = {
@@ -72,6 +74,7 @@ fun Password(
         },
         modifier = modifier
             .fillMaxWidth()
+            .padding(bottom = 10.dp)
             .onFocusChanged { focusState ->
                 passwordState.onFocusChange(focusState.isFocused)
                 if (!focusState.isFocused) {

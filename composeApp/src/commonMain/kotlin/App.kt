@@ -11,8 +11,8 @@ import i18n.lyricist
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import presentation.theme.AppTheme
-import presentation.ui.auth.login.SignInScreen
 import presentation.ui.main.*
+import presentation.ui.onboarding.OnboardingScreen
 
 @Composable
 fun App(
@@ -31,7 +31,7 @@ fun App(
                 lyricist.languageTag = currentLangInfo.tag
             }
 
-            AppTheme(isDarkTheme) {
+            AppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
@@ -49,7 +49,7 @@ fun App(
                                 }
 
                                 is OnBoardingState.InProgress -> {
-                                    SignInScreen()
+                                    OnboardingScreen()
                                 }
                             }
                         )

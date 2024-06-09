@@ -1,71 +1,79 @@
 package i18n.locale
 
 import cafe.adriel.lyricist.LyricistStrings
-import i18n.Locales
-import i18n.Strings
+import i18n.*
 import presentation.ui.change_schedule.ErrorCode
 
 @LyricistStrings(languageTag = Locales.EN, default = true)
 val EnStrings = Strings(
-    startedAt = "Started at ",
-    changeSchedule = "Change schedule",
-    napIn = "Sleep in",
-    tstToday = "TST today",
-    streak = "Streak",
-    changeTheWayYouSleep = "Change the way you sleep",
-    firstOnboardingMessage = "Adaptation to polyphasic sleep is a lifechanger, but requires some additional forces. Be ready to stress yourself just last time and feel fresh after successful adaptation to reduced sleep schedule with reduced total sleep time per day.",
-    secondOnboardingMessage = "By using the app you agree to our disclaimer of liability for possible personal injury. Sleep deprivation is not a joke. If you feel yourself bad, don't feel bad about stop the adaptation and start it again. Keep in mind your personal age, health, environment limitations and use the app rationally. We hope you'll do your best anyway",
-    next = "Next",
-    getStarted = "Get started",
-    username = "Username",
-    password = "Password",
-    keepInMind = "Keep in mind",
-    confirmPassword = "Confirm password",
-    createAccount = "Create account",
-    createAccountButton = "Create account",
-    alreadyHaveAnAccount = "Already have an account? Login",
-    login = "Login",
-    signup = "Sign up",
-    byContinue = "By signing up you are apply the service agreement",
-    dontHaveAnAccount = "Don't have an account? Signup",
-    welcomeBack = "Welcome back",
-    language = "Language",
-    chooseAnotherSchedule = "Choose another schedule",
-    tabHome = "Home",
-    tabAdaptationStats = "Adaptation",
-    tabDailyStats = "Day",
-    tabMore = "More",
-    timeFormat24h = "Use 24-hour clock",
-    wakeUpEase = "Wake up ease level",
-    fallAsleepEase = "Fall asleep ease level",
-    easeMiddle = "Viable",
-    easeLow = "Hard",
-    easeHigh = "Easy",
-    save = "Save",
-    note = "Note",
-    dismiss = "Dismiss",
-    confirm = "Confirm",
-    ok = "Ok",
-    inDevelopment = "In development...",
-    firstDayOfWeek = "First day of the week",
-    dateFormat = "Date format",
-    durationFormat = "Duration format",
-    firstTab = "First tab",
-    appTheme = "App theme",
-    appThemeFollowSystem = "Follow system",
-    cancel = "Cancel",
-    selectNewLanguage = "Select language",
-    clearChoice = "Clear",
-    monday = "Monday",
-    settings = "Settings",
-    lack = "Lack",
-    excess = "Excess",
-    graphEase = "Adaptation ease",
-    chooseDate = "Choose date",
-    add = "Add",
-    delete = "Delete",
-    warnings = "Warnings",
-    errors = "Errors",
+
+    onboardingStrings = OnboardingStrings(
+        next = "Next",
+        changeTheWayYouSleep = "Change the way you sleep",
+        getStarted = "Get started",
+        keepInMind = "Keep in mind",
+        firstOnboardingMessage = "Adaptation to polyphasic sleep is a lifechanger, but requires some additional forces. Be ready to stress yourself just last time and feel fresh after successful adaptation to reduced sleep schedule with reduced total sleep time per day.",
+        secondOnboardingMessage = "By using the app you agree to our disclaimer of liability for possible personal injury. Sleep deprivation is not a joke. If you feel yourself bad, don't feel bad about stop the adaptation and start it again. Keep in mind your personal age, health, environment limitations and use the app rationally. We hope you'll do your best anyway",
+    ),
+
+    settingsStrings = SettingsStrings(
+        firstTab = "First tab",
+        dateAndTime = "Date and time",
+        interfaceSettingsGroup = "Interface",
+        dateFormat = "Date format",
+        appTheme = "App theme",
+        appThemeFollowSystem = "Follow system",
+        durationFormat = "Duration format",
+        settings = "Settings",
+        selectNewLanguage = "Select language",
+        timeFormat24h = "Use 24-hour clock",
+        language = "Language",
+        firstDayOfWeek = "First day of the week",
+    ),
+
+    tabNames = TabNames(
+        tabHome = "Home",
+        tabAdaptationStats = "Adaptation",
+        tabDailyStats = "Day",
+        tabMore = "More",
+    ),
+
+    weekDays = WeekDays(
+        monday = "Monday",
+        tuesday = "Tuesday",
+        wednesday = "Wednesday",
+        thursday = "Thursday",
+        friday = "Friday",
+        saturday = "Saturday",
+        sunday = "Sunday"
+    ),
+
+    dialogStrings = DialogStrings(
+        dismiss = "Dismiss",
+        confirm = "Confirm",
+        ok = "Ok",
+        clearChoice = "Clear",
+        cancel = "Cancel",
+        chooseDate = "Choose date",
+    ),
+
+    authStrings = AuthStrings(
+        username = "Username",
+        password = "Password",
+        confirmPassword = "Confirm password",
+        createAccount = "Create account",
+        createAccountButton = "Create account",
+        alreadyHaveAnAccount = "Already have an account? Login",
+        login = "Login",
+        signup = "Sign up",
+        byContinue = "By signing up you are apply the service agreement",
+        dontHaveAnAccount = "Don't have an account? Signup",
+        welcomeBack = "Welcome back",
+        termsOfService = "terms of service",
+        agreeWith = "Agree with ",
+    ),
+
+
     errorDescriptionByCode = {
         when (it) {
             ErrorCode.OVERLAP -> "Segments overlap"
@@ -75,10 +83,32 @@ val EnStrings = Strings(
             ErrorCode.SEGMENT_ZERO_DURATION -> "One of the segments ends in the moment of the start"
         }
     },
+
+
+    startedAt = "Started at ",
+    changeSchedule = "Change schedule",
+    napIn = "Sleep in",
+    tstToday = "TST today",
+    streak = "Streak",
+    chooseAnotherSchedule = "Choose another schedule",
+    wakeUpEase = "Wake up ease level",
+    fallAsleepEase = "Fall asleep ease level",
+    easeMiddle = "Viable",
+    easeLow = "Hard",
+    easeHigh = "Easy",
+    save = "Save",
+    note = "Note",
+    inDevelopment = "In development...",
+    lack = "Lack",
+    excess = "Excess",
+    graphEase = "Adaptation ease",
+    add = "Add",
+    delete = "Delete",
+    warnings = "Warnings",
+    errors = "Errors",
+
     rulesBroken = "Rules broken",
     defineSegment = "Define segment",
-    interfaceSettingsGroup = "Interface",
     profile = "Profile",
-    dateAndTime = "Date and time",
-    noInternetConnection = "No internet connection"
+    noInternetConnection = "No internet connection",
 )
