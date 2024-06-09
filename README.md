@@ -63,31 +63,18 @@ flowchart TB
 - Android Studio: Jellyfish 2023.3.1
 - Dev platform OS: Win10 22H2 19045.4291
 
-# Local conventions
-
-- Singular nouns in package names
-- While project in active development state, unstructured fat-ass commits are allowed
-- To keep aligned on the functional aspect of Jetpack Compose, the best writing approach is to
-  inject instances directly into functions properties. This way allow to have default implementation
-  with Koin, but keep open to inject different instances
-- Nothing worse imo than create "util" folder with bunch of general shit. That's better to honestly
-  say "idk wft located here but I need this", so unless project structure is forming, "wtf" packages
-  exists :(
-- Prefer named arguments on function call
-
 # Dependencies overview
 
 [Versions catalog](/gradle/libs.versions.toml)
 
-- Settings multiplatform
-    - I found more examples with that, later probably better to use data store
-- Voyager
-- Koin
-- SQLDelight
-- Lyricist
-- Napier
-- Ktor
+- [Settings multiplatform](https://github.com/russhwolf/multiplatform-settings?tab=readme-ov-file#coroutine-apis)
+- [Voyager](https://voyager.adriel.cafe)
+- [Koin](https://insert-koin.io)
+- [SQLDelight](https://cashapp.github.io/sqldelight/)
+- [Lyricist](https://github.com/adrielcafe/lyricist)
+- [Napier](https://github.com/AAkira/Napier)
+- [Ktor](https://ktor.io)
 
-# Supporting Backend Project
+----
 
 [The backend that powers this app](https://github.com/Smart-Health-LLC/server)
