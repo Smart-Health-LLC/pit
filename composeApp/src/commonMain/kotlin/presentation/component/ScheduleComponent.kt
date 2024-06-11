@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -25,7 +26,6 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +34,7 @@ import java.time.Duration
 import java.time.LocalTime
 import kotlin.math.atan2
 import kotlin.math.cos
+import kotlin.math.round
 import kotlin.math.sin
 import kotlinx.coroutines.delay
 
@@ -95,7 +96,8 @@ private fun calculateAngle(offset: Offset, size: IntSize): Float {
     val angle = Math.toDegrees(
         atan2((offset.y - centerY).toDouble(), (offset.x - centerX).toDouble())
     ).toFloat()
-    return (angle + 360) % 360
+
+    return getAdjustedAngle(angle)
 }
 
 /**
@@ -107,10 +109,8 @@ private fun calculateAngle(offset: Offset, size: IntSize): Float {
  * @return A LocalTime object representing the time corresponding to the given angle.
  */
 private fun angleToLocalTime(angle: Float): LocalTime {
-    var adjustedAngle = angle % 360
-    if (adjustedAngle < 0) {
-        adjustedAngle += 360
-    }
+    val adjustedAngle = getAdjustedAngle(angle)
+
     val totalMinutes = (adjustedAngle / 360 * 24 * 60).toInt()
     val roundedMinutes = (totalMinutes + 2) / 5 * 5
     val hours = totalMinutes / 60
@@ -133,6 +133,29 @@ private fun calculateTextPosition(angle: Float, radius: Float, center: Offset): 
     val x = center.x + radius * cos(radians).toFloat()
     val y = center.y + radius * sin(radians).toFloat()
     return Offset(x, y)
+}
+
+/**
+ * Adjusts the given angle to ensure it falls within the range of 0 to 360 degrees.
+ *
+ * This function takes an angle as input and adjusts it to ensure it falls within the range of 0 to 360 degrees.
+ * If the angle is less than 0, it adds 360 to it until it falls within the range.
+ * If the angle is greater than 360, it subtracts 360 from it until it falls within the range.
+ *
+ * @param angle The angle in degrees to be adjusted. It can be any float value.
+ * @return The adjusted angle, which will be a float value between 0 and 360 degrees.
+ */
+private fun getAdjustedAngle(angle: Float): Float {
+    var adjustedAngle = angle
+
+    while (adjustedAngle !in 0f..360f) {
+        adjustedAngle %= 360
+        if (adjustedAngle < 0) {
+            adjustedAngle += 360
+        }
+    }
+
+    return adjustedAngle
 }
 
 @Composable
@@ -368,35 +391,82 @@ private fun DrawScope.drawSegment(
         style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
     )
 
-    val startTextPosition = calculateTextPosition(startAngle, innerRadius, center)
-    val endTextPosition = calculateTextPosition(startAngle + sweepAngle, innerRadius, center)
+    printTimeOnAngle(
+        text = angleToLocalTime(startAngle).toString(),
+        textStyle = TextStyle(
+            color = Color.Black,
+            fontSize = 11.sp
+        ),
+        textMeasurer = textMeasurer,
+        angle = startAngle,
+        innerRadius = innerRadius,
+        center = center
+    )
 
-    withTransform({
-        rotate(90f, pivot = startTextPosition)
-    }) {
-        drawText(
-            textMeasurer = textMeasurer,
-            text = angleToLocalTime(startAngle).toString(),
-            topLeft = startTextPosition,
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 9.sp
-            )
-        )
+    printTimeOnAngle(
+        text = angleToLocalTime(startAngle + sweepAngle).toString(),
+        textStyle = TextStyle(
+            color = Color.Black,
+            fontSize = 11.sp
+        ),
+        textMeasurer = textMeasurer,
+        angle = startAngle + sweepAngle,
+        innerRadius = innerRadius,
+        center = center
+    )
+}
+
+private fun DrawScope.printTimeOnAngle(
+    text: String,
+    textStyle: TextStyle,
+    textMeasurer: TextMeasurer,
+    angle: Float,
+    innerRadius: Float,
+    center: Offset
+) {
+    val adjustedAngle = getAdjustedAngle(angle)
+    var textPosition = calculateTextPosition(angle, innerRadius, center)
+    val size = textMeasurer.measure(text = text, style = textStyle).size
+
+    val textHeight = size.height * 1.5f
+    val textWidth = size.width * 1.5f
+
+    val offsetX: Float
+    val offsetY: Float
+
+    if (round(adjustedAngle) in 0f..89f) {
+        val percent = adjustedAngle / 90
+
+        offsetX = -((0.5f * textWidth) + (0.5f * (percent * textWidth)))
+        offsetY = -((0.5f * textHeight) - (percent * textHeight))
+    } else if (round(adjustedAngle) in 90f..179f) {
+        val percent = (adjustedAngle - 90) / 90
+
+        offsetX = -(textWidth - (0.5f * (percent * textWidth)))
+        offsetY = (0.5f * textHeight) + (0.5f * (percent * textHeight))
+    } else if (round(adjustedAngle) in 180f..269f) {
+        val percent = (adjustedAngle - 180) / 90
+
+        offsetX = -((0.5f * textWidth) - (0.8f * (percent * textWidth)))
+        offsetY = textHeight - (0.5f * (percent * textHeight))
+    } else {
+        val percent = (adjustedAngle - 270) / 90
+
+        offsetX = (0.3f * textWidth) - (0.5f * (percent * textWidth))
+        offsetY = (0.5f * textHeight) - (percent * textHeight)
     }
 
+    textPosition = Offset(textPosition.x + offsetY, textPosition.y + offsetX)
+
     withTransform({
-        rotate(90f, pivot = endTextPosition)
+        rotate(90f, pivot = textPosition)
     }) {
         drawText(
             textMeasurer = textMeasurer,
-            text = angleToLocalTime(startAngle + sweepAngle).toString(),
-            topLeft = endTextPosition,
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 9.sp,
-                textAlign = TextAlign.Center
-            )
+            text = angleToLocalTime(angle).toString(),
+            topLeft = textPosition,
+            style = textStyle,
+            size = Size(width = size.width.toFloat(), height = size.height.toFloat())
         )
     }
 }
