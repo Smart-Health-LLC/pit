@@ -34,6 +34,7 @@ import java.time.Duration
 import java.time.LocalTime
 import kotlin.math.atan2
 import kotlin.math.cos
+import kotlin.math.floor
 import kotlin.math.round
 import kotlin.math.sin
 import kotlinx.coroutines.delay
@@ -111,10 +112,11 @@ private fun calculateAngle(offset: Offset, size: IntSize): Float {
 private fun angleToLocalTime(angle: Float): LocalTime {
     val adjustedAngle = getAdjustedAngle(angle)
 
-    val totalMinutes = (adjustedAngle / 360 * 24 * 60).toInt()
-    val roundedMinutes = (totalMinutes + 2) / 5 * 5
-    val hours = totalMinutes / 60
+    val totalMinutes = round(adjustedAngle / 360f * 24f * 60f).toInt()
+    val roundedMinutes = (round(totalMinutes / 5f) * 5).toInt()
+    val hours = roundedMinutes / 60 % 24
     val minutes = roundedMinutes % 60
+
     return LocalTime.of(hours, minutes)
 }
 
@@ -254,6 +256,7 @@ fun ScheduleComponent(
                                 segmentEndAngle = angle
                             } else {
                                 val angleDiff = angle - (draggingSegmentInitialAngle ?: 0f)
+
                                 segmentStartAngle = (segmentStartAngle ?: 0f) + angleDiff
                                 segmentEndAngle = (segmentEndAngle ?: 0f) + angleDiff
                                 draggingSegmentInitialAngle = angle
@@ -267,6 +270,7 @@ fun ScheduleComponent(
                         if (segmentStartAngle != null && segmentEndAngle != null) {
                             val startTime = angleToLocalTime(segmentStartAngle!!)
                             val endTime = angleToLocalTime(segmentEndAngle!!)
+
                             if (draggingSegment != null) {
                                 onUpdateSegment?.invoke(draggingSegment!!, startTime, endTime)
                                 draggingSegment = null
@@ -354,7 +358,6 @@ fun ScheduleComponent(
     }
 }
 
-// todo | fix text position
 private fun DrawScope.drawSegment(
     startAngle: Float,
     sweepAngle: Float,
