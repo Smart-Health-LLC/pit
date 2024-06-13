@@ -256,30 +256,37 @@ class ChangeScheduleViewModel : ScreenModel {
         segment: Segment,
         newStartTime: LocalTime,
         newEndTime: LocalTime
-    ) {
-        _screenState.update {
-            val segmentIndex = it.editableSegments.indexOf(segment)
-            val savedList = it.editableSegments.toMutableList()
-            savedList[segmentIndex] = it.editableSegments[segmentIndex].copy(
-                start = newStartTime,
-                end = newEndTime
-            )
+    ): Segment {
+        val state = _screenState.value
 
-            it.copy(editableSegments = savedList)
-        }
+        val segmentIndex = state.editableSegments.indexOf(segment)
+        val savedList = state.editableSegments.toMutableList()
+
+        savedList[segmentIndex] = state.editableSegments[segmentIndex].copy(
+            start = newStartTime,
+            end = newEndTime
+        )
+
+        _screenState.tryEmit(state.copy(editableSegments = savedList))
 
         validateSchedule()
         determineWhetherScheduleEdited()
+
+        return savedList[segmentIndex]
     }
 
-    fun addSegment(segment: Segment) {
-        _screenState.update {
-            val newSegments = it.editableSegments.toMutableList()
-            newSegments.add(segment)
-            it.copy(editableSegments = newSegments)
-        }
+    fun addSegment(segment: Segment): Segment {
+        val state = _screenState.value
+
+        val newSegments = state.editableSegments.toMutableList()
+        newSegments.add(segment)
+
+        _screenState.tryEmit(state.copy(editableSegments = newSegments))
+
         validateSchedule()
         determineWhetherScheduleEdited()
+
+        return segment
     }
 
     fun deleteSegment(segment: Segment) {
