@@ -2,13 +2,27 @@ package presentation.ui.change_schedule
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,7 +33,9 @@ import cafe.adriel.lyricist.strings
 import cafe.adriel.voyager.core.screen.Screen
 import domain.model.Segment
 import org.koin.compose.koinInject
-import presentation.component.*
+import presentation.component.ScheduleEditableComponent
+import presentation.component.SegmentTimeEdges
+import presentation.component.Spacer_12dp
 import presentation.icon.SaveIcon
 
 class ChangeScheduleScreen : Screen {
@@ -28,7 +44,6 @@ class ChangeScheduleScreen : Screen {
         ChangeScheduleScreenContent()
     }
 }
-
 
 @Composable
 fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject()) {
@@ -55,22 +70,26 @@ fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject(
                 .padding(top = 15.dp)
                 .padding(paddingValues = it)
         ) {
-
-            ScheduleComponent(
+            ScheduleEditableComponent(
                 segments = state.editableSegments,
                 componentRadius = 320,
                 strokeWidth = 190f,
                 useRandomColors = true,
                 onAddSegment = { segment ->
                     viewModel.addSegment(segment)
+                },
+                onUpdateSegment = { segment, newStart, newEnd ->
+                    viewModel.updateSegmentStartTimeAndEndTime(segment, newStart, newEnd)
+                },
+                onDeleteSegment = { segment ->
+                    viewModel.deleteSegment(segment)
                 }
             )
             Spacer_12dp()
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-
                 // time edges components
                 state.editableSegments.forEach { segment ->
                     item {
@@ -98,7 +117,6 @@ fun ChangeScheduleScreenContent(viewModel: ChangeScheduleViewModel = koinInject(
     }
 }
 
-
 @Composable
 fun ControlPanel(
     errorCodes: List<ErrorCode>,
@@ -119,7 +137,6 @@ fun ControlPanel(
             .animateContentSize()
             .padding(horizontal = 16.dp, vertical = 10.dp) // standard FAB m3 padding
     ) {
-
         ControlItem(
             onClick = {
                 isAddNewDialogOpen = true
@@ -132,7 +149,7 @@ fun ControlPanel(
             ControlItem(
                 onClick = onSave,
                 icon = SaveIcon,
-                strings.save,
+                strings.save
             )
         }
         if (errorCodes.isNotEmpty()) {
@@ -169,7 +186,6 @@ fun ControlPanel(
     }
 }
 
-
 @Composable
 fun ControlItem(
     onClick: () -> Unit,
@@ -188,7 +204,7 @@ fun ControlItem(
                 Icon(
                     icon,
                     contentDescription = null,
-                    tint = contentColor,
+                    tint = contentColor
                 )
 //                Text(text = label, color = contentColor)
             }
